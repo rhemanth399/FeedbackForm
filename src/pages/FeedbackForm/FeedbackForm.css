@@ -1,0 +1,23 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.form Button{
+    width:max(5vw,16px);
+    padding:10px 0px;
+    margin-top: 4vh;
+
+}
+
+
+.form .main{
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+}
+
+.question-number{
+    padding-right: 25px;
+}
