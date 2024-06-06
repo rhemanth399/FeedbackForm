@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-
 interface FormContextType {
   formData: Record<string, string>;
   setFormData: (data: Record<string, string>) => void;
+  apiUrl:string;
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -17,6 +17,10 @@ export const useFormContext = () => {
 
 export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const apiUrl: string= "http://localhost:4000"
 
-  return <FormContext.Provider value={{ formData, setFormData }}>{children}</FormContext.Provider>;
+  
+  
+
+  return <FormContext.Provider value={{formData,setFormData,apiUrl}}>{children}</FormContext.Provider>;
 };
