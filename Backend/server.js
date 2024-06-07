@@ -3,6 +3,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import 'dotenv/config.js'
 import feedbackRouter from "./routes/feedback.js";
+import addQuestionsRouter from "./routes/questions.js";
 
 
 //app config
@@ -17,6 +18,8 @@ app.use(cors())
 // api endpoints 
 
 app.use("/api",feedbackRouter)
+
+app.use("/api",addQuestionsRouter)
 
 
 //db connection

@@ -8,7 +8,12 @@
     width:max(5vw,16px);
     padding:10px 0px;
     margin-top: 4vh;
+    background-color: tomato;
 
+}
+
+.form Button:hover{
+    background-color: tomato;
 }
 
 

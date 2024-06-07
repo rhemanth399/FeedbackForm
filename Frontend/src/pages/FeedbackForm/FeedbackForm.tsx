@@ -9,23 +9,24 @@ import TextFieldComponent from '../../components/TextField/TextField';
 import CommentsField from '../../components/CommentsField/CommentsField';
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import Inputs from '../../components/Inputs/Inputs';
 
-const FeedbackForm: React.FC = () => {
+interface FeedbackFormProps {
+  withData: boolean;
+}
+
+const FeedbackForm: React.FC<FeedbackFormProps> = ({withData}) => {
   const { formData ,apiUrl,setFormData } = useFormContext();
 
 
   const handleSubmit = async (event :React.FormEvent<HTMLFormElement>)=>{
     event.preventDefault()
-
-    const newFormData =new FormData()
-    newFormData.append("rating",formData.data)
-    newFormData.append("comment",formData.comment)
-    newFormData.append("yesNo",formData.yesNo)
-    newFormData.append("name",formData.name)
+    console.log(formData)
+    
 
     try {
-      const response = await axios.post(apiUrl+"/api/create",{newFormData})
-      console.log(newFormData)
+      const response = await axios.post(apiUrl+"/api/create",formData)
+      
       if(response.data.success){
         setFormData({
           rating:"",
@@ -40,6 +41,8 @@ const FeedbackForm: React.FC = () => {
     }
   }
   return (
+    <>
+   { withData && <Inputs/> }
     <form className='form' onSubmit={handleSubmit}>
       {questionsData.map((question,index) => {
         switch (question.type) {
@@ -88,6 +91,7 @@ const FeedbackForm: React.FC = () => {
       </Button>
       {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
     </form>
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextField, FormControl, FormLabel } from '@mui/material';
 import { useFormContext } from '../../context/FormContext';
 import './TextField.css'
 
@@ -8,18 +7,17 @@ interface TextFieldProps {
   id: string;
 }
 
-const TextFieldComponent: React.FC<TextFieldProps> = ({ question, id }) => {
+const TextFieldComponent: React.FC<TextFieldProps> = ({ question}) => {
   const { formData, setFormData } = useFormContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [id]: event.target.value });
+    setFormData({ name: event.target.value });
   };
-
   return (
-    <FormControl component="fieldset" margin="normal">
-      <FormLabel component="legend">{question}</FormLabel>
-      <TextField variant="outlined" fullWidth value={formData[id] || ''} onChange={handleChange} className='textfield' />
-    </FormControl>
+    <div>
+    <label>{question}</label>
+    <input type="text" value={formData.name} onChange={handleChange} />
+  </div>
   );
 };
 

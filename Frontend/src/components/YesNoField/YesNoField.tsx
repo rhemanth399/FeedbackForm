@@ -1,5 +1,4 @@
 import React from 'react';
-import { RadioGroup, FormControlLabel, Radio, FormControl, FormLabel } from '@mui/material';
 import { useFormContext } from '../../context/FormContext';
 
 interface YesNoFieldProps {
@@ -7,21 +6,19 @@ interface YesNoFieldProps {
   id: string;
 }
 
-const YesNoField: React.FC<YesNoFieldProps> = ({ question, id }) => {
+const YesNoField: React.FC<YesNoFieldProps> = ({ question }) => {
   const { formData, setFormData } = useFormContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [id]: event.target.value });
+    setFormData({ yesNo: event.target.value });
   };
 
   return (
-    <FormControl component="fieldset" margin="normal">
-      <FormLabel component="legend">{question}</FormLabel>
-      <RadioGroup row onChange={handleChange} name={id} value={formData[id] || ''}>
-        <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-        <FormControlLabel value="no" control={<Radio />} label="No" />
-      </RadioGroup>
-    </FormControl>
+    <div>
+      <label>{question}</label>
+      <input type="radio" value="yes" checked={formData.yesNo === "yes"} onChange={handleChange} /> Yes
+      <input type="radio" value="no" checked={formData.yesNo === "no"} onChange={handleChange} /> No
+    </div>
   );
 };
 
