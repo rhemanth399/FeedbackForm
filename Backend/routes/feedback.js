@@ -1,8 +1,8 @@
 import express from 'express'
-import { storingFeedback } from '../controllers/createFeedback.js'
+import { storeFeedback } from '../controllers/feedback.js'
 
 const feedbackRouter = express.Router()
 
-feedbackRouter.post("/create",storingFeedback)
+feedbackRouter.post("/create",storeFeedback)
 
 export default feedbackRouter

@@ -11,4 +11,15 @@ const addQuestions = async (req, res) => {
     }
 };
 
-export { addQuestions };
+const retrievingFeedback = async(req,res)=>{
+    try {
+        const response = await Question.find({})
+        res.json({success:true,data:response})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:"Error"})
+    }
+    
+}
+
+export { addQuestions ,retrievingFeedback };
