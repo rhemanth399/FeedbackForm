@@ -10,6 +10,10 @@ const Sidebar: React.FC = () =>{
          <img src={assets.add_icon} alt=""/>
          <p>Create Form</p>
         </NavLink>
+        <NavLink to="/editforms" className="sidebar-option">
+         <img src={assets.add_icon} alt=""/>
+         <p>Edit Forms</p>
+        </NavLink>
         
       </div>
     </div>

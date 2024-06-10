@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import CreateForms from './pages/CreateForms/CreateForms.tsx'
+import EditForms from './pages/EditForms/EditForms.tsx'
 
 function App() {
   
@@ -18,6 +19,7 @@ function App() {
 
           <Routes>
             <Route path="/createForm" element={<CreateForms/>}/>
+            <Route path="/editForms" element={<EditForms/>}/>
           </Routes>
           </div>
         </div>
