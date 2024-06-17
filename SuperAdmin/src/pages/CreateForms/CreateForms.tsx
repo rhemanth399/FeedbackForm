@@ -38,6 +38,7 @@ const CreateForms : React.FC = () => {
 
   const saveForm = async () => {
     try {
+      console.log(title,questions)
       await axios.post('http://localhost:4000/api/create', { title, questions });
       alert('Form saved successfully!');
     } catch (error) {
@@ -46,6 +47,7 @@ const CreateForms : React.FC = () => {
     }
     console.log(questions)
     setQuestions([])
+    setTitle("")
   };
 
   return (

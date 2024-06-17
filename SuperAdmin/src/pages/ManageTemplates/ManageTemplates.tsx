@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './EditForms.css'
+import './ManageTemplates.css'
 
 const questionTypes = [
   'Multiple choice',
@@ -37,7 +37,7 @@ const FormEditor: React.FC = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/allForms');
+        const response = await axios.get('http://localhost:4000/api/templates');
         console.log("1",response)
         setForms(response.data.message);
       } catch (error) {
@@ -49,7 +49,7 @@ const FormEditor: React.FC = () => {
 
   const fetchForm = async (formId: string) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/forms/${formId}`);
+      const response = await axios.get(`http://localhost:4000/api/template/${formId}`);
       console.log("2",response)
       setForm(response.data.message);
 

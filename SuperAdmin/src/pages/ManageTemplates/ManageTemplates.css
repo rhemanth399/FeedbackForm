@@ -1,0 +1,94 @@
+/* FormEditor.css */
+.form-editor {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-editor h1 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+.form-editor input[type="text"],
+.form-editor select,
+.form-editor textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-editor textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+
+
+.form-editor button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: tomato;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+
+.form-editor .question {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-editor .question select,
+.form-editor .question input[type="text"],
+.form-editor .question textarea {
+  margin-bottom: 10px;
+  border: 1px solid gray;
+  outline: none;
+}
+
+.form-editor .question select:hover,
+.form-editor .question input[type="text"]:hover,
+.form-editor .question textarea :hover{
+  border: 1px solid tomato;
+}
+
+.form-editor .form-list {
+  list-style: none;
+  padding: 0;
+}
+
+.form-editor .form-list li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: rgb(250, 136, 110);;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-editor .form-list li:hover {
+  background-color: tomato;
+}
+
+.form-editor .form-list li.selected {
+  background-color: tomato;
+}

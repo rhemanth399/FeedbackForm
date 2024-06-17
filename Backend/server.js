@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.js";
 import 'dotenv/config.js'
 import feedbackRouter from "./routes/feedback.js";
 import addQuestionsRouter from "./routes/questions.js";
+import templateRouter from "./routes/templates.js";
 
 
 //app config
@@ -20,6 +21,8 @@ app.use(cors())
 app.use("/api",feedbackRouter)
 
 app.use("/api",addQuestionsRouter)
+
+app.use("/api",templateRouter)
 
 
 

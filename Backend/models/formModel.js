@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-
-
 const questionSchema = new mongoose.Schema({
     type: String,
     prompt: String,
