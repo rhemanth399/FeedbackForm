@@ -16,19 +16,25 @@ const Inputs: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='inputs'>
+       <div className="form-group">
+       <label>Name</label>
       <input
         type="text"
         name="name"
         value={formData.user.name}
         onChange={handleUserChange}
       />
+      </div>
+      <div className="form-group">
+      <label>Phone Number</label>
       <input
         type="text"
         name="mobile" // Change type to text
         value={formData.user.mobile}
         onChange={handleUserChange}
       />
+      </div>
     </div>
   );
 };

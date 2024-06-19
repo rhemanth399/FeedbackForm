@@ -92,3 +92,8 @@
 .form-editor .form-list li.selected {
   background-color: tomato;
 }
+
+
+.edit-template{
+  margin-bottom: 10px;
+}

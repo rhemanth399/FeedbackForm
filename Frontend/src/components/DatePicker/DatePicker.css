@@ -1,0 +1,11 @@
+.date-picker {
+    margin: 20px;
+  }
+  .date-picker p {
+    font-weight: bold;
+  }
+  .date-picker input {
+    margin-top: 10px;
+    padding: 5px;
+    width: 100%;
+  }

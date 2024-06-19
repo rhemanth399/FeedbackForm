@@ -66,7 +66,7 @@ const FormEditor: React.FC = () => {
     }
   };
 
-  const saveForm = async () => {
+  const updatedTemplate = async () => {
     if (form) {
       try {
         await axios.put(`http://localhost:4000/api/forms/${form._id}`, form);
@@ -78,9 +78,22 @@ const FormEditor: React.FC = () => {
     }
   };
 
+
+  const saveForm = async () => {
+    if (form) {
+      try {
+        await axios.post('http://localhost:4000/api/create', form);
+        alert('Form saved successfully!');
+      } catch (error) {
+        console.error('Error saving form', error);
+        alert('Failed to save form');
+      }
+    }
+  };
+
   return (
     <div className="form-editor">
-      <h1>Edit Form</h1>
+      <h1>Manage Templates</h1>
       {selectedFormId ? (
         form ? (
           <div>
@@ -122,14 +135,15 @@ const FormEditor: React.FC = () => {
                 )}
               </div>
             ))}
-            <button onClick={saveForm}>Save Form</button>
+            <button onClick={updatedTemplate} className='edit-template' >Edit Template</button>
+            <button onClick={saveForm}>Save Template</button>
           </div>
         ) : (
           <p>Loading form...</p>
         )
       ) : (
         <div>
-          <h2>Select a form to edit</h2>
+          <h2>Select a Template</h2>
           <ul className="form-list">
             {forms.map((form) => (
               <li

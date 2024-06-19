@@ -1,0 +1,19 @@
+.inputs{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+
+.inputs input{
+    padding: 8px 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    border: 1px solid gray;
+    outline: none;
+
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}

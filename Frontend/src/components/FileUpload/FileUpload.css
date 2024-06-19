@@ -1,0 +1,9 @@
+.file-upload {
+    margin: 20px;
+  }
+  .file-upload p {
+    font-weight: bold;
+  }
+  .file-upload input {
+    margin-top: 10px;
+  }

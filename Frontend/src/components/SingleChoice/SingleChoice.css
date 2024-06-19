@@ -1,0 +1,9 @@
+.single-choice {
+    margin: 20px;
+  }
+  .single-choice p {
+    font-weight: bold;
+  }
+  .single-choice div {
+    margin: 5px 0;
+  }

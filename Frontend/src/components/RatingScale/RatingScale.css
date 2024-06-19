@@ -1,0 +1,18 @@
+.rating-scale {
+    margin: 20px;
+  }
+  .rating-scale p {
+    font-weight: bold;
+  }
+  .rating-options {
+    margin-top: 10px;
+  }
+  .rating-button {
+    margin-right: 5px;
+    padding: 2px 2px;
+    
+  }
+  .rating-button.selected {
+    background-color: #3f51b5;
+    color: white;
+  }

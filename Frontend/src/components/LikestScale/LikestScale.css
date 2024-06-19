@@ -1,0 +1,14 @@
+.likest-scale {
+    margin: 20px;
+  }
+  .likest-scale p {
+    font-weight: bold;
+  }
+  .likest-scale div {
+    display: flex;
+    flex-direction: column;
+  }
+  .likest-scale label {
+    cursor: pointer;
+    margin: 5px 0;
+  }

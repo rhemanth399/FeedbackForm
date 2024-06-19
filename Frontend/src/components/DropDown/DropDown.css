@@ -1,0 +1,9 @@
+.dropdown {
+    margin: 20px;
+  }
+  .dropdown p {
+    font-weight: bold;
+  }
+  .dropdown select {
+    margin-top: 10px;
+  }

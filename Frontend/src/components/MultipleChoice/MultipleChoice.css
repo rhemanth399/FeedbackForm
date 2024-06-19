@@ -1,0 +1,9 @@
+.multiple-choice {
+  margin: 20px;
+}
+.multiple-choice p {
+  font-weight: bold;
+}
+.multiple-choice div {
+  margin: 5px 0;
+}

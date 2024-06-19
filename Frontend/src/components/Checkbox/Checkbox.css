@@ -1,0 +1,9 @@
+.checkbox {
+    margin: 20px;
+  }
+  .checkbox p {
+    font-weight: bold;
+  }
+  .checkbox div {
+    margin: 5px 0;
+  }

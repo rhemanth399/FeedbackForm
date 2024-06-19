@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar/Sidebar'
 import CreateForms from './pages/CreateForms/CreateForms.tsx'
 import EditForms from './pages/EditForms/EditForms.tsx'
 import ManageTemplates from './pages/ManageTemplates/ManageTemplates.tsx'
+import CreateAdmin from './pages/CreateAdmin/CreateAdmin.tsx'
 
 function App() {
   
@@ -22,6 +23,7 @@ function App() {
             <Route path="/createForm" element={<CreateForms/>}/>
             <Route path="/editForms" element={<EditForms/>}/>
             <Route path="/manageTemplates" element={<ManageTemplates/>}/>
+            <Route path="/createAdmin" element={<CreateAdmin/>}/>
           </Routes>
           </div>
         </div>
