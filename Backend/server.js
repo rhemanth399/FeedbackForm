@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 import 'dotenv/config.js'
-import feedbackRouter from "./routes/feedback.js";
-import addQuestionsRouter from "./routes/questions.js";
+import formRouter from "./routes/form.js";
 import templateRouter from "./routes/templates.js";
 import adminRouter from "./routes/admin.js";
 
@@ -19,9 +18,9 @@ app.use(cors())
 
 // api endpoints 
 
-app.use("/api",feedbackRouter)
+app.use("/api",formRouter)
 
-app.use("/api",addQuestionsRouter)
+
 
 app.use("/api",templateRouter)
 

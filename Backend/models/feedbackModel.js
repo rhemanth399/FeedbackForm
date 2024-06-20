@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: false },
-  mobile: { type: String, required: false }
-});
 
 const feedbackSchema = new mongoose.Schema({
-  rating: { type: String, required: false },
-  comment: { type: String, required: false },
-  yesNo: { type: String, required: false },
-  name: { type: String, required: false },
-  user: { type: userSchema, required: false }
-});
+  formId: { type: mongoose.Schema.Types.ObjectId, ref: 'Form', required: true },
+  answers: [{
+    question: { type: String, required: false },
+    answer: { type: String, required: false }
+  }],
+  customerDetails: {
+    name: String,
+    mobile: String,
+    email: String
+  }
+}, { timestamps: true });
 
-const feedbackModel = mongoose.models.feedback || mongoose.model("feedback", feedbackSchema);
+const feedbackModel = mongoose.model("feedback",feedbackSchema)
 
-export default feedbackModel;
+export default feedbackModel
