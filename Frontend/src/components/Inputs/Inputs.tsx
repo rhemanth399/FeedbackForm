@@ -35,6 +35,15 @@ const Inputs: React.FC = () => {
         onChange={handleUserChange}
       />
       </div>
+      <div className="form-group">
+      <label>Email</label>
+      <input
+        type="email"
+        name="email" // Change type to text
+        value={formData.user.email}
+        onChange={handleUserChange}
+      />
+      </div>
     </div>
   );
 };

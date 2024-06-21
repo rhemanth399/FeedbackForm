@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useFormContext } from '../../context/FormContext'; // Ensure the correct path
 import './SingleChoice.css';
 
 type SingleChoiceProps = {
   question: string;
   options: string[];
+  questionId: string; // Add questionId to map responses
 };
 
-const SingleChoice: React.FC<SingleChoiceProps> = ({ question, options }) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+const SingleChoice: React.FC<SingleChoiceProps> = ({ question, options, questionId }) => {
+  const { formData, setFormData } = useFormContext();
+  const [selectedOption, setSelectedOption] = useState<any>(formData.single_choice[questionId] || '');
+
+  
+  useEffect(() => {
+    setFormData({ single_choice: { ...formData.single_choice, [questionId]: selectedOption } });
+  }, [selectedOption]);
 
   return (
     <div className="single-choice">

@@ -3,45 +3,48 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface User {
   name: string;
   mobile: string;
-  email:string
+  email: string;
 }
+
+interface TextArea {
+  [questionId:string]:string;
+}
+
 interface FormData {
-  multiple_choice: string;
-  single_choice: string;
+  multiple_choice: { [questionId: string]: string[] };
+  single_choice: { [questionId: string]: string[] };
   dropdown: string;
-  ratingscale: string;
-  likestscale:string,
-  textinput:string,
-  textarea:string,
-  datepicker:string,
-  fileupload:string,
-  checkbox:string
-  user:User
+  ratingscale: { [questionId: string]: number | null };
+  likestscale: string;
+  textinput:  { [questionId: string]: string };
+  textarea: TextArea
+  datepicker: string;
+  fileupload: string;
+  checkbox: { [questionId: string]: number | null };
+  user: User;
 }
+
 interface FormContextType {
   formData: FormData;
   setFormData: (data: Partial<FormData>) => void;
   apiUrl: string;
 }
 
-
-
-
 const initialFormData: FormData = {
-  multiple_choice: "",
-  single_choice: "",
+  multiple_choice: {},
+  single_choice: {},
   dropdown: "",
-  ratingscale: "",
-  likestscale:"",
-  textinput:"",
-  textarea:"",
-  datepicker:"",
-  fileupload:"",
-  checkbox:"",
-  user:{
-    name:"",
-    mobile:"",
-    email:""
+  ratingscale: {},
+  likestscale: "",
+  textinput: {},
+  textarea: {},
+  datepicker: "",
+  fileupload: "",
+  checkbox: {},
+  user: {
+    name: "",
+    mobile: "",
+    email: ""
   }
 };
 
@@ -70,5 +73,9 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }));
   };
 
-  return <FormContext.Provider value={{ formData, setFormData, apiUrl }}>{children}</FormContext.Provider>;
+  return (
+    <FormContext.Provider value={{ formData, setFormData, apiUrl }}>
+      {children}
+    </FormContext.Provider>
+  );
 };
