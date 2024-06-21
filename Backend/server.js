@@ -5,6 +5,7 @@ import 'dotenv/config.js'
 import formRouter from "./routes/form.js";
 import templateRouter from "./routes/templates.js";
 import adminRouter from "./routes/admin.js";
+import feedbackRouter from "./routes/feedback.js";
 
 
 //app config
@@ -20,13 +21,11 @@ app.use(cors())
 
 app.use("/api",formRouter)
 
-
-
 app.use("/api",templateRouter)
 
 app.use("/api",adminRouter)
 
-
+app.use("/api",feedbackRouter)
 
 //db connection
 connectDB();

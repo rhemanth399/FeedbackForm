@@ -1,11 +1,8 @@
-import React ,{useState, useEffect} from 'react';
-import './FeedbackForm.css';
-import { Button } from '@mui/material';
-import { useFormContext } from '../../context/FormContext';
-import { questionsData } from '../../questionsData'; 
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Inputs from '../../components/Inputs/Inputs'; 
+import { Button } from '@mui/material';
+import { useFormContext } from '../../context/FormContext'; 
 import MultipleChoice from '../../components/MultipleChoice/MultipleChoice';
 import SingleChoice from '../../components/SingleChoice/SingleChoice';
 import DropDown from '../../components/DropDown/DropDown';
@@ -16,6 +13,15 @@ import TextArea from '../../components/TextArea/TextArea';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import Checkbox from '../../components/Checkbox/Checkbox';
+import Inputs from '../../components/Inputs/Inputs';
+import './FeedbackForm.css'
+// Define the type for the question object
+interface Question {
+  type: string;
+  prompt: string;
+  options?: string[];
+  _id: string;
+}
 
 interface FeedbackFormProps {
   withData: boolean;
@@ -23,12 +29,11 @@ interface FeedbackFormProps {
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const { formData, apiUrl, setFormData } = useFormContext();
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch the first form from the API
         const response = await axios.get(`${apiUrl}/api/allForms`);
         if (response.data.success && response.data.message.length > 0) {
           const firstForm = response.data.message[0];
@@ -44,28 +49,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
     fetchData();
   }, [apiUrl]);
 
-  console.log(questions)
-
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(formData);
-
-    // try {
-    //   const response = await axios.post(`${apiUrl}/api/create`, formData);
-
-    //   if (response.data.success) {
-    //     setFormData({
-    //       rating: "",
-    //       comment: "",
-    //       yesNo: "",
-    //       name: ""
-    //     });
-    //     toast.success(response.data.message);
-    //   }
-    // } catch (error) {
-    //   toast.error("Error");
-    // }
   };
 
   return (
@@ -73,96 +59,95 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
       {withData && <Inputs />}
       <form className='form' onSubmit={handleSubmit}>
         {questions.map((question, index) => {
-          
-          switch (question) {
-            case 'multiple_choice':
+          switch (question.type) {
+            case 'Multiple choice':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <MultipleChoice question={question.question} options={question.options || []} />
+                  <MultipleChoice question={question.prompt} options={question.options || []} />
                 </span>
               );
-            case 'single_choice':
+            case 'Single choice':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <SingleChoice question={question.question} options={question.options || []} />
+                  <SingleChoice question={question.prompt} options={question.options || []} />
                 </span>
               );
-            case 'dropdown':
+            case 'Dropdown':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <DropDown question={question.question} options={question.options || []} />
+                  <DropDown question={question.prompt} options={question.options || []} />
                 </span>
               );
-            case 'rating_scale':
+            case 'Rating scale':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <RatingScale question={question.question} scale={question.scale || 5} />
+                  <RatingScale question={question.prompt}  scale={5}/>
                 </span>
               );
-            case 'likert_scale':
+            case 'Likert scale':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <LikestScale question={question.question} options={question.options || []} />
+                  <LikestScale question={question.prompt} options={question.options || []} />
                 </span>
               );
-            case 'text_input':
+            case 'Text input (short answer)':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <TextInput question={question.question} />
+                  <TextInput question={question.prompt} />
                 </span>
               );
-            case 'text_area':
+            case 'Text area (long answer)':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <TextArea question={question.question} />
+                  <TextArea question={question.prompt} />
                 </span>
               );
-            case 'date_picker':
+            case 'Date picker':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <DatePicker question={question.question} />
+                  <DatePicker question={question.prompt} />
                 </span>
               );
-            case 'file_upload':
+            case 'File upload':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <FileUpload question={question.question} />
+                  <FileUpload question={question.prompt} />
                 </span>
               );
-            case 'checkbox':
+            case 'Checkbox':
               return (
-                <span className='main' key={question.id}>
+                <span className='main' key={question._id}>
                   <span className='question-number'>
-                    {index + 1} .
+                    {index + 1}.
                   </span>
-                  <Checkbox question={question.question} options={question.options || []} />
+                  <Checkbox question={question.prompt} options={question.options || []} />
                 </span>
               );
             default:

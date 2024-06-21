@@ -3,12 +3,19 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface User {
   name: string;
   mobile: string;
+  email:string
 }
 interface FormData {
-  rating: string;
-  comment: string;
-  yesNo: string;
-  name: string;
+  multiple_choice: string;
+  single_choice: string;
+  dropdown: string;
+  ratingscale: string;
+  likestscale:string,
+  textinput:string,
+  textarea:string,
+  datepicker:string,
+  fileupload:string,
+  checkbox:string
   user:User
 }
 interface FormContextType {
@@ -21,13 +28,20 @@ interface FormContextType {
 
 
 const initialFormData: FormData = {
-  rating: "",
-  comment: "",
-  yesNo: "",
-  name: "",
+  multiple_choice: "",
+  single_choice: "",
+  dropdown: "",
+  ratingscale: "",
+  likestscale:"",
+  textinput:"",
+  textarea:"",
+  datepicker:"",
+  fileupload:"",
+  checkbox:"",
   user:{
     name:"",
-    mobile:""
+    mobile:"",
+    email:""
   }
 };
 
