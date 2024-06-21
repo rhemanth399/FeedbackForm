@@ -104,15 +104,15 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
                   <SingleChoice question={question.prompt} options={question.options || []} questionId={question._id} />
                 </span>
               );
-            // case 'Dropdown':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <DropDown question={question.prompt} options={question.options || []} questionId={question._id} />
-            //     </span>
-            //   );
+            case 'Dropdown':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <DropDown question={question.prompt} options={question.options || []} questionId={question._id} />
+                </span>
+              );
             case 'Rating scale':
               return (
                 <span className='main' key={question._id}>
@@ -131,15 +131,15 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
             //       <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />
             //     </span>
             //   );
-            // case 'Text input (short answer)':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <TextInput question={question.prompt} questionId={question._id} />
-            //     </span>
-            //   );
+            case 'Text input':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <TextInput question={question.prompt} questionId={question._id} />
+                </span>
+              );
             case 'Text area (long answer)':
               return (
                 <span className='main' key={question._id}>

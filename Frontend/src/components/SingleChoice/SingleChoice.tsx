@@ -5,7 +5,7 @@ import './SingleChoice.css';
 type SingleChoiceProps = {
   question: string;
   options: string[];
-  questionId: string; // Add questionId to map responses
+  questionId: string; 
 };
 
 const SingleChoice: React.FC<SingleChoiceProps> = ({ question, options, questionId }) => {

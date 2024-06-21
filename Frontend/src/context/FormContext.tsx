@@ -10,13 +10,20 @@ interface TextArea {
   [questionId:string]:string;
 }
 
+interface TextInput {
+  [questionId:string]:string;
+}
+interface DropDown {
+  [questionId:string]:string;
+}
+
 interface FormData {
   multiple_choice: { [questionId: string]: string[] };
   single_choice: { [questionId: string]: string[] };
-  dropdown: string;
+  dropdown: DropDown;
   ratingscale: { [questionId: string]: number | null };
   likestscale: string;
-  textinput:  { [questionId: string]: string };
+  textinput: TextInput;
   textarea: TextArea
   datepicker: string;
   fileupload: string;
@@ -33,7 +40,7 @@ interface FormContextType {
 const initialFormData: FormData = {
   multiple_choice: {},
   single_choice: {},
-  dropdown: "",
+  dropdown: {},
   ratingscale: {},
   likestscale: "",
   textinput: {},

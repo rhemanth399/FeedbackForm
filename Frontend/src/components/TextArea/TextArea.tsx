@@ -4,7 +4,7 @@ import './TextArea.css';
 
 type TextAreaProps = {
   question: string;
-  questionId: string; // Add questionId to map responses
+  questionId: string; 
 };
 
 const TextArea: React.FC<TextAreaProps> = ({ question, questionId }) => {
@@ -13,7 +13,9 @@ const TextArea: React.FC<TextAreaProps> = ({ question, questionId }) => {
 
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
     setFormData({ textarea: { ...formData.textarea, [questionId]: event.target.value } });
+    
   };
 
   return (
