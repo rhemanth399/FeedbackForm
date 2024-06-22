@@ -81,7 +81,7 @@ const CreateForms : React.FC = () => {
           />
           <button type="button" onClick={() => handleRemoveQuestion(index)} className='question-remove-btn'>Remove</button>
           </div>
-          {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
+          {['Multiple choice', 'Single choice', 'Dropdown','Checkbox','Likert scale'].includes(question.type) && (
             <div>
               <textarea
                 placeholder="Options (comma separated)"

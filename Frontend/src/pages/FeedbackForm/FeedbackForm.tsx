@@ -122,16 +122,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
                   <RatingScale question={question.prompt} scale={5} questionId={question._id} />
                 </span>
               );
-            // case 'Likert scale':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />
-            //     </span>
-            //   );
-            case 'Text input':
+            case 'Likert scale':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />
+                </span>
+              );
+            case 'Text input (short answer)':
               return (
                 <span className='main' key={question._id}>
                   <span className='question-number'>
@@ -149,33 +149,33 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
                   <TextArea question={question.prompt} questionId={question._id} />
                 </span>
               );
-            // case 'Date picker':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <DatePicker question={question.prompt} questionId={question._id} />
-            //     </span>
-            //   );
-            // case 'File upload':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <FileUpload question={question.prompt} questionId={question._id} />
-            //     </span>
-            //   );
-            // case 'Checkbox':
-            //   return (
-            //     <span className='main' key={question._id}>
-            //       <span className='question-number'>
-            //         {index + 1}.
-            //       </span>
-            //       <Checkbox question={question.prompt} options={question.options || []} questionId={question._id} />
-            //     </span>
-            //   );
+            case 'Date picker':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <DatePicker question={question.prompt} questionId={question._id} />
+                </span>
+              );
+            case 'File upload':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <FileUpload question={question.prompt} questionId={question._id} />
+                </span>
+              );
+            case 'Checkbox':
+              return (
+                <span className='main' key={question._id}>
+                  <span className='question-number'>
+                    {index + 1}.
+                  </span>
+                  <Checkbox question={question.prompt} options={question.options || []} questionId={question._id} />
+                </span>
+              );
             default:
               return null;
           }

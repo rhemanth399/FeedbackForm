@@ -17,17 +17,44 @@ interface DropDown {
   [questionId:string]:string;
 }
 
+interface likestScale {
+  [questionId:string]:string;
+}
+interface ratingScale {
+  [questionId:string]:string | number;
+}
+interface datePicker {
+  [questionId:string]:string;
+}
+
+interface fileUpload {
+  [questionId:string]:string;
+}
+
+interface multipleChoice{
+  [questionId:string]:string[];
+}
+
+interface singleChoice {
+  [questionId:string]:string[];
+}
+
+interface checkBox {
+  [questionId:string]:string[];
+}
+
+
 interface FormData {
-  multiple_choice: { [questionId: string]: string[] };
-  single_choice: { [questionId: string]: string[] };
+  multiple_choice: multipleChoice;
+  single_choice: singleChoice;
   dropdown: DropDown;
-  ratingscale: { [questionId: string]: number | null };
-  likestscale: string;
+  ratingscale: ratingScale;
+  likestscale: likestScale;
   textinput: TextInput;
   textarea: TextArea
-  datepicker: string;
-  fileupload: string;
-  checkbox: { [questionId: string]: number | null };
+  datepicker: datePicker;
+  fileupload: fileUpload;
+  checkbox: checkBox;
   user: User;
 }
 
@@ -42,11 +69,11 @@ const initialFormData: FormData = {
   single_choice: {},
   dropdown: {},
   ratingscale: {},
-  likestscale: "",
+  likestscale: {},
   textinput: {},
   textarea: {},
-  datepicker: "",
-  fileupload: "",
+  datepicker: {},
+  fileupload: {},
   checkbox: {},
   user: {
     name: "",
@@ -73,6 +100,46 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setFormDataState(prevState => ({
       ...prevState,
       ...data,
+      multiple_choice: {
+        ...prevState.multiple_choice,
+        ...data.multiple_choice,
+      },
+      single_choice: {
+        ...prevState.single_choice,
+        ...data.single_choice,
+      },
+      dropdown: {
+        ...prevState.dropdown,
+        ...data.dropdown,
+      },
+      ratingscale: {
+        ...prevState.ratingscale,
+        ...data.ratingscale,
+      },
+      likestscale: {
+        ...prevState.likestscale,
+        ...data.likestscale,
+      },
+      textinput: {
+        ...prevState.textinput,
+        ...data.textinput,
+      },
+      textarea: {
+        ...prevState.textarea,
+        ...data.textarea,
+      },
+      datepicker: {
+        ...prevState.datepicker,
+        ...data.datepicker,
+      },
+      fileupload: {
+        ...prevState.fileupload,
+        ...data.fileupload,
+      },
+      checkbox: {
+        ...prevState.checkbox,
+        ...data.checkbox,
+      },
       user: {
         ...prevState.user,
         ...data.user,

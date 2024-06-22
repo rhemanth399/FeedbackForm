@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './LikestScale.css';
+import { useFormContext } from '../../context/FormContext';
 
 type LikertScaleProps = {
   question: string;
   options: string[];
+  questionId: string;
 };
 
-const LikestScale: React.FC<LikertScaleProps> = ({ question, options }) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+const LikestScale: React.FC<LikertScaleProps> = ({ question, options , questionId}) => {
+  const { formData, setFormData } = useFormContext();
+  const [selectedOption, setSelectedOption] = useState<string>(formData.likestscale[questionId] || '');
+
+  
+  useEffect(() => {
+    setFormData({ likestscale: { ...formData.likestscale, [questionId]: selectedOption } });
+  }, [selectedOption]);
 
   return (
     <div className="likest-scale">
