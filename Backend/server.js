@@ -22,6 +22,7 @@ app.use(cors())
 app.use("/api",formRouter)
 
 app.use("/api",templateRouter)
+app.use('/uploads', express.static('uploads'));
 
 app.use("/api",adminRouter)
 

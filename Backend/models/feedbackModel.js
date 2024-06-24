@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-import FormModel from "./formModel.js";
 
 const responseSchema = new mongoose.Schema({
   questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
-  response: String
+  response: String 
 });
 
 const feedbackSchema = new mongoose.Schema({
@@ -11,8 +10,8 @@ const feedbackSchema = new mongoose.Schema({
   user: {
     name: String,
     email: String,
-    phone:String
-  },                                                                                                                                              
+    phone: String
+  },
   responses: [responseSchema],
   submittedAt: { type: Date, default: Date.now }
 });

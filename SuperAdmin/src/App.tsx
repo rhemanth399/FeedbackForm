@@ -6,6 +6,7 @@ import CreateForms from './pages/CreateForms/CreateForms.tsx'
 import EditForms from './pages/EditForms/EditForms.tsx'
 import ManageTemplates from './pages/ManageTemplates/ManageTemplates.tsx'
 import CreateAdmin from './pages/CreateAdmin/CreateAdmin.tsx'
+import ListOfFeedback from './pages/ListOfFeedback/ListOfFeedback.tsx'
 
 function App() {
   
@@ -24,6 +25,7 @@ function App() {
             <Route path="/editForms" element={<EditForms/>}/>
             <Route path="/manageTemplates" element={<ManageTemplates/>}/>
             <Route path="/createAdmin" element={<CreateAdmin/>}/>
+            <Route path="/listOfFeedback" element={<ListOfFeedback/>}/>
           </Routes>
           </div>
         </div>

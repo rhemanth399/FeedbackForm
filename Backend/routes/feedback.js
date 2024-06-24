@@ -1,10 +1,20 @@
 import express from 'express';
 import { RetrievingListOfFeedback, createFeedback } from '../controllers/feedback.js'; 
+import multer from 'multer';
 
 const feedbackRouter = express.Router();
 
+const storage = multer.diskStorage({
+    destination: "uploads",
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}_${file.originalname}`);
+    }
+  });
+  
+  const upload = multer({ storage: storage });
+
 // Route for creating feedback
-feedbackRouter.post('/feedback', createFeedback);
+feedbackRouter.post('/feedback', upload.single('file'), createFeedback);
 
 feedbackRouter.get("/listOfFeedback",RetrievingListOfFeedback)
 

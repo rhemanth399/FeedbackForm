@@ -22,6 +22,10 @@ const Sidebar: React.FC = () =>{
          <img src={assets.add_icon} alt=""/>
          <p>Create Admin</p>
         </NavLink>
+        <NavLink to="/listOfFeedback" className="sidebar-option">
+         <img src={assets.add_icon} alt=""/>
+         <p>List Of Feedback</p>
+        </NavLink>
       </div>
     </div>
     )
