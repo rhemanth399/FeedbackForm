@@ -30,8 +30,8 @@ const Inputs: React.FC = () => {
       <label>Phone Number</label>
       <input
         type="text"
-        name="mobile" // Change type to text
-        value={formData.user.mobile}
+        name="phone" 
+        value={formData.user.phone}
         onChange={handleUserChange}
       />
       </div>

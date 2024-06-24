@@ -12,7 +12,7 @@ const feedbackSchema = new mongoose.Schema({
     name: String,
     email: String,
     phone:String
-  },
+  },                                                                                                                                              
   responses: [responseSchema],
   submittedAt: { type: Date, default: Date.now }
 });

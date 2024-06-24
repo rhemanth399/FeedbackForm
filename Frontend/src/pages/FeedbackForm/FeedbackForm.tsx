@@ -58,14 +58,14 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
       formId: formId,  
       user: formData.user,
       responses: questions.map((question) => {
-        const response = formData.multiple_choice[question._id] || formData.single_choice[question._id] || formData.textarea[question._id]|| formData.ratingscale[question._id];
+        const response = formData.multiple_choice[question._id] || formData.single_choice[question._id] || formData.dropdown[question._id] || formData.textarea[question._id]|| formData.ratingscale[question._id] || formData.likestscale[question._id] || formData.textinput[question._id] || formData.datepicker[question._id] || formData.fileupload[question._id] || formData.checkbox[question._id] ;
         return {
           questionId: question._id,
           response: Array.isArray(response) ? response.join(', ') : response,
         };
       }),
     };
-    console.log(payload)
+    console.log("hemanth",payload)
 
     try {
       const response = await axios.post(`${apiUrl}/api/feedback`, payload);

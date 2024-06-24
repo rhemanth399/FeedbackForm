@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
   name: string;
-  mobile: string;
+  phone: string;
   email: string;
 }
 
@@ -77,7 +77,7 @@ const initialFormData: FormData = {
   checkbox: {},
   user: {
     name: "",
-    mobile: "",
+    phone: "",
     email: ""
   }
 };

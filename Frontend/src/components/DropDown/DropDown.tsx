@@ -22,7 +22,7 @@ const DropDown: React.FC<DropdownProps> = ({ question, options,questionId }) => 
   }, [selectedOption]);
 
 
-  console.log(formData)
+  //console.log("hemanth",formData)
   return (
     <div className="dropdown">
       <p>{question}</p>

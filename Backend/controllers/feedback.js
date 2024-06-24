@@ -33,3 +33,14 @@ export const createFeedback = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const RetrievingListOfFeedback = async(req,res)=>{
+
+  const feedback = await FeedbackModel.find();
+  if(feedback){
+    res.json({success:true,message:feedback})
+  }
+  else{
+    res.json({success:false,message:"Error"})
+  }
+}
