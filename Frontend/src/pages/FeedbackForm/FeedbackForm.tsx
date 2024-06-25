@@ -15,6 +15,7 @@ import FileUpload from '../../components/FileUpload/FileUpload';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Inputs from '../../components/Inputs/Inputs';
 import './FeedbackForm.css'
+import { useNavigate } from 'react-router-dom';
 
 interface Question {
   type: string;
@@ -31,6 +32,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const { formData, apiUrl, setFormData } = useFormContext();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [formId,setFormId] = useState<any>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,6 +73,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
       const response = await axios.post(`${apiUrl}/api/feedback`, payload);
       if (response.data) {
         toast.success('Form submitted successfully');
+        navigate("/")
       } else {
         toast.error('Failed to submit form');
       }

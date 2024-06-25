@@ -11,9 +11,9 @@ const App: React.FC = () => {
     <div className='app'>
       <ToastContainer/>
       <Routes>
-      <Route path ="/home" element={<Home/>}/>
-      <Route path="home/withData" element={<FeedbackForm withData={true}/>}/>
-      <Route path="home/withoutData" element={<FeedbackForm withData={false}/>}/>
+      <Route  index element={<Home/>}/>
+      <Route path="withData" element={<FeedbackForm withData={true}/>}/>
+      <Route path="withoutData" element={<FeedbackForm withData={false}/>}/>
 
       </Routes>
     </div>

@@ -8,9 +8,11 @@ type LikertScaleProps = {
   questionId: string;
 };
 
-const LikestScale: React.FC<LikertScaleProps> = ({ question, options , questionId}) => {
+const LikestScale: React.FC<LikertScaleProps> = ({ question, questionId}) => {
   const { formData, setFormData } = useFormContext();
   const [selectedOption, setSelectedOption] = useState<string>(formData.likestscale[questionId] || '');
+  
+  const options=['😡', '😞', '😐', '😊', '😍'];
 
   
   useEffect(() => {

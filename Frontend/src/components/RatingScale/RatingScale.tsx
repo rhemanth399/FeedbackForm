@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from '../../context/FormContext'; 
 import './RatingScale.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 type RatingScaleProps = {
   question: string;
@@ -23,19 +25,18 @@ const RatingScale: React.FC<RatingScaleProps> = ({ question, scale, questionId }
 
   return (
     <div className="rating-scale">
-      <p>{question}</p>
-      <div className="rating-options">
-        {Array.from({ length: scale }, (_, i) => i + 1).map(value => (
-          <button
-            key={value}
-            className={`rating-button ${rating === value ? 'selected' : ''}`}
-            onClick={() => handleRatingChange(value)}
-          >
-            {value}
-          </button>
-        ))}
-      </div>
+    <p>{question}</p>
+    <div className="rating-options">
+      {Array.from({ length: scale }, (_, i) => i + 1).map(value => (
+        <FontAwesomeIcon
+          key={value}
+          icon={faStar}
+          className={`rating-star ${rating >= value ? 'selected' : ''}`}
+          onClick={() => handleRatingChange(value)}
+        />
+      ))}
     </div>
+  </div>
   );
 };
 

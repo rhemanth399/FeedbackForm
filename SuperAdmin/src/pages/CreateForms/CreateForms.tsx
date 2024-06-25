@@ -8,8 +8,8 @@ const questionTypes = [
   'Dropdown',
   'Rating scale',
   'Likert scale',
-  'Text input (short answer)',
-  'Text area (long answer)',
+  'Text input (upto 150 characters)',
+  'Text area (upto 250 characters)',
   'Date picker',
   'File upload',
   'Checkbox'

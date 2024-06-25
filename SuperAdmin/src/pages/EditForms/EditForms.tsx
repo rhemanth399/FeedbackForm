@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './EditForms.css'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import './EditForms.css';
 
 const questionTypes = [
   'Multiple choice',
@@ -8,8 +9,8 @@ const questionTypes = [
   'Dropdown',
   'Rating scale',
   'Likert scale',
-  'Text input (short answer)',
-  'Text area (long answer)',
+  'Text input (upto 150 characters)',
+  'Text area (upto 250 characters)',
   'Date picker',
   'File upload',
   'Checkbox'
@@ -78,6 +79,20 @@ const FormEditor: React.FC = () => {
     }
   };
 
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const reorderedQuestions = Array.from(form?.questions || []);
+    const [movedQuestion] = reorderedQuestions.splice(result.source.index, 1);
+    reorderedQuestions.splice(result.destination.index, 0, movedQuestion);
+
+    if (form) {
+      setForm({ ...form, questions: reorderedQuestions });
+    }
+  };
+
   return (
     <div className="form-editor">
       <h1>Edit Form</h1>
@@ -90,38 +105,56 @@ const FormEditor: React.FC = () => {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
-            {form.questions.map((question, index) => (
-              <div key={index} className="question">
-                <select
-                  value={question.type}
-                  onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
-                >
-                  <option value="">Select question type</option>
-                  {questionTypes.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  placeholder="Question prompt"
-                  value={question.prompt}
-                  onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
-                />
-                {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
-                  <div>
-                    <textarea
-                      placeholder="Options (comma separated)"
-                      value={question.options.join(',')}
-                      onChange={(e) =>
-                        updateQuestion(index, 'options', e.target.value.split(','))
-                      }
-                    />
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="questions">
+                {(provided:any) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {form.questions.map((question, index) => (
+                      <Draggable key={index} draggableId={String(index)} index={index}>
+                        {(provided:any) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="question"
+                          >
+                            <select
+                              value={question.type}
+                              onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
+                            >
+                              <option value="">Select question type</option>
+                              {questionTypes.map((type) => (
+                                <option key={type} value={type}>
+                                  {type}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              type="text"
+                              placeholder="Question prompt"
+                              value={question.prompt}
+                              onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
+                            />
+                            {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
+                              <div>
+                                <textarea
+                                  placeholder="Options (comma separated)"
+                                  value={question.options.join(',')}
+                                  onChange={(e) =>
+                                    updateQuestion(index, 'options', e.target.value.split(','))
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
                   </div>
                 )}
-              </div>
-            ))}
+              </Droppable>
+            </DragDropContext>
             <button onClick={saveForm}>Save Form</button>
           </div>
         ) : (
