@@ -8,7 +8,8 @@ const questionSchema = new mongoose.Schema({
 
   const formSchema = new mongoose.Schema({
     title: String,
-    questions: [questionSchema]
+    questions: [questionSchema],
+    submittedAt: { type: Date, default: Date.now }
   });
 
   const FormModel = mongoose.model('Form', formSchema);

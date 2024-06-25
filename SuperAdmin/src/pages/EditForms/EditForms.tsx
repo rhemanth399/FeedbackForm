@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './EditForms.css';
-
+import { useNavigate } from 'react-router-dom';
 const questionTypes = [
   'Multiple choice',
   'Single choice',
@@ -28,12 +28,14 @@ interface Form {
   _id: string;
   title: string;
   questions: Question[];
+  submittedAt:String
 }
 
 const FormEditor: React.FC = () => {
   const [forms, setForms] = useState<Form[]>([]);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const [form, setForm] = useState<Form | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -72,6 +74,7 @@ const FormEditor: React.FC = () => {
       try {
         await axios.put(`http://localhost:4000/api/forms/${form._id}`, form);
         alert('Form updated successfully!');
+        navigate("/editforms")
       } catch (error) {
         console.error('Error updating form', error);
         alert('Failed to update form');
@@ -173,7 +176,7 @@ const FormEditor: React.FC = () => {
                 }}
                 className={form._id === selectedFormId ? 'selected' : ''}
               >
-                {form.title}
+                {form.title}{form.submittedAt.split('T')[0]}
               </li>
             ))}
           </ul>

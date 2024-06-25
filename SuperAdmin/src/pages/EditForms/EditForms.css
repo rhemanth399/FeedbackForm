@@ -93,3 +93,8 @@
     background-color: tomato;
   }
   
+
+  .form-list {
+    display: flex;
+    justify-content: space-between;
+  }
