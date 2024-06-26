@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, CircularProgress } from '@mui/material';
 import './ListOfAdmin.css';
 
 interface Admin {
   _id: string;
   name: string;
   email: string;
-  phone:string;
+  phone: string;
+  designation: string;
   permissions: {
     canCreateForm: boolean;
     canEditForm: boolean;
@@ -40,10 +41,10 @@ const ListOfAdmin: React.FC = () => {
   };
 
   const filteredAdmins = admins.filter((admin) =>
-    (admin.email.toLowerCase()||admin.name.toLowerCase() ).includes(searchTerm.toLowerCase())
+    (admin.name.toLowerCase() + admin.email.toLowerCase() + admin.phone + admin.designation.toLowerCase() ).includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="loading"><CircularProgress /></div>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -64,6 +65,7 @@ const ListOfAdmin: React.FC = () => {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
+              <TableCell>Designation</TableCell>
               <TableCell>Create Form</TableCell>
               <TableCell>Edit Form</TableCell>
             </TableRow>
@@ -73,12 +75,10 @@ const ListOfAdmin: React.FC = () => {
               <TableRow key={admin._id}>
                 <TableCell>{admin.name}</TableCell>
                 <TableCell>{admin.email}</TableCell>
-                <TableCell>
-                 {admin.phone}
-                </TableCell>
+                <TableCell>{admin.phone}</TableCell>
+                <TableCell>{admin.designation}</TableCell>
                 <TableCell>{admin.permissions.canCreateForm ? 'Yes' : 'No'}</TableCell>
                 <TableCell>{admin.permissions.canEditForm ? 'Yes' : 'No'}</TableCell>
-              
               </TableRow>
             ))}
           </TableBody>

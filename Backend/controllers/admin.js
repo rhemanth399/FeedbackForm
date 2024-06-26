@@ -4,6 +4,7 @@ import Admin from "../models/adminModel.js";
 
 const createAdmin = async (req,res)=>{
     const { username,password ,name,email,phone ,designation,permissions} = req.body;
+    console.log(password,name,email,phone,designation,permissions,username)
     try{
         const existingAdmin = await Admin.findOne({ username });
     if (existingAdmin) {

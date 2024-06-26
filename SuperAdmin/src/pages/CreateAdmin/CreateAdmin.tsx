@@ -30,7 +30,10 @@ const CreateAdmin: React.FC = () => {
           canEditForm
         }
       };
-      const response = await axios.post('http://localhost:4000/api/admin/create', { newAdmin});
+      
+      
+      const response = await axios.post('http://localhost:4000/api/admin/create',  newAdmin);
+      console.log('hemanth')
       setMessage(response.data.message);
       setUsername('');
       setPassword('');
