@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './ManageTemplates.css'
+import './ManageTemplates.css';
 
 const questionTypes = [
   'Multiple choice',
@@ -29,7 +29,7 @@ interface Form {
   questions: Question[];
 }
 
-const FormEditor: React.FC = () => {
+const ManageTemplates: React.FC = () => {
   const [forms, setForms] = useState<Form[]>([]);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const [form, setForm] = useState<Form | null>(null);
@@ -38,7 +38,7 @@ const FormEditor: React.FC = () => {
     const fetchForms = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/templates');
-        console.log("1",response)
+        console.log("1", response);
         setForms(response.data.message);
       } catch (error) {
         console.error('Error fetching forms', error);
@@ -50,9 +50,8 @@ const FormEditor: React.FC = () => {
   const fetchForm = async (formId: string) => {
     try {
       const response = await axios.get(`http://localhost:4000/api/template/${formId}`);
-      console.log("2",response)
+      console.log("2", response);
       setForm(response.data.message);
-
     } catch (error) {
       console.error('Error fetching form', error);
     }
@@ -63,6 +62,30 @@ const FormEditor: React.FC = () => {
       const newQuestions = [...form.questions];
       newQuestions[index][key] = value;
       setForm({ ...form, questions: newQuestions });
+    }
+  };
+
+  const deleteQuestion = async (index: number) => {
+    if (form) {
+      try {
+        const response = await axios.delete(`http://localhost:4000/api/template/${form._id}/questions/${index}`);
+        setForm(response.data.form);
+        alert('Question deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting question', error);
+        alert('Failed to delete question');
+      }
+    }
+  };
+
+  const addNewQuestion = () => {
+    if (form) {
+      const newQuestion: Question = {
+        type: questionTypes[0], // Default to the first question type
+        prompt: '',
+        options: [],
+      };
+      setForm({ ...form, questions: [...form.questions, newQuestion] });
     }
   };
 
@@ -77,7 +100,6 @@ const FormEditor: React.FC = () => {
       }
     }
   };
-
 
   const saveForm = async () => {
     if (form) {
@@ -105,6 +127,7 @@ const FormEditor: React.FC = () => {
             />
             {form.questions.map((question, index) => (
               <div key={index} className="question">
+                <span className="question-number">{index + 1})</span>
                 <select
                   value={question.type}
                   onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
@@ -133,10 +156,14 @@ const FormEditor: React.FC = () => {
                     />
                   </div>
                 )}
+                <button onClick={() => deleteQuestion(index)}>Delete</button>
               </div>
             ))}
-            <button onClick={updatedTemplate} className='edit-template' >Edit Template</button>
-            <button onClick={saveForm}>Save Template</button>
+            <div className='add-edit-save'>
+            <button onClick={addNewQuestion} >Add New Question</button>
+            {/* <button onClick={updatedTemplate} className="edit-template">Edit Template</button> */}
+            <button onClick={saveForm} >Save Template</button>
+            </div>
           </div>
         ) : (
           <p>Loading form...</p>
@@ -164,4 +191,4 @@ const FormEditor: React.FC = () => {
   );
 };
 
-export default FormEditor;
+export default ManageTemplates;

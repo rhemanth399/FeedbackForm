@@ -1,5 +1,5 @@
 import express from 'express'
-import { deletingTemplate, gettingTemplates, storeTemplate, storeTemplates, templateBasedonId, updatingTemplatesBasedonId } from '../controllers/templates.js';
+import { deleteQuestion, deletingTemplate, gettingTemplates, storeTemplate, storeTemplates, templateBasedonId, updatingTemplatesBasedonId } from '../controllers/templates.js';
 
 const templateRouter =express.Router();
 
@@ -10,5 +10,6 @@ templateRouter.post("/templates",storeTemplates)
 templateRouter.delete("/templates/:id",deletingTemplate)
 templateRouter.put("/template/:id",updatingTemplatesBasedonId)
 templateRouter.get("/template/:id",templateBasedonId)
+templateRouter.delete('/template/:templateId/questions/:questionIndex', deleteQuestion);
 
 export default templateRouter

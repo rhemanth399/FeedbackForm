@@ -98,3 +98,16 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .created-date{
+    margin-top: 2px;
+  }
+
+  .add-save{
+    display: flex;
+    
+  }
+
+  .add-save .add-question{
+    margin-right: 10px;
+  }

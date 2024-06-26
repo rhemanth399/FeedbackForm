@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './EditForms.css';
 import { useNavigate } from 'react-router-dom';
+
 const questionTypes = [
   'Multiple choice',
   'Single choice',
@@ -28,7 +29,7 @@ interface Form {
   _id: string;
   title: string;
   questions: Question[];
-  submittedAt:String
+  submittedAt: String
 }
 
 const FormEditor: React.FC = () => {
@@ -41,7 +42,7 @@ const FormEditor: React.FC = () => {
     const fetchForms = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/allForms');
-        console.log("1",response)
+        console.log("1", response)
         setForms(response.data.message);
       } catch (error) {
         console.error('Error fetching forms', error);
@@ -53,9 +54,8 @@ const FormEditor: React.FC = () => {
   const fetchForm = async (formId: string) => {
     try {
       const response = await axios.get(`http://localhost:4000/api/forms/${formId}`);
-      console.log("2",response)
+      console.log("2", response)
       setForm(response.data.message);
-
     } catch (error) {
       console.error('Error fetching form', error);
     }
@@ -66,6 +66,30 @@ const FormEditor: React.FC = () => {
       const newQuestions = [...form.questions];
       newQuestions[index][key] = value;
       setForm({ ...form, questions: newQuestions });
+    }
+  };
+
+  const deleteQuestion = async (index: number) => {
+    if (form) {
+      try {
+        const response = await axios.delete(`http://localhost:4000/api/forms/${form._id}/questions/${index}`);
+        setForm(response.data.form);
+        alert('Question deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting question', error);
+        alert('Failed to delete question');
+      }
+    }
+  };
+
+  const addNewQuestion = () => {
+    if (form) {
+      const newQuestion: Question = {
+        type: questionTypes[0], // Default to first question type
+        prompt: '',
+        options: [],
+      };
+      setForm({ ...form, questions: [...form.questions, newQuestion] });
     }
   };
 
@@ -98,7 +122,6 @@ const FormEditor: React.FC = () => {
 
   return (
     <div className="form-editor">
-      <h1>Edit Form</h1>
       {selectedFormId ? (
         form ? (
           <div>
@@ -110,17 +133,18 @@ const FormEditor: React.FC = () => {
             />
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="questions">
-                {(provided:any) => (
+                {(provided: any) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {form.questions.map((question, index) => (
                       <Draggable key={index} draggableId={String(index)} index={index}>
-                        {(provided:any) => (
+                        {(provided: any) => (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             className="question"
                           >
+                            <span className="question-number">{index + 1}) </span>
                             <select
                               value={question.type}
                               onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
@@ -132,12 +156,14 @@ const FormEditor: React.FC = () => {
                                 </option>
                               ))}
                             </select>
+                            
                             <input
                               type="text"
                               placeholder="Question prompt"
                               value={question.prompt}
                               onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
                             />
+                            
                             {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
                               <div>
                                 <textarea
@@ -149,6 +175,7 @@ const FormEditor: React.FC = () => {
                                 />
                               </div>
                             )}
+                            <button onClick={() => deleteQuestion(index)}>Delete</button>
                           </div>
                         )}
                       </Draggable>
@@ -158,7 +185,10 @@ const FormEditor: React.FC = () => {
                 )}
               </Droppable>
             </DragDropContext>
-            <button onClick={saveForm}>Save Form</button>
+            <div className='add-save'>
+            <button onClick={addNewQuestion} className='add-question'>Add New Question</button>
+            <button onClick={saveForm} className='save-form'>Save Form</button>
+            </div>
           </div>
         ) : (
           <p>Loading form...</p>
@@ -176,7 +206,8 @@ const FormEditor: React.FC = () => {
                 }}
                 className={form._id === selectedFormId ? 'selected' : ''}
               >
-                {form.title}{form.submittedAt.split('T')[0]}
+                {form.title}
+                <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
               </li>
             ))}
           </ul>

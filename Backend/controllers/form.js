@@ -71,4 +71,24 @@ const updatingFormBasedonId = async (req,res) =>{
     }
 }
 
-export { storeFeedback , allFormsRetrieving ,feedbackBasedonId , updatingFormBasedonId}
+const deleteQuestion = async (req,res)=>{
+    const {formId,questionIndex} =req.params;
+    try{
+        const form = await formModel.findById(formId);
+        if(!form){
+            return res.json({success:false,message:"Form not Found"})
+        }
+        form.questions.splice(questionIndex,1);
+        await form.save();
+        res.json({
+            success:true,message:"Question Deleted Successfully",form
+        })
+    }
+    catch(error){
+        res.json({
+            success:false,message:"Error deleting question"
+        })
+    }
+}
+
+export { storeFeedback , allFormsRetrieving ,feedbackBasedonId , updatingFormBasedonId ,deleteQuestion}

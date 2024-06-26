@@ -52,6 +52,28 @@ const deletingTemplate = async (req,res)=>{
     }
 }
 
+const deleteQuestion = async (req, res) => {
+    const { formId, questionIndex } = req.params;
+  
+    try{
+        const form = await Template.findById(formId);
+        if(!form){
+            return res.json({success:false,message:"Form not Found"})
+        }
+        form.questions.splice(questionIndex,1);
+        await form.save();
+        res.json({
+            success:true,message:"Question Deleted Successfully",form
+        })
+    }
+    catch(error){
+        res.json({
+            success:false,message:"Error deleting question"
+        })
+    }
+  };
+
+
 // storing template in db
 const storeTemplate = async (req,res)=>{
     const template = new Template(req.body);
@@ -114,4 +136,4 @@ const templateBasedonId = async (req,res) =>{
 }
 
 
-export {storeTemplates,gettingTemplates,deletingTemplate,storeTemplate,updatingTemplatesBasedonId,templateBasedonId}
+export {storeTemplates,gettingTemplates,deletingTemplate,storeTemplate,updatingTemplatesBasedonId,templateBasedonId,deleteQuestion}
