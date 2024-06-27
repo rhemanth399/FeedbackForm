@@ -13,7 +13,10 @@ const feedbackSchema = new mongoose.Schema({
     phone: String
   },
   responses: [responseSchema],
-  submittedAt: { type: Date, default: Date.now }
+  submittedAt: { type: Date, default: Date.now },
+ assignedAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
+ status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'pending' },
+ resolutionComment: String
 });
 
 const FeedbackModel = mongoose.model('Feedback', feedbackSchema);

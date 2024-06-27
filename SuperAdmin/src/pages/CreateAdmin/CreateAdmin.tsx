@@ -41,6 +41,8 @@ const CreateAdmin: React.FC = () => {
       setName("");
       setPhone("");
       setDesignation("")
+      setCanCreateForm(false)
+      setCanEditForm(false)
       
     } catch (error) {
       setMessage('Failed to create admin');
@@ -49,7 +51,9 @@ const CreateAdmin: React.FC = () => {
       setEmail("");
       setName("");
       setPhone("");
-      setDesignation("")
+      setDesignation("");
+      setCanCreateForm(false)
+      setCanEditForm(false)
     }
   };
 
@@ -118,7 +122,7 @@ const CreateAdmin: React.FC = () => {
             onChange={(e) => setCanCreateForm(e.target.checked)}
           />
         }
-        label="Able Create Form"
+        label="Able to Create Form"
       />
       <FormControlLabel
         control={
@@ -127,7 +131,7 @@ const CreateAdmin: React.FC = () => {
             onChange={(e) => setCanEditForm(e.target.checked)}
           />
         }
-        label="Able Edit Form"
+        label="Able to Edit Form"
       />
         
         <button type="submit">Create</button>

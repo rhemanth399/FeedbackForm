@@ -1,5 +1,5 @@
 import express from 'express';
-import { RetrievingListOfFeedback, createFeedback } from '../controllers/feedback.js'; 
+import { RetrievingListOfFeedback, createFeedback, feedbackTaskAssign, feedbackTaskResolve } from '../controllers/feedback.js'; 
 import multer from 'multer';
 
 const feedbackRouter = express.Router();
@@ -18,4 +18,7 @@ feedbackRouter.post('/feedback', upload.single('file'), createFeedback);
 
 feedbackRouter.get("/listOfFeedback",RetrievingListOfFeedback)
 
+feedbackRouter.put("/:feedbackId/assign",feedbackTaskAssign)
+
+feedbackRouter.put("/:feedbackId/resolve",feedbackTaskResolve);
 export default feedbackRouter;

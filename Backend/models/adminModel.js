@@ -11,7 +11,8 @@ const adminSchema = new mongoose.Schema({
     permissions: {
         canCreateForm: { type: Boolean, default: false },
         canEditForm: { type: Boolean, default: false }
-    }
+    },
+    feedbacksAssigned: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }]
   });
 
   adminSchema.pre('save', async function(next) {
