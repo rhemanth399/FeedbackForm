@@ -2,9 +2,7 @@ import Admin from '../models/adminModel.js';
 import FeedbackModel from '../models/feedbackModel.js';
 import FormModel from '../models/formModel.js';
 
-
 // Create a new feedback
-
 export const createFeedback = async (req, res) => {
   try {
     const { formId, user, responses } = req.body;
@@ -24,10 +22,12 @@ export const createFeedback = async (req, res) => {
       return res.status(400).json({ message: 'Invalid question ID(s) in responses' });
     }
 
-    // Add the file path to the first response
+    // Add the file path to the first response and include question prompts
     const updatedResponses = responses.map((response, index) => {
+      const question = form.questions.id(response.questionId);
       return {
-        ...response,
+        questionPrompt: question.prompt,
+        response: response.response,
         file: index === 0 && file ? file.filename : null
       };
     });
@@ -40,76 +40,75 @@ export const createFeedback = async (req, res) => {
     });
 
     const savedFeedback = await newFeedback.save();
-
     res.status(201).json(savedFeedback);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-export const RetrievingListOfFeedback = async(req,res)=>{
-
-  const feedback = await FeedbackModel.find()
-  if(feedback){
-    res.json({success:true,message:feedback})
+// Retrieve list of feedback
+export const RetrievingListOfFeedback = async (req, res) => {
+  try {
+    const feedback = await FeedbackModel.find()
+    res.json({ success: true, message: feedback });
+  } catch (error) {
+    res.json({ success: false, message: "Error", error });
   }
-  else{
-    res.json({success:false,message:"Error"})
-  }
-}
+};
 
-
-export const feedbackTaskAssign = async (req,res) =>{
+// Assign feedback task to admin
+export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;
   const { adminId } = req.body;
   try {
-    const feedback = await FeedbackModel.findById(feedbackId)
+    const feedback = await FeedbackModel.findById(feedbackId);
     const admin = await Admin.findById(adminId);
     if (!feedback || !admin) {
       return res.status(404).json({ message: 'Feedback or Admin not found' });
     }
     feedback.assignedAdmin = adminId;
-    feedback.status ='assigned'
+    feedback.status = 'assigned';
     await feedback.save();
-    admin.feedbacksAssigned.push(feedbackId)
+    admin.feedbacksAssigned.push(feedbackId);
     await admin.save();
     res.json({
-      success:true,
-      message:"Feedback assigned to admin successfully"
-    })
+      success: true,
+      message: "Feedback assigned to admin successfully"
+    });
   } catch (error) {
     res.json({
-      success:false,
-      message:"Error assigning feedback",error
-    })
+      success: false,
+      message: "Error assigning feedback",
+      error
+    });
   }
-}
+};
 
-export const feedbackTaskResolve = async (req,res) =>{
+// Resolve feedback task
+export const feedbackTaskResolve = async (req, res) => {
   const { feedbackId } = req.params;
   const { resolutionComment } = req.body;
 
   try {
     const feedback = await FeedbackModel.findById(feedbackId);
-  if(!feedback){
-    return res.json({
-      success:false,
-      message:"Feedback Not Found"
-    })
-  }
-  feedback.status ='resolved';
-  feedback.resolutionComment = resolutionComment;
-  await feedback.save();
-  res.json({
-    success:true,
-    message:"Feedback Resolved successfully"
-  })
-}
-  catch(error){
+    if (!feedback) {
+      return res.json({
+        success: false,
+        message: "Feedback Not Found"
+      });
+    }
+    feedback.status = 'resolved';
+    feedback.resolutionComment = resolutionComment;
+    await feedback.save();
     res.json({
-      success:false,
-      message:"Error Resolving feedback",error
-    })
+      success: true,
+      message: "Feedback resolved successfully"
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Error resolving feedback",
+      error
+    });
   }
-}
+};

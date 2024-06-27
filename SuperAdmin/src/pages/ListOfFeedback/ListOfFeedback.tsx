@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Container, Card, CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
 
 interface User {
   name: string;
@@ -7,12 +8,10 @@ interface User {
   phone: string;
 }
 
-
-
 interface Response {
-  questionId: string;
+  questionText: string;
   response: string;
-  prompt:string;
+  questionPrompt: string;
 }
 
 interface Feedback {
@@ -37,14 +36,15 @@ const ListOfFeedback: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [feedbacksPerPage] = useState<number>(5);
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const feedbackResponse = await axios.get('http://localhost:4000/api/listOfFeedback')
+        const feedbackResponse = await axios.get('http://localhost:4000/api/listOfFeedback');
         setFeedbacks(feedbackResponse.data.message);
         const adminResponse = await axios.get('http://localhost:4000/api/admin/listofadmins');
-        console.log(adminResponse.data.admins)
         setAdmins(adminResponse.data.admins);
         setLoading(false);
       } catch (err) {
@@ -89,59 +89,79 @@ const ListOfFeedback: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  if (loading) return <Box display="flex" justifyContent="center" alignItems="center" height="100vh"><CircularProgress /></Box>;
   if (error) return <div>Error: {error}</div>;
 
+  const indexOfLastFeedback = page * feedbacksPerPage;
+  const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
+  const currentFeedbacks = feedbacks.slice(indexOfFirstFeedback, indexOfLastFeedback);
+
   return (
-    <div>
-      <h1>List of Feedback</h1>
-      {feedbacks.map(feedback => (
-        <div key={feedback._id} className="feedback-item">
-          <h2>Feedback from {feedback.user.name || 'Anonymous'}</h2>
-          <p>Email: {feedback.user.email || 'N/A'}</p>
-          <p>Phone: {feedback.user.phone || 'N/A'}</p>
-          <p>Status: {feedback.status || 'unassigned'}</p>
-          <div>
-            <h3>Responses:</h3>
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        List of Feedback
+      </Typography>
+      {currentFeedbacks.map(feedback => (
+        <Card key={feedback._id} sx={{ mb: 2 }}>
+          <CardContent>
+            <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
+            <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
+            <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
+            <Typography>Status: {feedback.status || 'unassigned'}</Typography>
+            <Typography variant="subtitle1">Responses:</Typography>
             <ul>
-              {feedback.responses.map(response => (
-                <li key={response.questionId}>
-                  Question ID: {response.questionId}, Response: {response.response || 'N/A'}
+              {feedback.responses.map((response, index) => (
+                <li key={index}>
+                  Question: {response.questionPrompt}, Response: {response.response || 'N/A'}
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <label htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin: </label>
-            <select
-              id={`assign-admin-${feedback._id}`}
-              onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
-              value={feedback.assignedAdmin?._id || ''}
-            >
-              <option value="">Select Admin</option>
-              {admins.map(admin => (
-                <option key={admin._id} value={admin._id}>
-                  {admin.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          {feedback.status === 'assigned' && (
-            <div>
-              <label htmlFor={`resolution-comment-${feedback._id}`}>Resolution Comment: </label>
-              <input
-                type="text"
-                id={`resolution-comment-${feedback._id}`}
-                onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
-              />
-              <button onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}>
-                Resolve
-              </button>
-            </div>
-          )}
-        </div>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin</InputLabel>
+              <Select
+                id={`assign-admin-${feedback._id}`}
+                onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
+                value={feedback.assignedAdmin?._id || ''}
+              >
+                <MenuItem value="">
+                  <em>Select Admin</em>
+                </MenuItem>
+                {admins.map(admin => (
+                  <MenuItem key={admin._id} value={admin._id}>
+                    {admin.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {feedback.status === 'assigned' && (
+              <Box sx={{ mt: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Resolution Comment"
+                  variant="outlined"
+                  onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
+                />
+                <Button
+                  sx={{ mt: 1 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}
+                >
+                  Resolve
+                </Button>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
       ))}
-    </div>
+      <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+        <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
+      </Box>
+    </Container>
   );
 };
 

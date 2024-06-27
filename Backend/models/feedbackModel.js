@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const responseSchema = new mongoose.Schema({
-  questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
+  questionPrompt: { type: String, required: true },
   response: String 
 });
 
