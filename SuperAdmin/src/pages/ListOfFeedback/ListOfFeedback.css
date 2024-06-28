@@ -1,60 +1,67 @@
 .feedback-list {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .feedback-list h2 {
-    text-align: center;
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .feedback-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .feedback-item.pending {
-    border-left: 4px solid orange;
-  }
-  
-  .feedback-item.assigned {
-    border-left: 4px solid blue;
-  }
-  
-  .feedback-item.resolved {
-    border-left: 4px solid green;
-  }
-  
-  .feedback-item p {
-    margin: 0 0 10px;
-  }
-  
-  .feedback-item select,
-  .feedback-item button {
-    margin-right: 10px;
-  }
-  
-  .feedback-item button {
-    padding: 5px 10px;
-    background-color: tomato;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .feedback-item button:hover {
-    background-color: darkred;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-list h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.feedback-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-item.pending {
+  border-left: 4px solid orange;
+}
+
+.feedback-item.assigned {
+  border-left: 4px solid blue;
+}
+
+.feedback-item.resolved {
+  border-left: 4px solid green;
+}
+
+.feedback-item p {
+  margin: 0 0 10px;
+}
+
+.feedback-item select,
+.feedback-item button {
+  margin-right: 10px;
+}
+
+.feedback-item button {
+  padding: 5px 10px;
+  background-color: tomato;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.feedback-item button:hover {
+  background-color: darkred;
+}
+
+.ul-items li {
+  list-style-type: none;
+}
+
+.question {
+  font-weight: bold;
+}

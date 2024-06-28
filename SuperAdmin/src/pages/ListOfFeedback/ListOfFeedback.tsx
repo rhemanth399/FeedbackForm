@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Card, CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
+import './ListOfFeedback.css'
 
 interface User {
   name: string;
@@ -57,13 +58,14 @@ const ListOfFeedback: React.FC = () => {
 
   const handleAssignAdmin = async (feedbackId: string, adminId: string) => {
     try {
-      await axios.put(`/api/feedbacks/${feedbackId}/assign`, { adminId });
+      await axios.put(`http://localhost:4000/api/${feedbackId}/assign`, { adminId });
+      const assignedAdmin = admins.find(admin => admin._id === adminId);
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
           feedback._id === feedbackId
             ? {
                 ...feedback,
-                assignedAdmin: admins.find(admin => admin._id === adminId),
+                assignedAdmin,
                 status: 'assigned'
               }
             : feedback
@@ -76,7 +78,7 @@ const ListOfFeedback: React.FC = () => {
 
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
     try {
-      await axios.put(`/api/feedbacks/${feedbackId}/resolve`, { resolutionComment });
+      await axios.put(`http://localhost:4000/api/${feedbackId}/resolve`, { resolutionComment });
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
           feedback._id === feedbackId
@@ -101,68 +103,80 @@ const ListOfFeedback: React.FC = () => {
   const currentFeedbacks = feedbacks.slice(indexOfFirstFeedback, indexOfLastFeedback);
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        List of Feedback
-      </Typography>
-      {currentFeedbacks.map(feedback => (
-        <Card key={feedback._id} sx={{ mb: 2 }}>
-          <CardContent>
-            <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
-            <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
-            <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
-            <Typography>Status: {feedback.status || 'unassigned'}</Typography>
-            <Typography variant="subtitle1">Responses:</Typography>
-            <ul>
-              {feedback.responses.map((response, index) => (
-                <li key={index}>
-                  Question: {response.questionPrompt}, Response: {response.response || 'N/A'}
-                </li>
-              ))}
-            </ul>
-            <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin</InputLabel>
-              <Select
-                id={`assign-admin-${feedback._id}`}
-                onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
-                value={feedback.assignedAdmin?._id || ''}
-              >
-                <MenuItem value="">
-                  <em>Select Admin</em>
+    <Container className="feedback-list">
+    <Typography variant="h4" gutterBottom>
+      List of Feedback
+    </Typography>
+    {currentFeedbacks.map(feedback => (
+      <Card key={feedback._id} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
+        <CardContent>
+          <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
+          <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
+          <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
+          <Typography>Status: {feedback.status || 'unassigned'}</Typography>
+          {feedback.assignedAdmin && (
+            <Typography>Assigned Admin: {feedback.assignedAdmin.name}</Typography>
+          )}
+          <Typography variant="subtitle1">Responses:</Typography>
+          <ul className="ul-items">
+            {feedback.responses.map((response, index) => (
+              <li key={index}>
+              <span className='question'>{index+1}){response.questionPrompt}</span>
+              <p>
+              A){response.response || 'N/A'}
+              </p>
+              </li>
+            ))}
+          </ul>
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin</InputLabel>
+            <Select
+              id={`assign-admin-${feedback._id}`}
+              onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
+              value={feedback.assignedAdmin?._id || ''}
+            >
+              <MenuItem value="">
+                <em>Select Admin</em>
+              </MenuItem>
+              {admins.map(admin => (
+                <MenuItem key={admin._id} value={admin._id}>
+                  {admin.name}
                 </MenuItem>
-                {admins.map(admin => (
-                  <MenuItem key={admin._id} value={admin._id}>
-                    {admin.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {feedback.status === 'assigned' && (
-              <Box sx={{ mt: 2 }}>
-                <TextField
-                  fullWidth
-                  label="Resolution Comment"
-                  variant="outlined"
-                  onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
-                />
-                <Button
-                  sx={{ mt: 1 }}
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}
-                >
-                  Resolve
-                </Button>
-              </Box>
-            )}
-          </CardContent>
-        </Card>
-      ))}
-      <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
-        <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
-      </Box>
-    </Container>
+              ))}
+            </Select>
+          </FormControl>
+         
+        </CardContent>
+      </Card>
+    ))}
+    <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+      <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
+    </Box>
+  </Container>
   );
 };
 
 export default ListOfFeedback;
+
+
+
+
+
+// {feedback.status === 'assigned' && (
+//   <Box sx={{ mt: 2 }}>
+//     <TextField
+//       fullWidth
+//       label="Resolution Comment"
+//       variant="outlined"
+//       onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
+//     />
+//     <Button
+//       sx={{ mt: 1 }}
+//       variant="contained"
+//       color="primary"
+//       onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}
+//     >
+//       Resolve
+//     </Button>
+//   </Box>
+// )}

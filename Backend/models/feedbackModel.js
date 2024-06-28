@@ -5,6 +5,11 @@ const responseSchema = new mongoose.Schema({
   response: String 
 });
 
+const assignedAdminSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true }
+});
+
 const feedbackSchema = new mongoose.Schema({
   formId: { type: mongoose.Schema.Types.ObjectId, ref: 'FormModel', required: true },
   user: {
@@ -15,6 +20,7 @@ const feedbackSchema = new mongoose.Schema({
   responses: [responseSchema],
   submittedAt: { type: Date, default: Date.now },
  assignedAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
+ assignedAdmin: assignedAdminSchema,
  status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'pending' },
  resolutionComment: String
 });
