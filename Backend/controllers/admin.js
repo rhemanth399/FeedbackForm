@@ -1,4 +1,5 @@
 import Admin from "../models/adminModel.js";
+import bcrypt from 'bcrypt'
 
 //Create an Admin
 
@@ -31,4 +32,29 @@ const getListOfAdmins = async (req,res)=>{
     };
 }
 
-export {createAdmin,getListOfAdmins}
+//Login Function
+const loginAdmin = async(req,res)=>{
+    const {email,password} =req.body;
+    
+    try{
+    const admin = await Admin.findOne({email})
+    
+    if(!admin){
+       return res.status(400).json({message:"Invalid Email",success:false})
+    }
+    
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    console.log(isPasswordValid)
+    if(!isPasswordValid){
+       return res.status(400).json({message:"Invalid Password",success:false})
+    }
+
+return res.json({message:"Login Successfull",success:true})
+}
+catch(err){
+   return res.json({message:"Server Side Error",success:false})
+}
+
+}
+
+export {createAdmin,getListOfAdmins,loginAdmin}

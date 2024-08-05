@@ -1,0 +1,51 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f4f4f4;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #4A90E2;
+    color: white;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .feedback-overview, .issue-tracking, .task-management {
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .card h2 {
+    margin-bottom: 10px;
+  }
+  
+  .feedback-details, .feedback-stats, .issue-list, .comments-section, .task-list {
+    margin-top: 10px;
+  }
+  
+  .comments-section p, .task-list p, .feedback-details p, .feedback-stats p, .issue-list p {
+    margin: 10px 0;
+  }
+  
