@@ -1,22 +1,13 @@
-import React from 'react';
-import './App.css';
-import Admin from './pages/Admin/Admin';
-import Navbar from './components/Navbar/Navbar';
-import { Route, Routes } from 'react-router-dom';
-import UpdateAdmin from './pages/UpdateAdmin/UpdateAdmin';
+import './App.css'
 
-const App: React.FC = () => {
+function App() {
   
   return (
-    <div className='app'>
-      <Navbar/>
-      
-      <Routes>
-        <Route path="/home" element={<Admin/>}/>
-        <Route path="/updateadmin" element={<UpdateAdmin/>}/>
-      </Routes>
-    </div>
-  );
-};
+    <>
+      Hi
+       
+    </>
+  )
+}
 
-export default App;
+export default App

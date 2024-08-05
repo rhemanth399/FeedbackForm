@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import generateQRCodeMiddleware from "../middlewares/generateQRCodeMiddleware.js";
 const questionSchema = new mongoose.Schema({
     type: String,
     prompt: String,

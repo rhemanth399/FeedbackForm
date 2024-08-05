@@ -8,7 +8,7 @@ export const createFeedback = async (req, res) => {
     const { formId, user, responses } = req.body;
     const file = responses;
 
-    console.log('File:', file);
+    console.log('Responses:', responses);
 
     // Validate that the form exists
     const form = await FormModel.findById(formId);

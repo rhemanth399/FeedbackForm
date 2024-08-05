@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const responseSchema = new mongoose.Schema({
   questionPrompt: { type: String, required: true },
-  response: String 
+  response: String ,
+  file: String
 });
 
 const assignedAdminSchema = new mongoose.Schema({
@@ -19,7 +20,6 @@ const feedbackSchema = new mongoose.Schema({
   },
   responses: [responseSchema],
   submittedAt: { type: Date, default: Date.now },
- assignedAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
  assignedAdmin: assignedAdminSchema,
  status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'pending' },
  resolutionComment: String

@@ -6,7 +6,8 @@ const storeFeedback = async (req,res) =>{
 
     const form = new formModel(req.body)
     try {
-        
+        const qrCodeData = await qrcode.toDataURL()
+        form.qrCode = qrCodeData
         await form.save();
         res.json({success:true,message:"Form stored successfully"})
         
