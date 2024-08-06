@@ -1,2 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Outfit:wght@100..900&family=Timmana&display=swap');
-
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}

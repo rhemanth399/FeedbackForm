@@ -1,25 +1,21 @@
-import FeedbackOverview from "../FeedbackOverview/FeedbackOverview";
-import IssueTracking from "../IssueTracking/IssueTracking";
-import TaskManagement from "../TaskManagement/TaskManagement";
+import React from "react";
+import Header from "../../../components/Header/Header";
+import Sidebar from "../../../components/Drawer/Sidebar";
+
 
 const AdminDashboard: React.FC = () => {
+  const [drawerOpen, setDrawerOpen] = React.useState<any>(false);
+
+  const toggleDrawer:any = (newOpen:boolean) => {
+    setDrawerOpen(newOpen);
+  };
     return (
       <div className="dashboard-container">
-        <header className="header">
-          <h1>Admin Dashboard</h1>
-          <input type="text" className="search-bar" placeholder="Search feedback..." />
-        </header>
-        <main className="main-content">
-          <section className="feedback-overview">
-            <FeedbackOverview />
-          </section>
-          <section className="issue-tracking">
-            <IssueTracking />
-          </section>
-          <section className="task-management">
-            <TaskManagement />
-          </section>
-        </main>
+        <Header toggleDrawer={toggleDrawer}/>
+        <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer}/>
+        <div className="main-content">
+            main
+        </div>
       </div>
     );
   };

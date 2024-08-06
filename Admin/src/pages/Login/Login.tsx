@@ -1,51 +1,69 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import Button from "../../components/Button/Button";
-import image from '../../assets/Screenshot (116).png'
-import './Login.css'
-import axios from 'axios'
- const Login : React.FC=()=>{
+import './Login.css';
+import axios from 'axios';
 
-    const [email,setEmail] =useState<string>('');
-    const [password,setPassword] =useState<string>('');
+import { useNavigate } from "react-router";
 
-    const handleLogin = async()=>{
-        try{
-        const login:any =await axios.post('http://localhost:4000/api/admin/login',{email,password})
-        if(login){
-            alert("Login sucess")
+const Login: React.FC = () => {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [errorMsg,setErrorMsg] =useState<string>('');
+    const [error,setError] =useState<boolean>(false);
+
+    const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        if (!email) {
+            setErrorMsg("Email is required")
+            setError(true)
+            return;
         }
+        if(!password){
+            setErrorMsg("Password is required");
+            setError(true)
+            return;
         }
-        catch(err){
+        try {
+            const login: any = await axios.post('http://localhost:4000/api/admin/login', { email, password });
+            if (login) {
+                alert("Login success");
+                navigate('/dashboard')
+            }
+        } catch (err) {
             alert("Server Error");
         }
-    }
+    };
 
-    return(
-        <div className="container">
-            <div className="form-wrapper">
-        <div className="form">
-        <h2 className="title">Welcome Back, Log In...</h2>
-        <CustomInput
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        />
-        <CustomInput
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-        />
-        <Button text="Login" onClick={handleLogin}/>
+    return (
+        <div className="main-container">
+            <div className="login-container">
+                <div className="login-form">
+                    <h2 className="login-title">ADMIN</h2>
+                    <p className="login-subtitle">Welcome back! Please enter your details</p>
+                    <CustomInput
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                     {error&&<div className="error-msg">{errorMsg==='Email is required'?errorMsg:''}</div>}
+                    <CustomInput
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {error&&<div className="error-msg">{errorMsg==='Password is required'?errorMsg:''}</div>}
+                    <Button onClick={handleLogin} text="Login"></Button>
+                </div>
+                <div className="login-image">
+                    
+                </div>
+            </div>
         </div>
-        </div>
-        <div className="image-wrapper">
-        <img src={image} alt="Workout" className="image" />
-      </div>
-        </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
