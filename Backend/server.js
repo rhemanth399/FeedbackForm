@@ -6,6 +6,7 @@ import formRouter from "./routes/form.js";
 import templateRouter from "./routes/templates.js";
 import adminRouter from "./routes/admin.js";
 import feedbackRouter from "./routes/feedback.js";
+import path from 'path'
 
 
 //app config
@@ -22,7 +23,10 @@ app.use(cors())
 app.use("/api",formRouter)
 
 app.use("/api",templateRouter)
-app.use('/uploads', express.static('uploads'));
+const uploadPath =path.resolve(process.cwd(), 'uploads');
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(uploadPath));
 
 app.use("/api",adminRouter)
 

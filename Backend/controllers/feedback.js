@@ -1,14 +1,21 @@
+
+
 import Admin from '../models/adminModel.js';
 import FeedbackModel from '../models/feedbackModel.js';
 import FormModel from '../models/formModel.js';
 
 // Create a new feedback
 export const createFeedback = async (req, res) => {
-  try {
-    const { formId, user, responses } = req.body;
-    const file = responses;
 
-    console.log('Responses:', responses);
+
+
+  try {
+    const url = await req.file;
+
+    const path = `http://localhost:4000/uploads/${url.filename}`
+    console.log(path);
+    const { formId, user, responses } = await JSON.parse(req.body.json);
+    console.log(responses, "responses", formId, user,);
 
     // Validate that the form exists
     const form = await FormModel.findById(formId);
@@ -27,12 +34,16 @@ export const createFeedback = async (req, res) => {
     // Add the file path to the first response and include question prompts
     const updatedResponses = responses.map((response, index) => {
       const question = form.questions.id(response.questionId);
+      console.log(response);
+
       return {
         questionPrompt: question.prompt,
-        response: response.response,
-        file: index === 0 && file ? file.filename : null
+        response: typeof response.response === "object" ? undefined : response.response,
+        file: (question.prompt === "File upload") && path ? path : null
       };
     });
+
+    console.log(updatedResponses, "updatedResponses")
 
     const newFeedback = new FeedbackModel({
       formId,
@@ -44,6 +55,8 @@ export const createFeedback = async (req, res) => {
     const savedFeedback = await newFeedback.save();
     res.status(201).json(savedFeedback);
   } catch (error) {
+    console.log(error, "error");
+
     res.status(500).json({ message: error.message });
   }
 };

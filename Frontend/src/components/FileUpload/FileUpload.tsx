@@ -14,7 +14,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ question ,questionId }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setSelectedFile(event.target.files[0]);
-      setFormData({ fileupload: { ...formData.fileupload, [questionId]: event.target.value } });
+      setFormData({ fileupload: { ...formData.fileupload, [questionId]: event.target.files[0] } });
     
     }
   };

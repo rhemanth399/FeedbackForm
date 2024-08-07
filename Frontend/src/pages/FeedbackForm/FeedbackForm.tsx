@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
-import { useFormContext } from '../../context/FormContext'; 
+import { useFormContext } from '../../context/FormContext';
 import MultipleChoice from '../../components/MultipleChoice/MultipleChoice';
 import SingleChoice from '../../components/SingleChoice/SingleChoice';
 import DropDown from '../../components/DropDown/DropDown';
@@ -30,6 +30,7 @@ interface FeedbackFormProps {
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const { formData, apiUrl, setFormData } = useFormContext();
+  console.log('heelo', formData)
   const [questions, setQuestions] = useState<Question[]>([]);
   const [formId, setFormId] = useState<any>();
   const navigate = useNavigate();
@@ -53,9 +54,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
     fetchData();
   }, [apiUrl]);
 
+
+
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    const form = new FormData();
+    form.append('file', formData.fileupload?.[`667b20c475465408fd442bab`]);
     const payload = {
       formId: formId,
       user: formData.user,
@@ -76,9 +81,11 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         };
       }),
     };
+    form.append("json", JSON.stringify(payload))
+
 
     try {
-      const response = await axios.post(`${apiUrl}/api/feedback`, payload);
+      const response = await axios.post(`${apiUrl}/api/feedback`, form);
       if (response.data) {
         toast.success('Form submitted successfully');
         navigate("/");
@@ -99,7 +106,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
           <div className="question-container" key={question._id}>
             <span className="question-number">{index + 1}.</span>
             <div className="question-content">
-              
+
               <div className="question-options">
                 {(() => {
                   switch (question.type) {
@@ -140,3 +147,14 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
 };
 
 export default FeedbackForm;
+
+
+
+
+
+
+
+
+
+
+

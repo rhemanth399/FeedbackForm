@@ -28,7 +28,7 @@ interface datePicker {
 }
 
 interface fileUpload {
-  [questionId:string]:string;
+  questionId:any;
 }
 
 interface multipleChoice{
@@ -53,7 +53,7 @@ interface FormData {
   textinput: TextInput;
   textarea: TextArea
   datepicker: datePicker;
-  fileupload: fileUpload;
+  fileupload: any;
   checkbox: checkBox;
   user: User;
 }
