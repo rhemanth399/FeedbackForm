@@ -73,30 +73,48 @@ export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;
   const { adminId } = req.body;
   try {
-    const feedback = await FeedbackModel.findById(feedbackId);
-    const admin = await Admin.findById(adminId).select('name email feedbacksAssigned');
-    if (!feedback || !admin) {
-      return res.status(404).json({ message: 'Feedback or Admin not found' });
+    const admin = await Admin.findById(adminId).select('name email');
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
     }
-    feedback.assignedAdmin = {
-      name: admin.name,
-      email: admin.email
-    };
-    feedback.status = 'assigned';
-    await feedback.save();
-   
-    admin.feedbacksAssigned.push(feedbackId);
-    
-    await admin.save();
-    res.json({
+
+    const feedbackUpdateResult = await FeedbackModel.updateOne(
+      { _id: feedbackId },
+      {
+        $set: {
+          assignedAdmin: {
+            name: admin.name,
+            email: admin.email
+          },
+          status: 'assigned'
+        }
+      }
+    );
+
+    if (feedbackUpdateResult.nModified === 0) {
+      return res.status(404).json({ message: 'Feedback not found or already assigned' });
+    }
+
+    const adminUpdateResult = await Admin.updateOne(
+      { _id: adminId },
+      {
+        $push: { feedbacksAssigned: feedbackId }
+      }
+    );
+
+    if (adminUpdateResult.nModified === 0) {
+      return res.status(500).json({ message: 'Failed to update admin with assigned feedback' });
+    }
+
+    return res.json({
       success: true,
       message: "Feedback assigned to admin successfully"
     });
   } catch (error) {
-    res.json({
+    return res.status(500).json({
       success: false,
       message: "Error assigning feedback",
-      error
+      error: error.message
     });
   }
 };
