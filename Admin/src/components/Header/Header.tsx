@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useDrawer } from '../../useContext/DrawerProvider';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,6 +60,7 @@ type HeaderProps = {
     toggleDrawer: (open: boolean) => void;
   };
 
+  
 export default function Header({ toggleDrawer }:HeaderProps) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 

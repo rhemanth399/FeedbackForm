@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
 import Sidebar from "../../../components/Drawer/Sidebar";
+import MainContent from "../MainContent/MainContent";
+import { DrawerProvider } from "../../../useContext/DrawerProvider";
 
 
 const AdminDashboard: React.FC = () => {
@@ -10,13 +12,15 @@ const AdminDashboard: React.FC = () => {
     setDrawerOpen(newOpen);
   };
     return (
+      <DrawerProvider>
       <div className="dashboard-container">
         <Header toggleDrawer={toggleDrawer}/>
         <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer}/>
         <div className="main-content">
-            main
+            <MainContent/>
         </div>
       </div>
+      </DrawerProvider>
     );
   };
   

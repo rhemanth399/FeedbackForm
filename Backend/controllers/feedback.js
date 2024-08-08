@@ -6,9 +6,6 @@ import FormModel from '../models/formModel.js';
 
 // Create a new feedback
 export const createFeedback = async (req, res) => {
-
-
-
   try {
     const url = await req.file;
 
@@ -77,7 +74,7 @@ export const feedbackTaskAssign = async (req, res) => {
   const { adminId } = req.body;
   try {
     const feedback = await FeedbackModel.findById(feedbackId);
-    const admin = await Admin.findById(adminId).select('name email');
+    const admin = await Admin.findById(adminId).select('name email feedbacksAssigned');
     if (!feedback || !admin) {
       return res.status(404).json({ message: 'Feedback or Admin not found' });
     }
@@ -87,7 +84,9 @@ export const feedbackTaskAssign = async (req, res) => {
     };
     feedback.status = 'assigned';
     await feedback.save();
+   
     admin.feedbacksAssigned.push(feedbackId);
+    
     await admin.save();
     res.json({
       success: true,
