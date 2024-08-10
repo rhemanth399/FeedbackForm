@@ -1,7 +1,7 @@
 import React from "react";
-import ScrollableTable from "../../../components/ScrollableTable/ScrollableTable";
 import Header from "../../../components/Header/Header";
 import Sidebar from "../../../components/Drawer/Sidebar";
+import ListOfFeedback from "../../../components/ScrollableTable/FeedbackList";
 
 const FeedbackDetails:React.FC=()=>{
     const [drawerOpen, setDrawerOpen] = React.useState<any>(false);
@@ -13,7 +13,7 @@ const FeedbackDetails:React.FC=()=>{
         <>
         <Header toggleDrawer={toggleDrawer}/>
         <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer}/>
-        <ScrollableTable/>
+        <ListOfFeedback/>
         </>
     )
 }

@@ -16,6 +16,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import Inputs from '../../components/Inputs/Inputs';
 import './FeedbackForm.css';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Question {
   type: string;
@@ -30,9 +31,9 @@ interface FeedbackFormProps {
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const { formData, apiUrl, setFormData } = useFormContext();
-  console.log('heelo', formData)
   const [questions, setQuestions] = useState<Question[]>([]);
   const [formId, setFormId] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,6 +49,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         }
       } catch (error) {
         console.error('Error fetching form data:', error);
+      }
+      finally{
+        setLoading(false)
       }
     };
 
@@ -100,51 +104,66 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
 
   return (
     <>
-      {withData && <Inputs />}
-      <form className="form" onSubmit={handleSubmit}>
-        {questions.map((question, index) => (
-          <div className="question-container" key={question._id}>
-            <span className="question-number">{index + 1}.</span>
-            <div className="question-content">
-
-              <div className="question-options">
-                {(() => {
-                  switch (question.type) {
-                    case 'Multiple choice':
-                      return <MultipleChoice question={question.prompt} options={question.options || []} questionId={question._id} />;
-                    case 'Single choice':
-                      return <SingleChoice question={question.prompt} options={question.options || []} questionId={question._id} />;
-                    case 'Dropdown':
-                      return <DropDown question={question.prompt} options={question.options || []} questionId={question._id} />;
-                    case 'Rating scale':
-                      return <RatingScale question={question.prompt} scale={5} questionId={question._id} />;
-                    case 'Likert scale':
-                      return <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />;
-                    case 'Text input (upto 150 characters)':
-                      return <TextInput question={question.prompt} questionId={question._id} />;
-                    case 'Text area (upto 500 characters)':
-                      return <TextArea question={question.prompt} questionId={question._id} />;
-                    case 'Date picker':
-                      return <DatePicker question={question.prompt} questionId={question._id} />;
-                    case 'File upload':
-                      return <FileUpload question={question.prompt} questionId={question._id} />;
-                    case 'Checkbox':
-                      return <Checkbox question={question.prompt} options={question.options || []} questionId={question._id} />;
-                    default:
-                      return null;
-                  }
-                })()}
+      {loading ? (
+        <div className="loading-spinner">
+          <CircularProgress />
+        </div>
+      ) : questions.length > 0 ? (
+        <>
+          {withData && <Inputs />}
+          <form className="form" onSubmit={handleSubmit}>
+            {questions.map((question, index) => (
+              <div className="question-container" key={question._id}>
+                <span className="question-number">{index + 1}.</span>
+                <div className="question-content">
+                  <div className="question-options">
+                    {(() => {
+                      switch (question.type) {
+                        case 'Multiple choice':
+                          return <MultipleChoice question={question.prompt} options={question.options || []} questionId={question._id} />;
+                        case 'Single choice':
+                          return <SingleChoice question={question.prompt} options={question.options || []} questionId={question._id} />;
+                        case 'Dropdown':
+                          return <DropDown question={question.prompt} options={question.options || []} questionId={question._id} />;
+                        case 'Rating scale':
+                          return <RatingScale question={question.prompt} scale={5} questionId={question._id} />;
+                        case 'Likert scale':
+                          return <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />;
+                        case 'Text input (upto 150 characters)':
+                          return <TextInput question={question.prompt} questionId={question._id} />;
+                        case 'Text area (upto 500 characters)':
+                          return <TextArea question={question.prompt} questionId={question._id} />;
+                        case 'Date picker':
+                          return <DatePicker question={question.prompt} questionId={question._id} />;
+                        case 'File upload':
+                          return <FileUpload question={question.prompt} questionId={question._id} />;
+                        case 'Checkbox':
+                          return <Checkbox question={question.prompt} options={question.options || []} questionId={question._id} />;
+                        default:
+                          return null;
+                      }
+                    })()}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-        <Button variant="contained" color="primary" type="submit">
-          Submit
-        </Button>
-      </form>
+            ))}
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        </>
+      ) : (
+        <div>404 Not Found</div>
+      )}
     </>
-  );
-};
+  )
+
+}
+  
+
+
+
+
 
 export default FeedbackForm;
 

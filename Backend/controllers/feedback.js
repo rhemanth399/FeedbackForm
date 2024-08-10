@@ -68,6 +68,21 @@ export const RetrievingListOfFeedback = async (req, res) => {
   }
 };
 
+// Retrieve list of feedback based on admin
+
+export const RetrievingListOfFeedbackBasedOnAdmin = async(req,res)=>{
+  try{
+    const admin = await Admin.findById(req.admin).populate('feedbacksAssigned')
+    if(!admin){
+      return res.status(404).json({message:'Admin not found',sucess:false})
+    }
+    res.json(admin.feedbacksAssigned);
+  }
+  catch(err){
+    res.status(500).json({message:"server error",success:false})
+  }
+}
+
 // Assign feedback task to admin
 export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;

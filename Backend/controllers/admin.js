@@ -1,6 +1,6 @@
 import Admin from "../models/adminModel.js";
 import bcrypt from 'bcrypt'
-
+import jwt from 'jsonwebtoken';
 //Create an Admin
 
 const createAdmin = async (req,res)=>{
@@ -49,7 +49,12 @@ const loginAdmin = async(req,res)=>{
        return res.status(400).json({message:"Invalid Password",success:false})
     }
 
-return res.json({message:"Login Successfull",success:true})
+//Create a JWT payload
+const payload ={id:admin._id,username:admin.username,email:admin.email}
+// Sign token
+const token = jwt.sign(payload,'jwt_secret',{expiresIn:'1h'})
+
+return res.json({message:"Login Successfull",success:true,token})
 }
 catch(err){
    return res.json({message:"Server Side Error",success:false})

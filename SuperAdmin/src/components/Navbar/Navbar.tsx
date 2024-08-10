@@ -6,8 +6,9 @@ import './Navbar.css'
 const Navbar :React.FC = () => {
   return (
     <div className='navbar'>
-      <img className='logo' src={""} alt="logo"/>
-      <img className='profile' src={assets.profile_image} alt=""/>
+      <h1>Super Admin</h1>
+      <img className='profile' src={assets.profile_image} alt="logo" />
+      
     </div>
   )
 }

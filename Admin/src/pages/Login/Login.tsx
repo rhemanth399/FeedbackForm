@@ -26,12 +26,16 @@ const Login: React.FC = () => {
             return;
         }
         try {
+            
+            
             const login: any = await axios.post('http://localhost:4000/api/admin/login', { email, password });
             if (login) {
+                localStorage.setItem('token',login.data.token)
                 alert("Login success");
                 navigate('/dashboard')
             }
         } catch (err) {
+            
             alert("Server Error");
         }
     };
