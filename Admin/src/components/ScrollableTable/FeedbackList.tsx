@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Card, CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
+import { Container, Card, Grid,CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
 import './ListOfFeedback.css'
 
 interface User {
@@ -39,6 +39,7 @@ const ListOfFeedback: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [feedbacksPerPage] = useState<number>(5);
+  const [comment, setComment] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -62,25 +63,7 @@ const ListOfFeedback: React.FC = () => {
     fetchFeedbacks();
   }, []);
 
-  const handleAssignAdmin = async (feedbackId: string, adminId: string) => {
-    try {
-      await axios.put(`http://localhost:4000/api/${feedbackId}/assign`, { adminId });
-      const assignedAdmin = admins.find(admin => admin._id === adminId);
-      setFeedbacks(prevFeedbacks =>
-        prevFeedbacks.map(feedback =>
-          feedback._id === feedbackId
-            ? {
-                ...feedback,
-                assignedAdmin,
-                status: 'assigned'
-              }
-            : feedback
-        )
-      );
-    } catch (err) {
-      setError('Error assigning admin');
-    }
-  };
+  
 
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
     try {
@@ -92,6 +75,7 @@ const ListOfFeedback: React.FC = () => {
             : feedback
         )
       );
+      setComment(prevComment => ({ ...prevComment, [feedbackId]: '' }));
     } catch (err) {
       setError('Error resolving feedback');
     }
@@ -110,11 +94,11 @@ const ListOfFeedback: React.FC = () => {
 
   return (
     <Container className="feedback-list">
-    <Typography variant="h4" gutterBottom>
-      List of Feedback
-    </Typography>
+      <Typography>Feedback List</Typography>
+    <Grid container spacing={2}>
     {currentFeedbacks.map(feedback => (
-      <Card key={feedback._id} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
+      <Grid item xs={12} sm={6} key={feedback._id}>
+      <Card key={feedback._id} className={`feedback-item ${feedback.status || 'unassigned'}`}  sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
           <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
@@ -145,30 +129,31 @@ const ListOfFeedback: React.FC = () => {
               </li>
             ))}
           </ul>
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin</InputLabel>
-            <Select
-              id={`assign-admin-${feedback._id}`}
-              onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
-              value={feedback.assignedAdmin?._id || ''}
-            >
-              <MenuItem value="">
-                <em>Select Admin</em>
-              </MenuItem>
-              {admins.map(admin => (
-                <MenuItem key={admin._id} value={admin._id}>
-                  {admin.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+       
          
         </CardContent>
-      </Card>
+        <TextField
+                  label="Add a Comment"
+                  variant="outlined"
+                  fullWidth
+                  value={comment[feedback._id] || ''}
+                  onChange={(e) => setComment({ ...comment, [feedback._id]: e.target.value })}
+                  sx={{ mt: 2 }}
+                />
+        <Button
+                  style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
+                  onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
+                >
+                  Add Comment
+                </Button>
+          </Card>
+      </Grid>
     ))}
-    <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+    
+    <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{ height: '100px' }}>
       <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
     </Box>
+    </Grid>
   </Container>
   );
 };
