@@ -1,6 +1,6 @@
 import express from 'express';
-import { RetrievingListOfFeedback, RetrievingListOfFeedbackBasedOnAdmin, createFeedback, feedbackTaskAssign, feedbackTaskResolve, getFeebackStatisticsAndTrends, getFeedbackByStarRating, getFeedbackTrackAndFlagRepeatedIssues } from '../controllers/feedback.js'; 
-import multer from 'multer';
+import { RetrievingListOfFeedback, RetrievingListOfFeedbackBasedOnAdmin, createFeedback, feedbackTaskAssign, feedbackTaskResolve, getFeebackStatisticsAndTrends, getFeedbackByStarRating, getFeedbackTrackAndFlagRepeatedIssues, getSearchFeedback } from '../controllers/feedback.js'; 
+
 import { upload } from '../middlewares/multer.js';
 import verifyToken from '../middlewares/verifyToken.js';
 
@@ -18,6 +18,8 @@ feedbackRouter.get('/admin/feedback/starrating',verifyToken,getFeedbackByStarRat
 feedbackRouter.get("/admin/feedbackstatistics",verifyToken,getFeebackStatisticsAndTrends)
 
 feedbackRouter.get("/admin/feedback/repeatedissues",verifyToken,getFeedbackTrackAndFlagRepeatedIssues)
+
+feedbackRouter.get("/admin/feedbackbasedonsearch",verifyToken,getSearchFeedback)
 
 feedbackRouter.get("/listOfFeedback",RetrievingListOfFeedback)
 

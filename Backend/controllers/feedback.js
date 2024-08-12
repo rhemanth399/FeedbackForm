@@ -274,3 +274,39 @@ export const getFeedbackTrackAndFlagRepeatedIssues = async(req,res)=>{
     res.status(500).json({message:"Error Fetching repeated Issues"})
   }
 }
+
+// get search feedback
+
+export const getSearchFeedback = async (req, res) => {
+  try {
+    const adminId = req.admin;
+
+    // Find the admin to get the list of feedbacks assigned to them
+    const admin = await Admin.findById(adminId).populate('feedbacksAssigned');
+
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    const { query } = req.query;
+
+    // Extract the list of feedback IDs assigned to the admin
+    const feedbackIds = admin.feedbacksAssigned.map(feedback => feedback._id);
+
+    // Search only within the feedbacks assigned to the admin
+    const feedbacks = await FeedbackModel.find({
+      _id: { $in: feedbackIds }, // Filter by assigned feedbacks
+      $or: [
+        { 'user.name': new RegExp(query, 'i') },
+        { 'user.email': new RegExp(query, 'i') },
+        { 'user.phone': new RegExp(query, 'i') },
+        { 'responses.response': new RegExp(query, 'i') }
+      ],
+    });
+
+    res.json(feedbacks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error searching feedback' });
+  }
+};
