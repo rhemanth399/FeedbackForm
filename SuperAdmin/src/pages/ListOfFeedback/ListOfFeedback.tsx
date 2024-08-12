@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Card, CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
+import { Container, Card, Grid,CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
 import './ListOfFeedback.css'
 
 interface User {
@@ -107,7 +107,9 @@ const ListOfFeedback: React.FC = () => {
     <Typography variant="h4" gutterBottom>
       List of Feedback
     </Typography>
+    <Grid container spacing={2}>
     {currentFeedbacks.map(feedback => (
+       <Grid item xs={12} sm={6} key={feedback._id}>
       <Card key={feedback._id} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
@@ -117,6 +119,11 @@ const ListOfFeedback: React.FC = () => {
           {feedback.assignedAdmin && (
             <Typography>Assigned Admin: {feedback.assignedAdmin.name}</Typography>
           )}
+          {
+            feedback.resolutionComment && (
+              <Typography>Comments:{feedback.resolutionComment}</Typography>
+            )
+          }
           <Typography variant="subtitle1">Responses:</Typography>
           <ul className="ul-items">
             {feedback.responses.map((response, index) => (
@@ -148,7 +155,10 @@ const ListOfFeedback: React.FC = () => {
          
         </CardContent>
       </Card>
+      </Grid>
     ))}
+    
+    </Grid>
     <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
       <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
     </Box>

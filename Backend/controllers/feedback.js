@@ -35,6 +35,7 @@ export const createFeedback = async (req, res) => {
 
       return {
         questionPrompt: question.prompt,
+        questionType: question.type, 
         response: typeof response.response === "object" ? undefined : response.response,
         file: (question.prompt === "File upload") && path ? path : null
       };
@@ -162,3 +163,114 @@ export const feedbackTaskResolve = async (req, res) => {
     });
   }
 };
+
+
+
+export const getFeedbackByStarRating = async (req, res) => {
+  try {
+    // Extract the admin ID from the request (set by the verifyToken middleware)
+    const adminId = req.admin;
+    
+
+    // Find the admin to get the list of feedbacks assigned to them
+    const admin = await Admin.findById(adminId).populate('feedbacksAssigned');
+    
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Extract the list of feedbacks assigned to the admin
+    const feedbacksAssigned = admin.feedbacksAssigned;
+
+    // Filter feedbacks to only include those that are assigned to the admin
+    const feedbacks = await FeedbackModel.find({
+      _id: { $in: feedbacksAssigned.map(feedback => feedback._id) },
+      'responses.questionType': 'Rating scale'
+    });
+
+    
+    // Group feedbacks by star rating
+    const groupedFeedbacks = feedbacks.reduce((acc, feedback) => {
+      const rating = feedback.responses.find(r => r.questionType === 'Rating scale').response;
+      
+      acc[rating] = acc[rating] || [];
+      acc[rating].push(feedback);
+      return acc;
+    }, {});
+
+    res.json(groupedFeedbacks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error fetching feedback by star rating' });
+  }
+};
+
+
+// Get Feedback Statistics and Trends
+export const getFeebackStatisticsAndTrends= async(req,res)=>{
+ try{
+  const adminId = req.admin;
+  // Find the admin to get the list of feedbacks assigned to them
+  const admin = await Admin.findById(adminId).populate('feedbacksAssigned');
+  
+  if (!admin) {
+    return res.status(404).json({ message: 'Admin not found' });
+  }
+
+// Extract the list of feedback IDs assigned to the admin
+const feedbackIds = admin.feedbacksAssigned.map(feedback => feedback._id);
+
+// Perform the aggregation only on the feedbacks assigned to the admin
+  const statistics = await FeedbackModel.aggregate([
+    {
+      $match: {
+        _id: { $in: feedbackIds },
+      },
+    },
+    {
+      $group:{
+        _id:{$dateToString:{format:"%Y-%m-%d",date:"$submittedAt"}},
+        submissions:{$sum:1},
+      },
+    },
+    {$sort:{_id:1}},
+  ]);
+  res.status(200).json(statistics)
+}
+catch(err){
+  res.status(500).json({message:"Error Fetching feedback Statistics"})
+}
+}
+
+// Get Track and Flag Repeated Issues
+export const getFeedbackTrackAndFlagRepeatedIssues = async(req,res)=>{
+  try{
+    const adminId = req.admin;
+    // Find the admin to get the list of feedbacks assigned to them
+    const admin = await Admin.findById(adminId).populate('feedbacksAssigned');
+    
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Extract the list of feedback IDs assigned to the admin
+    const feedbackIds = admin.feedbacksAssigned.map(feedback => feedback._id);
+
+    const repeatedIssues = await FeedbackModel.aggregate([
+      {
+        $match: {
+          _id: { $in: feedbackIds }, // Match only feedbacks assigned to this admin
+        },
+      },
+      { $unwind: '$responses' },
+      { $match: { 'responses.response': { $exists: true, $ne: null } } },
+      { $group: { _id: '$responses.response', count: { $sum: 1 } } },
+      { $match: { count: { $gt: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+    res.status(200).json(repeatedIssues);
+  }
+  catch(err){
+    res.status(500).json({message:"Error Fetching repeated Issues"})
+  }
+}

@@ -94,7 +94,7 @@ const ListOfFeedback: React.FC = () => {
 
   return (
     <Container className="feedback-list">
-      <Typography>Feedback List</Typography>
+      <Typography>Assigned Feedback List</Typography>
     <Grid container spacing={2}>
     {currentFeedbacks.map(feedback => (
       <Grid item xs={12} sm={6} key={feedback._id}>
@@ -150,10 +150,11 @@ const ListOfFeedback: React.FC = () => {
       </Grid>
     ))}
     
+    
+    </Grid>
     <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{ height: '100px' }}>
       <Pagination count={Math.ceil(feedbacks.length / feedbacksPerPage)} page={page} onChange={handleChangePage} />
     </Box>
-    </Grid>
   </Container>
   );
 };

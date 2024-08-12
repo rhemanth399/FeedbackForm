@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const responseSchema = new mongoose.Schema({
   questionPrompt: { type: String, required: true },
   response: String ,
-  file: String
+  file: String,
+  questionType: { type: String }
 });
 
 const assignedAdminSchema = new mongoose.Schema({

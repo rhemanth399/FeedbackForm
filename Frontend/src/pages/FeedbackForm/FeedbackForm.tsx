@@ -65,6 +65,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
     event.preventDefault();
     const form = new FormData();
     form.append('file', formData.fileupload?.[`667b20c475465408fd442bab`]);
+    
     const payload = {
       formId: formId,
       user: formData.user,
@@ -81,10 +82,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
           formData.checkbox[question._id];
         return {
           questionId: question._id,
+          questionType: question.type,
           response: Array.isArray(response) ? response.join(', ') : response,
         };
       }),
     };
+    console.log("hhhh",payload)
     form.append("json", JSON.stringify(payload))
 
 
