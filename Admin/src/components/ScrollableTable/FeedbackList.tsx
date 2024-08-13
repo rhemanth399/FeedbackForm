@@ -20,6 +20,7 @@ interface Feedback {
   formId: string;
   user: User;
   responses: Response[];
+  comment:string,
   submittedAt: string;
   assignedAdmin?: Admin;
   status?: string;
@@ -91,22 +92,22 @@ const ListOfFeedback: React.FC = () => {
   const indexOfLastFeedback = page * feedbacksPerPage;
   const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
   const currentFeedbacks = feedbacks.slice(indexOfFirstFeedback, indexOfLastFeedback);
-
+console.log('hi',currentFeedbacks)
   return (
     <Container className="feedback-list">
       <Typography>Assigned Feedback List</Typography>
     <Grid container spacing={2}>
-    {currentFeedbacks.map(feedback => (
-      <Grid item xs={12} sm={6} key={feedback._id}>
-      <Card key={feedback._id} className={`feedback-item ${feedback.status || 'unassigned'}`}  sx={{ mb: 2 }}>
+      
+    {currentFeedbacks.map((feedback,index) => (
+      <Grid item xs={12} sm={6} key={index}>
+      <Card key={index} className={`feedback-item ${feedback.status || 'unassigned'}`}  sx={{ mb: 2 }}>
         <CardContent>
           <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
           <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
           <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
           <Typography>Status: {feedback.status || 'unassigned'}</Typography>
-          {feedback.assignedAdmin && (
-            <Typography>Assigned Admin: {feedback.assignedAdmin.name}</Typography>
-          )}
+          <Typography>Comment: {feedback.comment || 'N/A'}</Typography>
+        
           <Typography variant="subtitle1">Responses:</Typography>
           <ul className="ul-items">
             {feedback.responses.map((response, index) => (
@@ -144,7 +145,7 @@ const ListOfFeedback: React.FC = () => {
                   style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
                   onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
                 >
-                  Add Comment
+                  Resoultion
                 </Button>
           </Card>
       </Grid>

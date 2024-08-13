@@ -23,6 +23,7 @@ const feedbackSchema = new mongoose.Schema({
   submittedAt: { type: Date, default: Date.now },
  assignedAdmin: assignedAdminSchema,
  status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'pending' },
+ comment:String,
  resolutionComment: String
 });
 

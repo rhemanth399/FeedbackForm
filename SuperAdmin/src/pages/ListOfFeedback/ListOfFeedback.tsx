@@ -39,6 +39,7 @@ const ListOfFeedback: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [feedbacksPerPage] = useState<number>(5);
+  const [comment, setComment] = useState<string>('');
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -56,9 +57,9 @@ const ListOfFeedback: React.FC = () => {
     fetchFeedbacks();
   }, []);
 
-  const handleAssignAdmin = async (feedbackId: string, adminId: string) => {
+  const handleAssignAdmin = async (feedbackId: string, adminId: string,comment:string) => {
     try {
-      await axios.put(`http://localhost:4000/api/${feedbackId}/assign`, { adminId });
+      await axios.put(`http://localhost:4000/api/${feedbackId}/assign`, { adminId ,comment});
       const assignedAdmin = admins.find(admin => admin._id === adminId);
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
@@ -66,7 +67,8 @@ const ListOfFeedback: React.FC = () => {
             ? {
                 ...feedback,
                 assignedAdmin,
-                status: 'assigned'
+                status: 'assigned',
+                comment:comment
               }
             : feedback
         )
@@ -135,11 +137,17 @@ const ListOfFeedback: React.FC = () => {
               </li>
             ))}
           </ul>
+          <TextField label="Add a Comment"
+                  fullWidth
+                  value={comment}
+                  onChange={(e)=>setComment(e.target.value)}
+                  ></TextField>
           <FormControl fullWidth sx={{ mt: 2 }}>
+            
             <InputLabel htmlFor={`assign-admin-${feedback._id}`}>Assign to Admin</InputLabel>
             <Select
               id={`assign-admin-${feedback._id}`}
-              onChange={e => handleAssignAdmin(feedback._id, e.target.value)}
+              onChange={e => handleAssignAdmin(feedback._id, e.target.value,comment)}
               value={feedback.assignedAdmin?._id || ''}
             >
               <MenuItem value="">
@@ -151,9 +159,11 @@ const ListOfFeedback: React.FC = () => {
                 </MenuItem>
               ))}
             </Select>
+            
           </FormControl>
          
         </CardContent>
+        
       </Card>
       </Grid>
     ))}
@@ -167,26 +177,3 @@ const ListOfFeedback: React.FC = () => {
 };
 
 export default ListOfFeedback;
-
-
-
-
-
-// {feedback.status === 'assigned' && (
-//   <Box sx={{ mt: 2 }}>
-//     <TextField
-//       fullWidth
-//       label="Resolution Comment"
-//       variant="outlined"
-//       onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
-//     />
-//     <Button
-//       sx={{ mt: 1 }}
-//       variant="contained"
-//       color="primary"
-//       onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}
-//     >
-//       Resolve
-//     </Button>
-//   </Box>
-// )}

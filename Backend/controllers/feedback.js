@@ -87,7 +87,7 @@ export const RetrievingListOfFeedbackBasedOnAdmin = async(req,res)=>{
 // Assign feedback task to admin
 export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;
-  const { adminId } = req.body;
+  const { adminId,comment} = req.body;
   try {
     const admin = await Admin.findById(adminId).select('name email');
     if (!admin) {
@@ -102,7 +102,8 @@ export const feedbackTaskAssign = async (req, res) => {
             name: admin.name,
             email: admin.email
           },
-          status: 'assigned'
+          status: 'assigned',
+          comment:comment
         }
       }
     );
@@ -165,13 +166,11 @@ export const feedbackTaskResolve = async (req, res) => {
 };
 
 
-
 export const getFeedbackByStarRating = async (req, res) => {
   try {
     // Extract the admin ID from the request (set by the verifyToken middleware)
     const adminId = req.admin;
     
-
     // Find the admin to get the list of feedbacks assigned to them
     const admin = await Admin.findById(adminId).populate('feedbacksAssigned');
     
@@ -188,22 +187,32 @@ export const getFeedbackByStarRating = async (req, res) => {
       'responses.questionType': 'Rating scale'
     });
 
-    
-    // Group feedbacks by star rating
-    const groupedFeedbacks = feedbacks.reduce((acc, feedback) => {
-      const rating = feedback.responses.find(r => r.questionType === 'Rating scale').response;
-      
-      acc[rating] = acc[rating] || [];
-      acc[rating].push(feedback);
-      return acc;
-    }, {});
+    // Initialize an object to store the count of each rating
+    const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
-    res.json(groupedFeedbacks);
+     console.log('hell',feedbacks)
+
+    // Count the feedbacks by star rating
+    feedbacks.forEach(feedback => {
+      const rating = feedback.responses.find(r => r.questionType === 'Rating scale').response;
+      if (ratingCounts[rating] !== undefined) {
+        ratingCounts[rating]++;
+      }
+    });
+
+    // Transform the ratingCounts object into an array
+    const ratingCountsArray = Object.keys(ratingCounts).map(rating => ({
+      rating: parseInt(rating),
+      count: ratingCounts[rating],
+    }));
+
+    res.json(ratingCountsArray);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error fetching feedback by star rating' });
   }
 };
+
 
 
 // Get Feedback Statistics and Trends
