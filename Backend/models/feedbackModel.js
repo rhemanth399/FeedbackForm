@@ -24,7 +24,8 @@ const feedbackSchema = new mongoose.Schema({
  assignedAdmin: assignedAdminSchema,
  status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'pending' },
  comment:String,
- resolutionComment: String
+ resolutionComment: String,
+ adminSubmittedDate:{type:Date,default:Date.now}
 });
 
 const FeedbackModel = mongoose.model('Feedback', feedbackSchema);

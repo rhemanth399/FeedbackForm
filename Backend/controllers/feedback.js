@@ -87,23 +87,40 @@ export const RetrievingListOfFeedbackBasedOnAdmin = async(req,res)=>{
 // Assign feedback task to admin
 export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;
-  const { adminId,comment} = req.body;
+  const { adminId, comment } = req.body;
   try {
+    // Find the feedback to get the currently assigned admin
+    const feedback = await FeedbackModel.findById(feedbackId).select('assignedAdmin');
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback not found' });
+    }
+
+    // Check if there's a previous admin assigned and remove the feedback from their list
+    if (feedback.assignedAdmin && feedback.assignedAdmin._id) {
+      await Admin.updateOne(
+        { _id: feedback.assignedAdmin._id },
+        { $pull: { feedbacksAssigned: feedbackId } }
+      );
+    }
+
+    // Find the new admin by ID
     const admin = await Admin.findById(adminId).select('name email');
     if (!admin) {
       return res.status(404).json({ message: 'Admin not found' });
     }
 
+    // Update the feedback with the new admin's information
     const feedbackUpdateResult = await FeedbackModel.updateOne(
       { _id: feedbackId },
       {
         $set: {
           assignedAdmin: {
+            _id: admin._id,  // Store the admin ID to reference later
             name: admin.name,
             email: admin.email
           },
           status: 'assigned',
-          comment:comment
+          comment: comment
         }
       }
     );
@@ -112,6 +129,7 @@ export const feedbackTaskAssign = async (req, res) => {
       return res.status(404).json({ message: 'Feedback not found or already assigned' });
     }
 
+    // Update the new admin to add the feedback ID
     const adminUpdateResult = await Admin.updateOne(
       { _id: adminId },
       {
@@ -139,7 +157,7 @@ export const feedbackTaskAssign = async (req, res) => {
 // Resolve feedback task
 export const feedbackTaskResolve = async (req, res) => {
   const { feedbackId } = req.params;
-  const { resolutionComment } = req.body;
+  const { resolutionComment,adminSubmittedDate } = req.body;
 
   try {
     const feedback = await FeedbackModel.findById(feedbackId);
@@ -151,6 +169,7 @@ export const feedbackTaskResolve = async (req, res) => {
     }
     feedback.status = 'resolved';
     feedback.resolutionComment = resolutionComment;
+    feedback.adminSubmittedDate = adminSubmittedDate;
     await feedback.save();
     res.json({
       success: true,

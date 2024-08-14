@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { format, parseISO } from 'date-fns';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, CartesianGrid, Line, Label, Dot } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
 
 interface FeedbackData {
   rating: number;
   count: number;
 }
-interface FeedbackTrend {
-  date: string;
-  count: number;
-}
+
+
+
 
 const MainContent: React.FC = () => {
   const [feedbackData, setFeedbackData] = useState<FeedbackData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<FeedbackTrend[]>([]);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,14 +27,8 @@ const MainContent: React.FC = () => {
         });
         
         setFeedbackData(response.data);
-        const response1 = await axios.get('http://localhost:4000/api/admin/feedbackstatistics', {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-        console.log("The line",response1.data)
-        // Assuming the response format is { trends: [{ date: '2024-08-01', count: 5 }, ...] }
-        setData(response1.data);
+        
+       
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch feedback data');
@@ -95,13 +86,8 @@ const MainContent: React.FC = () => {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
-      <LineChart width={500} height={300} data={data}>
-    <XAxis dataKey="_id" tickFormatter={(date) => format(parseISO(date), 'MMM dd')}/>
-    <YAxis/>
+      
     
-    <Line type="monotone" dataKey="submissions" stroke="#8884d8" />
-    <CartesianGrid stroke="#ccc" />
-    </LineChart>
     </div>
   );
 };

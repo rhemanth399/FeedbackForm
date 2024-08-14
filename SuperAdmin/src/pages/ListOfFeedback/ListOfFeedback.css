@@ -65,3 +65,15 @@
 .question {
   font-weight: bold;
 }
+
+.top-content{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-top: 15px;
+  gap:10px;
+}
+
+.ul-items{
+  margin-top: 20px;
+}

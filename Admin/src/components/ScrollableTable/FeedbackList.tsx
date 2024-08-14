@@ -67,8 +67,9 @@ const ListOfFeedback: React.FC = () => {
   
 
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
+    const adminSubmittedDate= Date.now();
     try {
-      await axios.put(`http://localhost:4000/api/${feedbackId}/resolve`, { resolutionComment });
+      await axios.put(`http://localhost:4000/api/${feedbackId}/resolve`, { resolutionComment,adminSubmittedDate });
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
           feedback._id === feedbackId
