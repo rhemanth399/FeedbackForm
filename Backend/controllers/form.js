@@ -1,14 +1,20 @@
 import formModel from "../models/formModel.js";
-
+import QRCode from 'qrcode';
 
 // storing the feedback data
 const storeFeedback = async (req,res) =>{
 
     const form = new formModel(req.body)
     try {
-        const qrCodeData = await qrcode.toDataURL()
-        form.qrCode = qrCodeData
+        
+        
+        const formUrl= `http://192.168.0.105:5173`
+        console.log('Generated form URL:', formUrl); 
+        const qrCode = await QRCode.toDataURL(formUrl)
+        form.qrCode=qrCode;
+        
         await form.save();
+        
         res.json({success:true,message:"Form stored successfully"})
         
     } catch (error) {

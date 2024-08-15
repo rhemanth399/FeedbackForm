@@ -39,7 +39,7 @@ const CreateForms : React.FC = () => {
   const saveForm = async () => {
     try {
       console.log(title,questions)
-      await axios.post('http://localhost:4000/api/create', { title, questions });
+      await axios.post('http://192.168.0.105:4000/api/create', { title, questions });
       alert('Form saved successfully!');
     } catch (error) {
       console.error('Error saving form', error);

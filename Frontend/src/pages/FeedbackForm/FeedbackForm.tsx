@@ -39,9 +39,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/allForms`);
-        if (response.data.success && response.data.message.length > 0) {
-          const firstForm = response.data.message[0];
+        const response = await axios.get(`http://192.168.0.105:4000/api/forms/66be5a2a4ccca382bff9a305`);
+        console.log(response)
+        if (response.data.success && response.data.message) {
+          const firstForm = response.data.message;
           setQuestions(firstForm.questions);
           setFormId(firstForm._id);
         } else {

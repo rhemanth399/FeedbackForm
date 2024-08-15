@@ -12,6 +12,7 @@ import path from 'path'
 //app config
 const app=express()
 const port=process.env.PORT
+const host = process.env.HOST||'0.0.0.0'
 
 //middleware
 app.use(express.json())
@@ -39,6 +40,6 @@ app.get("/",(req,res)=>{
     res.send("API Working")
 })
 
-app.listen(port,()=>{
-    console.log(`Server Started on http://localhost:${port}`)
+app.listen(port,host,()=>{
+    console.log(`Server Started on http://${host}:${port}`)
 })

@@ -29,7 +29,8 @@ interface Form {
   _id: string;
   title: string;
   questions: Question[];
-  submittedAt: String
+  submittedAt: String,
+  qrCode:string
 }
 
 const FormEditor: React.FC = () => {
@@ -41,7 +42,7 @@ const FormEditor: React.FC = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/allForms');
+        const response = await axios.get('http://192.168.0.105:4000/api/allForms');
         console.log("1", response)
         setForms(response.data.message);
       } catch (error) {
@@ -53,7 +54,7 @@ const FormEditor: React.FC = () => {
 
   const fetchForm = async (formId: string) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/forms/${formId}`);
+      const response = await axios.get(`http://192.168.0.105:4000/api/forms/${formId}`);
       console.log("2", response)
       setForm(response.data.message);
     } catch (error) {
@@ -72,7 +73,7 @@ const FormEditor: React.FC = () => {
   const deleteQuestion = async (index: number) => {
     if (form) {
       try {
-        const response = await axios.delete(`http://localhost:4000/api/forms/${form._id}/questions/${index}`);
+        const response = await axios.delete(`http://192.168.0.105:4000/api/forms/${form._id}/questions/${index}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -96,7 +97,7 @@ const FormEditor: React.FC = () => {
   const saveForm = async () => {
     if (form) {
       try {
-        await axios.put(`http://localhost:4000/api/forms/${form._id}`, form);
+        await axios.put(`http://192.168.0.105:4000/api/forms/${form._id}`, form);
         alert('Form updated successfully!');
         navigate("/editforms")
       } catch (error) {
@@ -131,6 +132,8 @@ const FormEditor: React.FC = () => {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
+            <img src={form.qrCode} alt="qrCode"/>
+            
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="questions">
                 {(provided: any) => (
