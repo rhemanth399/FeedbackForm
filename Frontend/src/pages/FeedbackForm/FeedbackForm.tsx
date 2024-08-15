@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+
 import { Button } from '@mui/material';
 import { useFormContext } from '../../context/FormContext';
-import axios from 'axios';
+
 import { toast } from 'react-toastify';
 import Inputs from '../../components/Inputs/Inputs'; 
 import MultipleChoice from '../../components/MultipleChoice/MultipleChoice';
@@ -16,7 +16,6 @@ import TextArea from '../../components/TextArea/TextArea';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import Checkbox from '../../components/Checkbox/Checkbox';
-import Inputs from '../../components/Inputs/Inputs';
 import './FeedbackForm.css';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
