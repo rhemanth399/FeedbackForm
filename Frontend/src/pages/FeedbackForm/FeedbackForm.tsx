@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import { Button } from '@mui/material';
 import { useFormContext } from '../../context/FormContext';
-
 import { toast } from 'react-toastify';
 import Inputs from '../../components/Inputs/Inputs'; 
 import MultipleChoice from '../../components/MultipleChoice/MultipleChoice';
@@ -17,7 +15,7 @@ import DatePicker from '../../components/DatePicker/DatePicker';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import './FeedbackForm.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
 interface Question {
@@ -37,11 +35,21 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const [formId, setFormId] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract the formId from the query parameters
+  const searchParams = new URLSearchParams(location.search);
+  const dbformId = searchParams.get('formId');
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!dbformId) {
+        toast.error('Form ID is missing');
+        setLoading(false);
+        return;
+      }
       try {
-        const response = await axios.get(`http://192.168.0.105:4000/api/forms/66be5a2a4ccca382bff9a305`);
+        const response = await axios.get(`http://192.168.1.3:4000/api/forms/${dbformId}`);
         console.log(response)
         if (response.data.success && response.data.message) {
           const firstForm = response.data.message;
@@ -60,19 +68,22 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
 
     fetchData();
   }, [apiUrl]);
-
-
-
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData();
-    form.append('file', formData.fileupload?.[`667b20c475465408fd442bab`]);
-    
+    if (formData.fileupload) {
+      Object.keys(formData.fileupload).forEach((questionId) => {
+        const file = formData.fileupload[questionId];
+        if (file) {
+          form.append('file', file);
+        }
+      });
+    }
     const payload = {
       formId: formId,
       user: formData.user,
       responses: questions.map((question) => {
+        {console.log(question._id)}
         const response = formData.multiple_choice[question._id] ||
           formData.single_choice[question._id] ||
           formData.dropdown[question._id] ||
@@ -92,10 +103,16 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
     };
     console.log("hhhh",payload)
     form.append("json", JSON.stringify(payload))
+    
 
 
     try {
-      const response = await axios.post(`${apiUrl}/api/feedback`, form);
+      console.log("Hi")
+      const response = await axios.post(`http://192.168.1.3:4000/api/feedback`, form,{
+        headers:{
+          'Content-Type': 'multipart/form-data',
+        }
+      });
       if (response.data) {
         toast.success('Form submitted successfully');
         navigate("/");
@@ -137,7 +154,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
                           return <LikestScale question={question.prompt} options={question.options || []} questionId={question._id} />;
                         case 'Text input (upto 150 characters)':
                           return <TextInput question={question.prompt} questionId={question._id} />;
-                        case 'Text area (upto 500 characters)':
+                        case 'Text area (upto 250 characters)':
                           return <TextArea question={question.prompt} questionId={question._id} />;
                         case 'Date picker':
                           return <DatePicker question={question.prompt} questionId={question._id} />;
@@ -165,21 +182,4 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   )
 
 }
-  
-
-
-
-
-
 export default FeedbackForm;
-
-
-
-
-
-
-
-
-
-
-

@@ -13,6 +13,7 @@ interface Response {
   questionText: string;
   response: any;
   questionPrompt: string;
+  questionType:string
 }
 
 interface Feedback {
@@ -46,14 +47,14 @@ const ListOfFeedback: React.FC = () => {
     const fetchFeedbacks = async () => {
       try {
         const token = localStorage.getItem("token")
-        const feedbackResponse = await axios.get('http://localhost:4000/api/admin/listoffeedback',{
+        const feedbackResponse = await axios.get('http://192.168.1.3:4000/api/admin/listoffeedback',{
           headers:{
             Authorization :`Bearer ${token}`
           }
         });
         console.log(feedbackResponse)
         setFeedbacks(feedbackResponse.data);
-        const adminResponse = await axios.get('http://localhost:4000/api/admin/listofadmins');
+        const adminResponse = await axios.get('http://192.168.1.3:4000/api/admin/listofadmins');
         setAdmins(adminResponse.data.admins);
         setLoading(false);
       } catch (err) {
@@ -69,7 +70,7 @@ const ListOfFeedback: React.FC = () => {
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
     const adminSubmittedDate= Date.now();
     try {
-      await axios.put(`http://localhost:4000/api/${feedbackId}/resolve`, { resolutionComment,adminSubmittedDate });
+      await axios.put(`http://192.168.1.3:4000/api/${feedbackId}/resolve`, { resolutionComment,adminSubmittedDate });
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
           feedback._id === feedbackId
@@ -93,7 +94,7 @@ const ListOfFeedback: React.FC = () => {
   const indexOfLastFeedback = page * feedbacksPerPage;
   const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
   const currentFeedbacks = feedbacks.slice(indexOfFirstFeedback, indexOfLastFeedback);
-console.log('hi',currentFeedbacks)
+console.log("Hemanthd",currentFeedbacks)
   return (
     <Container className="feedback-list">
       <Typography>Assigned Feedback List</Typography>
@@ -112,20 +113,13 @@ console.log('hi',currentFeedbacks)
           <Typography variant="subtitle1">Responses:</Typography>
           <ul className="ul-items">
             {feedback.responses.map((response, index) => (
+              
               <li key={index}>
               <span className='question'>{index+1}){response.questionPrompt}</span>
               <p>
-              A) {response.file ? (
-            response.file.endsWith('.jpg') || response.file.endsWith('.png') ? (
-              <img src={response.file} alt="uploaded file" style={{ maxWidth: '100px', height: '100px' }} />
-            ) : (
-              <a href={response.file} download>
-                Download File
-              </a>
-            )
-          ) : (
-            response.response || 'N/A'
-          )}
+              A) {
+                response.questionType==="File upload"?(<img src={response.response} alt ='file upload' className="file-upload"/>):(response.response)
+              }
               </p>
              
               </li>
@@ -167,21 +161,18 @@ export default ListOfFeedback;
 
 
 
-// {feedback.status === 'assigned' && (
-//   <Box sx={{ mt: 2 }}>
-//     <TextField
-//       fullWidth
-//       label="Resolution Comment"
-//       variant="outlined"
-//       onBlur={e => handleResolveFeedback(feedback._id, e.target.value)}
-//     />
-//     <Button
-//       sx={{ mt: 1 }}
-//       variant="contained"
-//       color="primary"
-//       onClick={() => handleResolveFeedback(feedback._id, feedback.resolutionComment || '')}
-//     >
-//       Resolve
-//     </Button>
-//   </Box>
+
+
+
+
+// {response.file  ? (
+//   response.file.endsWith('.jpg') || response.file.endsWith('.png') ? (
+//     <img src={response.file} alt="uploaded file" style={{ maxWidth: '100px', height: '100px' }} />
+//   ) : (
+//     <a href={response.response} download>
+//       Download File
+//     </a>
+//   )
+// ) : (
+//   response.response || 'N/A'
 // )}

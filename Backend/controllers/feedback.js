@@ -9,7 +9,7 @@ export const createFeedback = async (req, res) => {
   try {
     const url = await req.file;
 
-    const path = `http://localhost:4000/uploads/${url.filename}`
+    const path = `http://192.168.1.3:4000/uploads/${url.filename}`
     console.log(path);
     const { formId, user, responses } = await JSON.parse(req.body.json);
     console.log(responses, "responses", formId, user,);
@@ -36,7 +36,8 @@ export const createFeedback = async (req, res) => {
       return {
         questionPrompt: question.prompt,
         questionType: question.type, 
-        response: typeof response.response === "object" ? undefined : response.response,
+        //response: typeof response.response === "object" ? undefined : response.response,
+        response: question.type === 'File upload' && path ? path:response.response,
         file: (question.prompt === "File upload") && path ? path : null
       };
     });

@@ -13,6 +13,7 @@ interface Response {
   questionText: string;
   response: string;
   questionPrompt: string;
+  questionType:string;
 }
 
 interface Feedback {
@@ -45,9 +46,9 @@ const ListOfFeedback: React.FC = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const feedbackResponse = await axios.get('http://localhost:4000/api/listOfFeedback');
+        const feedbackResponse = await axios.get('http://192.168.1.3:4000/api/listOfFeedback');
         setFeedbacks(feedbackResponse.data.message);
-        const adminResponse = await axios.get('http://localhost:4000/api/admin/listofadmins');
+        const adminResponse = await axios.get('http://192.168.1.3:4000/api/admin/listofadmins');
         setAdmins(adminResponse.data.admins);
         setLoading(false);
       } catch (err) {
@@ -61,7 +62,7 @@ const ListOfFeedback: React.FC = () => {
   const handleAssignAdmin = async (feedbackId: string, adminId: string) => {
     const comment = comments[feedbackId];
     try {
-      await axios.put(`http://localhost:4000/api/${feedbackId}/assign`, { adminId, comment });
+      await axios.put(`http://192.168.1.3:4000/api/${feedbackId}/assign`, { adminId, comment });
       const assignedAdmin = admins.find(admin => admin._id === adminId);
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
@@ -129,7 +130,9 @@ const ListOfFeedback: React.FC = () => {
                   {feedback.responses.map((response, index) => (
                     <li key={index}>
                       <span className='question'>{index + 1}) {response.questionPrompt}</span>
-                      <p>A) {response.response || 'N/A'}</p>
+                      <p>A) {
+                response.questionType==="File upload"?(<img src={response.response} alt ='file upload' className="file-upload"/>):(response.response)
+              }</p>
                     </li>
                   ))}
                 </ul>

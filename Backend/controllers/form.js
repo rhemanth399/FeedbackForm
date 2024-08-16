@@ -8,7 +8,7 @@ const storeFeedback = async (req,res) =>{
     try {
         
         
-        const formUrl= `http://192.168.0.105:5173`
+        const formUrl= `http://192.168.1.3:5173?formId=${form._id}`
         console.log('Generated form URL:', formUrl); 
         const qrCode = await QRCode.toDataURL(formUrl)
         form.qrCode=qrCode;

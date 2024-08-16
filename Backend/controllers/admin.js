@@ -50,7 +50,7 @@ const loginAdmin = async(req,res)=>{
     }
 
 //Create a JWT payload
-const payload ={id:admin._id,username:admin.username,email:admin.email}
+const payload ={id:admin._id,username:admin.username,email:admin.email,permissions:admin.permissions}
 // Sign token
 const token = jwt.sign(payload,'jwt_secret',{expiresIn:'1h'})
 
