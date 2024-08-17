@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -9,33 +10,31 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate } from 'react-router';
+import { jwtDecode } from 'jwt-decode';
 
 type TemporaryDrawerProps = {
   open: boolean;
   toggleDrawer: (open: boolean) => void;
 };
 
-export default function Sidebar({ open, toggleDrawer }:TemporaryDrawerProps) {
-  const navigate=useNavigate();
+export default function Sidebar({ open, toggleDrawer }: TemporaryDrawerProps) {
+  const navigate = useNavigate();
+
+  // Example token; in practice, you'd retrieve this from local storage or an API
+  const token = localStorage.getItem('token'); // Replace with actual token retrieval
+  let permissions = { canCreateForm: false, canEditForm: false };
+
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    permissions = decodedToken.permissions;
+  }
+
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" >
+    <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {['Dashboard Overview', 'Feedback Details', 'Feedback Statistics', 'Issue Tracking','Task Management'].map((text, index) => (
+        {['Dashboard Overview', 'Feedback Details', 'Feedback Statistics', 'Issue Tracking', 'Task Management'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} onClick={()=>navigate(text.replace(" ",''))}/>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate(text.replace(" ", ''))}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -43,13 +42,37 @@ export default function Sidebar({ open, toggleDrawer }:TemporaryDrawerProps) {
             </ListItemButton>
           </ListItem>
         ))}
+
+        {/* Conditional rendering based on permissions */}
+        {permissions.canCreateForm && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('CreateForm')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create Form" />
+            </ListItemButton>
+          </ListItem>
+        )}
+
+        {permissions.canEditForm && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('EditForm')}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="Edit Form" />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
+      <Divider />
+      
     </Box>
   );
 
   return (
     <div>
-      
       <Drawer open={open} onClose={() => toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
