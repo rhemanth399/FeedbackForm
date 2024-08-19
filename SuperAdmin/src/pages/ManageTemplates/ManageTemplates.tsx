@@ -89,17 +89,17 @@ const ManageTemplates: React.FC = () => {
     }
   };
 
-  const updatedTemplate = async () => {
-    if (form) {
-      try {
-        await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
-        alert('Form updated successfully!');
-      } catch (error) {
-        console.error('Error updating form', error);
-        alert('Failed to update form');
-      }
-    }
-  };
+  // const updatedTemplate = async () => {
+  //   if (form) {
+  //     try {
+  //       await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
+  //       alert('Form updated successfully!');
+  //     } catch (error) {
+  //       console.error('Error updating form', error);
+  //       alert('Failed to update form');
+  //     }
+  //   }
+  // };
 
   const saveForm = async () => {
     if (form) {
