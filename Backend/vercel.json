@@ -1,10 +1,10 @@
 {
     "version": 2,
     "builds": [
-      { "src": "server.js", "use": "@vercel/node" }
+      { "src": "./server.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/api/(.*)", "dest": "server.js" }
+      { "src": "/api/(.*)", "dest": "/" }
     ],
     "env": {
       "MONGO_URL": "mongodb+srv://rhemanth399:741628969@cluster0.ij7pqrc.mongodb.net/feedback",
