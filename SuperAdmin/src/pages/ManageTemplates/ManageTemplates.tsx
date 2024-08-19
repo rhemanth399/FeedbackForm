@@ -37,7 +37,7 @@ const ManageTemplates: React.FC = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/templates');
+        const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/templates');
         console.log("1", response);
         setForms(response.data.message);
       } catch (error) {
@@ -49,7 +49,7 @@ const ManageTemplates: React.FC = () => {
 
   const fetchForm = async (formId: string) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/template/${formId}`);
+      const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/template/${formId}`);
       console.log("2", response);
       setForm(response.data.message);
     } catch (error) {
@@ -68,7 +68,7 @@ const ManageTemplates: React.FC = () => {
   const deleteQuestion = async (index: number) => {
     if (form) {
       try {
-        const response = await axios.delete(`http://localhost:4000/api/template/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/template/${form._id}/questions/${index}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -92,7 +92,7 @@ const ManageTemplates: React.FC = () => {
   const updatedTemplate = async () => {
     if (form) {
       try {
-        await axios.put(`http://localhost:4000/api/forms/${form._id}`, form);
+        await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
         alert('Form updated successfully!');
       } catch (error) {
         console.error('Error updating form', error);
@@ -104,7 +104,7 @@ const ManageTemplates: React.FC = () => {
   const saveForm = async () => {
     if (form) {
       try {
-        await axios.post('http://localhost:4000/api/create', form);
+        await axios.post('https://feedbackform-backend-ao0d.onrender.com/api/create', form);
         alert('Form saved successfully!');
       } catch (error) {
         console.error('Error saving form', error);

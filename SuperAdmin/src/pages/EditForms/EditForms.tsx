@@ -42,7 +42,7 @@ const FormEditor: React.FC = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://192.168.1.3:4000/api/allForms');
+        const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/allForms');
         console.log("1", response)
         setForms(response.data.message);
       } catch (error) {
@@ -54,7 +54,7 @@ const FormEditor: React.FC = () => {
 
   const fetchForm = async (formId: string) => {
     try {
-      const response = await axios.get(`http://192.168.1.3:4000/api/forms/${formId}`);
+      const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${formId}`);
       console.log("2", response)
       setForm(response.data.message);
     } catch (error) {
@@ -73,7 +73,7 @@ const FormEditor: React.FC = () => {
   const deleteQuestion = async (index: number) => {
     if (form) {
       try {
-        const response = await axios.delete(`http://192.168.1.3:4000/api/forms/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${index}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -97,7 +97,7 @@ const FormEditor: React.FC = () => {
   const saveForm = async () => {
     if (form) {
       try {
-        await axios.put(`http://192.168.1.3:4000/api/forms/${form._id}`, form);
+        await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
         alert('Form updated successfully!');
         navigate("/editforms")
       } catch (error) {

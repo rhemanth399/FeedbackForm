@@ -62,7 +62,7 @@ const ListOfFeedback: React.FC = () => {
   const handleAssignAdmin = async (feedbackId: string, adminId: string) => {
     const comment = comments[feedbackId];
     try {
-      await axios.put(`http://192.168.1.3:4000/api/${feedbackId}/assign`, { adminId, comment });
+      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/${feedbackId}/assign`, { adminId, comment });
       const assignedAdmin = admins.find(admin => admin._id === adminId);
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>

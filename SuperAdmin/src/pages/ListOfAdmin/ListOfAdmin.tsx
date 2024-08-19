@@ -24,7 +24,7 @@ const ListOfAdmin: React.FC = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/admin/listofadmins');
+        const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/listofadmins');
         setAdmins(response.data.admins);
         setLoading(false);
       } catch (error) {
