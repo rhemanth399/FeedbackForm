@@ -1,8 +1,10 @@
 import Admin from "../models/adminModel.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import 'dotenv/config.js'
 //Create an Admin
 
+const jwtSecret='jwt_secret'
 const createAdmin = async (req,res)=>{
     const { username,password ,name,email,phone ,designation,permissions} = req.body;
     console.log(password,name,email,phone,designation,permissions,username)
@@ -52,7 +54,7 @@ const loginAdmin = async(req,res)=>{
 //Create a JWT payload
 const payload ={id:admin._id,username:admin.username,email:admin.email,permissions:admin.permissions}
 // Sign token
-const token = jwt.sign(payload,'jwt_secret',{expiresIn:'1h'})
+const token = jwt.sign(payload,`${jwtSecret}`,{expiresIn:'1h'})
 
 return res.json({message:"Login Successfull",success:true,token})
 }
