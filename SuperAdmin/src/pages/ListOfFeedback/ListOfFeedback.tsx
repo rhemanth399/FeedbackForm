@@ -46,9 +46,9 @@ const ListOfFeedback: React.FC = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const feedbackResponse = await axios.get('http://192.168.1.3:4000/api/listOfFeedback');
+        const feedbackResponse = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/listOfFeedback');
         setFeedbacks(feedbackResponse.data.message);
-        const adminResponse = await axios.get('http://192.168.1.3:4000/api/admin/listofadmins');
+        const adminResponse = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/listofadmins');
         setAdmins(adminResponse.data.admins);
         setLoading(false);
       } catch (err) {
