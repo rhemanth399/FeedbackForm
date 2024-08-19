@@ -30,7 +30,7 @@ interface FeedbackFormProps {
 }
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
-  const { formData, apiUrl, setFormData } = useFormContext();
+  const { formData, apiUrl } = useFormContext();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [title,setTitle] =useState<(any)>('')
   const [formId, setFormId] = useState<any>();
@@ -50,7 +50,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         return;
       }
       try {
-        const response = await axios.get(`http://192.168.1.3:4000/api/forms/${dbformId}`);
+        const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${dbformId}`);
         console.log(response)
         if (response.data.success && response.data.message) {
           const firstForm = response.data.message;
@@ -110,7 +110,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
 
     try {
       console.log("Hi")
-      const response = await axios.post(`http://192.168.1.3:4000/api/feedback`, form,{
+      const response = await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/feedback`, form,{
         headers:{
           'Content-Type': 'multipart/form-data',
         }
