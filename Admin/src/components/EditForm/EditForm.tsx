@@ -123,101 +123,106 @@ const EditForm: React.FC = () => {
 
   return (
     <div className="form-editor">
-      {selectedFormId ? (
-        form ? (
-          <div>
-            <input
-              type="text"
-              placeholder="Form Title"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-            />
-            <img src={form.qrCode} alt="qrCode"/>
-            
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="questions">
-                {(provided: any) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {form.questions.map((question, index) => (
-                      <Draggable key={index} draggableId={String(index)} index={index}>
-                        {(provided: any) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="question"
+    {selectedFormId ? (
+      form ? (
+        <div>
+          <h2>Edit Form</h2>
+          <input
+            type="text"
+            placeholder="Form Title"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+          />
+          <img src={form.qrCode} alt="QR Code" style={{ display: 'block', margin: '20px auto' }} />
+  
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="questions">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {form.questions.map((question, index) => (
+                    <Draggable key={index} draggableId={String(index)} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="question"
+                        >
+                          <span className="question-number">{index + 1}) </span>
+                          <select
+                            value={question.type}
+                            onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
                           >
-                            <span className="question-number">{index + 1}) </span>
-                            <select
-                              value={question.type}
-                              onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
-                            >
-                              <option value="">Select question type</option>
-                              {questionTypes.map((type) => (
-                                <option key={type} value={type}>
-                                  {type}
-                                </option>
-                              ))}
-                            </select>
-                            
-                            <input
-                              type="text"
-                              placeholder="Question prompt"
-                              value={question.prompt}
-                              onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
-                            />
-                            
-                            {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
-                              <div>
-                                <textarea
-                                  placeholder="Options (comma separated)"
-                                  value={question.options.join(',')}
-                                  onChange={(e) =>
-                                    updateQuestion(index, 'options', e.target.value.split(','))
-                                  }
-                                />
-                              </div>
-                            )}
-                            <button onClick={() => deleteQuestion(index)}>Delete</button>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-            <div className='add-save'>
+                            <option value="">Select question type</option>
+                            {questionTypes.map((type) => (
+                              <option key={type} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
+                          
+                          <input
+                            type="text"
+                            placeholder="Question prompt"
+                            value={question.prompt}
+                            onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
+                          />
+                          
+                          {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
+                            <div>
+                              <textarea
+                                placeholder="Options (comma separated)"
+                                value={question.options.join(',')}
+                                onChange={(e) =>
+                                  updateQuestion(index, 'options', e.target.value.split(','))
+                                }
+                              />
+                            </div>
+                          )}
+                          <button onClick={() => deleteQuestion(index)} className="delete-btn">
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <div className='add-save'>
             <button onClick={addNewQuestion} className='add-question'>Add New Question</button>
             <button onClick={saveForm} className='save-form'>Save Form</button>
-            </div>
           </div>
-        ) : (
-          <p>Loading form...</p>
-        )
-      ) : (
-        <div>
-          <h2>Select a form to edit</h2>
-          <ul className="form-list">
-            {forms.map((form) => (
-              <li
-                key={form._id}
-                onClick={() => {
-                  setSelectedFormId(form._id);
-                  fetchForm(form._id);
-                }}
-                className={form._id === selectedFormId ? 'selected' : ''}
-              >
-                {form.title}
-                <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
-              </li>
-            ))}
-          </ul>
         </div>
-      )}
-    </div>
-  );
-};
+      ) : (
+        <p>Loading form...</p>
+      )
+    ) : (
+      <div>
+        <h2>Select a form to edit</h2>
+        <ul className="form-list">
+          {forms.map((form) => (
+            <li
+              key={form._id}
+              onClick={() => {
+                setSelectedFormId(form._id);
+                fetchForm(form._id);
+              }}
+              className={form._id === selectedFormId ? 'selected' : ''}
+            >
+              {form.title}
+              <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
 
-export default EditForm;
+  
+  )
+}
+
+export default EditForm

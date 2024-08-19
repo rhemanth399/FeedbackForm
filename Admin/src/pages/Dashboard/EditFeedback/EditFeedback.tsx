@@ -1,11 +1,10 @@
 import React from "react";
-import Header from "../../../components/Header/Header";
 import Sidebar from "../../../components/Drawer/Sidebar";
-import ListOfFeedback from "../../../components/ScrollableTable/FeedbackList";
+import Header from "../../../components/Header/Header";
+import EditForm from "../../../components/EditForm/EditForm";
 
-const FeedbackDetails:React.FC=()=>{
+const EditFeedback:React.FC=()=>{
     const [drawerOpen, setDrawerOpen] = React.useState<any>(false);
-
     const toggleDrawer:any = (newOpen:boolean) => {
       setDrawerOpen(newOpen);
     };
@@ -13,12 +12,9 @@ const FeedbackDetails:React.FC=()=>{
         <>
         <Header toggleDrawer={toggleDrawer}/>
         <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer}/>
-        <div>
-          <h1>List Of Assigned Feedback</h1>
-        <ListOfFeedback/>
-        </div>
+        <EditForm/>
         </>
     )
 }
 
-export default FeedbackDetails
+export default EditFeedback

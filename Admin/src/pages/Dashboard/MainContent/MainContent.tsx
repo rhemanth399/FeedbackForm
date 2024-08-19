@@ -7,9 +7,6 @@ interface FeedbackData {
   count: number;
 }
 
-
-
-
 const MainContent: React.FC = () => {
   const [feedbackData, setFeedbackData] = useState<FeedbackData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

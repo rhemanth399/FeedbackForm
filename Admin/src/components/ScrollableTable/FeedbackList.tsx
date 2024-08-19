@@ -40,7 +40,7 @@ const ListOfFeedback: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [feedbacksPerPage] = useState<number>(5);
+  const [feedbacksPerPage] = useState<number>(2);
   const [comment, setComment] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const ListOfFeedback: React.FC = () => {
 console.log("Hemanthd",currentFeedbacks)
   return (
     <Container className="feedback-list">
-      <Typography>Assigned Feedback List</Typography>
+      
     <Grid container spacing={2}>
       
     {currentFeedbacks.map((feedback,index) => (

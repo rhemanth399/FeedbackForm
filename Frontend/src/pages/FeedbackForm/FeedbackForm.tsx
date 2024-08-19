@@ -32,6 +32,7 @@ interface FeedbackFormProps {
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   const { formData, apiUrl, setFormData } = useFormContext();
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [title,setTitle] =useState<(any)>('')
   const [formId, setFormId] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         console.log(response)
         if (response.data.success && response.data.message) {
           const firstForm = response.data.message;
+          setTitle(firstForm.title)
           setQuestions(firstForm.questions);
           setFormId(firstForm._id);
         } else {
@@ -125,6 +127,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
     }
   };
 
+  
+
   return (
     <>
       {loading ? (
@@ -133,11 +137,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         </div>
       ) : questions.length > 0 ? (
         <>
+        <h1>{title}</h1>
           {withData && <Inputs />}
           <form className="form" onSubmit={handleSubmit}>
+            
             {questions.map((question, index) => (
               <div className="question-container" key={question._id}>
-                <span className="question-number">{index + 1}.</span>
+                <div className="question-number">{index + 1}.</div>
                 <div className="question-content">
                   <div className="question-options">
                     {(() => {

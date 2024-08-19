@@ -17,6 +17,7 @@ const AdminDashboard: React.FC = () => {
         <Header toggleDrawer={toggleDrawer}/>
         <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer}/>
         <div className="main-content">
+          <h1>Feedback Statistics</h1>
             <MainContent/>
         </div>
       </div>

@@ -1,20 +1,34 @@
-.inputs{
+.inputs {
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 100%; /* Set width to 100% for better responsiveness */
     margin-bottom: 20px;
 }
 
-.inputs input{
-    padding: 8px 10px;
+.inputs input {
+    padding: 10px; /* Increase padding for better touch targets */
     margin-top: 10px;
     border-radius: 4px;
     border: 1px solid gray;
     outline: none;
-
+    width: 100%; /* Ensure the input takes full width */
+    box-sizing: border-box; /* Include padding in the element's width and height */
 }
 
-.form-group{
+.form-group {
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px; /* Add some spacing between form groups */
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px; /* Add spacing between label and input */
+}
+
+@media (min-width: 768px) {
+    .inputs {
+        width: 50%; /* Adjust width on larger screens */
+        margin: 0 auto; /* Center the input fields on larger screens */
+    }
 }
