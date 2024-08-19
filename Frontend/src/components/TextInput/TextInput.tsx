@@ -19,7 +19,7 @@ const TextInput: React.FC<TextInputProps> = ({ question, questionId}) => {
   return (
     <div className="text-input">
       <p>{question}</p>
-      <input type={text} onChange={handleChange} />
+      <input type={text} onChange={(_e)=>handleChange} />
     </div>
   );
 };

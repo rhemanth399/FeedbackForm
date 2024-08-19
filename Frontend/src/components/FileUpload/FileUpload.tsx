@@ -8,7 +8,7 @@ type FileUploadProps = {
 };
 
 const FileUpload: React.FC<FileUploadProps> = ({ question ,questionId }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [_selectedFile, setSelectedFile] = useState<File | null>(null);
   const { formData, setFormData } = useFormContext();
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

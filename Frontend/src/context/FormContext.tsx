@@ -27,9 +27,7 @@ interface datePicker {
   [questionId:string]:string;
 }
 
-interface fileUpload {
-  questionId:any;
-}
+
 
 interface multipleChoice{
   [questionId:string]:string[];
@@ -94,7 +92,7 @@ export const useFormContext = () => {
 
 export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [formData, setFormDataState] = useState<FormData>(initialFormData);
-  const apiUrl: string = "http://localhost:4000";
+  const apiUrl: string = "https://feedbackform-backend-ao0d.onrender.com/";
 
   const setFormData = (data: Partial<FormData>) => {
     setFormDataState(prevState => ({
