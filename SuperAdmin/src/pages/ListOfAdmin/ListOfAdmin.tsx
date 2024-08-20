@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, CircularProgress } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, CircularProgress, Box } from '@mui/material';
 import './ListOfAdmin.css';
 
 interface Admin {
@@ -50,6 +50,7 @@ const ListOfAdmin: React.FC = () => {
   return (
     <div className="admin-list-container">
       <h1>List of Admins</h1>
+      <Box mb={2}>
       <TextField
         id="search"
         label="Search by Name"
@@ -58,6 +59,7 @@ const ListOfAdmin: React.FC = () => {
         onChange={handleSearchChange}
         className="search-input"
       />
+      </Box>
       <TableContainer component={Paper} className="table-container">
         <Table>
           <TableHead>
