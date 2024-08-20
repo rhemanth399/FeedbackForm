@@ -1,5 +1,6 @@
+/* FormEditor.css */
 .form-editor {
-  max-width: 800px; /* Added for better control over layout width */
+  
   margin: 0 auto;
   padding: 20px;
   margin-top: 20px;
@@ -12,13 +13,12 @@
   text-align: center;
   color: #333;
   font-size: 24px;
-  margin-bottom: 20px; /* Added for better spacing */
 }
 
 .form-editor input[type="text"],
 .form-editor select,
 .form-editor textarea {
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -32,9 +32,11 @@
   resize: vertical;
 }
 
+
+
 .form-editor button {
-  display: inline-block;
-  width: calc(50% - 10px); /* Adjusted for better alignment of buttons */
+  display: block;
+  width: 100%;
   padding: 10px;
   background-color: tomato;
   border: none;
@@ -43,14 +45,9 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-bottom: 10px; /* Added for consistent spacing */
 }
 
-.form-editor .add-edit-save {
-  display: flex;
-  justify-content: space-between; /* Adjusted to align buttons side by side */
-  gap: 10px;
-}
+
 
 .form-editor .question {
   margin-bottom: 20px;
@@ -58,15 +55,20 @@
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  position: relative; /* Adjusted for better control over internal elements */
 }
 
-.form-editor .question-number {
-  position: absolute;
-  left: -35px; /* Adjusted to align with other input fields */
-  top: 15px;
-  font-weight: bold;
-  font-size: 18px;
+.form-editor .question select,
+.form-editor .question input[type="text"],
+.form-editor .question textarea {
+  margin-bottom: 10px;
+  border: 1px solid gray;
+  outline: none;
+}
+
+.form-editor .question select:hover,
+.form-editor .question input[type="text"]:hover,
+.form-editor .question textarea :hover{
+  border: 1px solid tomato;
 }
 
 .form-editor .form-list {
@@ -77,7 +79,7 @@
 .form-editor .form-list li {
   padding: 10px;
   margin: 5px 0;
-  background-color: rgb(250, 136, 110);
+  background-color: rgb(250, 136, 110);;
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -90,24 +92,10 @@
 
 .form-editor .form-list li.selected {
   background-color: tomato;
-  border-left: 4px solid white; /* Added for better highlighting of selected item */
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  .form-editor {
-    padding: 15px;
-  }
 
-  .form-editor button {
-    width: 100%; /* Full width buttons on small screens */
-    margin-bottom: 10px;
-  }
-
-  .form-editor .question-number {
-    left: 0; /* Adjusted for better alignment on small screens */
-    top: 0;
-    position: relative;
-    margin-bottom: 10px;
-  }
+.edit-template{
+  margin-bottom: 10px;
 }
+
