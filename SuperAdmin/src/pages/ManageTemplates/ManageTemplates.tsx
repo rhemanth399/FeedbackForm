@@ -114,8 +114,10 @@ const ManageTemplates: React.FC = () => {
   };
 
   return (
+    <>
+    <h1>Manage Templates</h1>
     <div className="form-editor">
-      <h1>Manage Templates</h1>
+      
       {selectedFormId ? (
         form ? (
           <div>
@@ -188,6 +190,7 @@ const ManageTemplates: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
