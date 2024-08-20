@@ -138,52 +138,60 @@ const ListOfFeedback: React.FC<ListOfFeedbackProps> = ({ searchQuery }) => {
   return (
     <Container className="feedback-list">
       <Grid container spacing={2}>
-        {currentFeedbacks.map((feedback, index) => (
-          <Grid item xs={12} sm={6} key={index}>
-            <Card key={index} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
-                <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
-                <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
-                <Typography>Status: {feedback.status || 'unassigned'}</Typography>
-                <Typography>Comment: {feedback.comment || 'N/A'}</Typography>
+        {currentFeedbacks.length > 0 ? (
+          currentFeedbacks.map((feedback, index) => (
+            <Grid item xs={12} sm={6} key={index}>
+              <Card key={index} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
+                <CardContent>
+                  <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
+                  <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
+                  <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
+                  <Typography>Status: {feedback.status || 'unassigned'}</Typography>
+                  <Typography>Comment: {feedback.comment || 'N/A'}</Typography>
 
-                <Typography variant="subtitle1">Responses:</Typography>
-                <ul className="ul-items">
-                  {feedback.responses.map((response, index) => (
-                    <li key={index}>
-                      <span className="question">
-                        {index + 1}) {response.questionPrompt}
-                      </span>
-                      <p>
-                        A:{' '}
-                        {response.questionType === 'File upload' ? (
-                          <img src={response.response} alt="file upload" className="file-upload" />
-                        ) : (
-                          response.response
-                        )}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-              <TextField
-                label="Add a Comment"
-                variant="outlined"
-                fullWidth
-                value={comment[feedback._id] || ''}
-                onChange={(e) => setComment({ ...comment, [feedback._id]: e.target.value })}
-                sx={{ mt: 2 }}
-              />
-              <Button
-                style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
-                onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
-              >
-                Resolution
-              </Button>
-            </Card>
+                  <Typography variant="subtitle1">Responses:</Typography>
+                  <ul className="ul-items">
+                    {feedback.responses.map((response, index) => (
+                      <li key={index}>
+                        <span className="question">
+                          {index + 1}) {response.questionPrompt}
+                        </span>
+                        <p>
+                          A:{' '}
+                          {response.questionType === 'File upload' ? (
+                            <img src={response.response} alt="file upload" className="file-upload" />
+                          ) : (
+                            response.response
+                          )}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <TextField
+                  label="Add a Comment"
+                  variant="outlined"
+                  fullWidth
+                  value={comment[feedback._id] || ''}
+                  onChange={(e) => setComment({ ...comment, [feedback._id]: e.target.value })}
+                  sx={{ mt: 2 }}
+                />
+                <Button
+                  style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
+                  onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
+                >
+                  Resolution
+                </Button>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" align="center">
+              No feedback found matching your search criteria.
+            </Typography>
           </Grid>
-        ))}
+        )}
       </Grid>
       <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{ height: '100px' }}>
         <Pagination
