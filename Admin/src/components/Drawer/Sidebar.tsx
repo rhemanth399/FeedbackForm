@@ -31,7 +31,7 @@ export default function Sidebar({ open, toggleDrawer }: TemporaryDrawerProps) {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {['Dashboard Overview', 'Feedback Details', 'Feedback Statistics', 'Issue Tracking', 'Task Management'].map((text, index) => (
+        {[  'Feedback Statistics', 'Issue Tracking'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => navigate(text.replace(" ", ''))}>
               <ListItemIcon>

@@ -18,12 +18,13 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <AdminDashboard />
+              <FeedbackDetails/>
+              
             </ProtectedRoute>
           }
         />
-       <Route path='dashboard/FeedbackStatistics' element={<Feedback/>}/>
-      <Route path='/dashboard/FeedbackDetails' element={<FeedbackDetails/>}/>
+       <Route path='dashboard/Issue Tracking' element={<Feedback/>}/>
+      <Route path='/dashboard/overview' element={<AdminDashboard />}/>
       <Route path='/dashboard/createform' element={<CreateFeedback/>}/>
       <Route path='/dashboard/editform' element={<EditFeedback/>}/>
       
