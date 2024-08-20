@@ -9,7 +9,7 @@ export const createFeedback = async (req, res) => {
   try {
     const url = await req.file;
 
-    const path = `http://192.168.1.3:4000/uploads/${url.filename}`
+    const path = `https://feedbackform-backend-ao0d.onrender.com/uploads/${url.filename}`
     console.log(path);
     const { formId, user, responses } = await JSON.parse(req.body.json);
     console.log(responses, "responses", formId, user,);
