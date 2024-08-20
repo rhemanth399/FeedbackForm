@@ -27,6 +27,7 @@ interface Form {
   _id: string;
   title: string;
   questions: Question[];
+  qrCode:string,
 }
 
 const ManageTemplates: React.FC = () => {
@@ -127,6 +128,7 @@ const ManageTemplates: React.FC = () => {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
             />
+            <img src={form.qrCode} alt="qrCode"/>
             {form.questions.map((question, index) => (
               <div key={index} className="question">
                 <span className="question-number">{index + 1})</span>
