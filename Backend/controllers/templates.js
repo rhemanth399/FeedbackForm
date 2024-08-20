@@ -77,10 +77,12 @@ const deleteQuestion = async (req, res) => {
 
 // storing template in db
 const storeTemplate = async (req,res)=>{
+    console.log('Hi')
     const template = new Template(req.body);
     try {
         const formUrl= `https://feedback-form-user.vercel.app/?formId=${template._id}`
         const qrCode = await QRCode.toDataURL(formUrl)
+        console.log(qrCode)
         template.qrCode=qrCode;
         await template.save();
         res.json({

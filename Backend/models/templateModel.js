@@ -8,7 +8,9 @@ const questionSchema = new mongoose.Schema({
 
 const templateSchema = new mongoose.Schema({
   title: String,
-  questions: [questionSchema]
+  questions: [questionSchema],
+  submittedAt: { type: Date, default: Date.now },
+  qrCode: String,
 });
 
 
