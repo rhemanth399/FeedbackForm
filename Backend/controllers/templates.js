@@ -1,5 +1,6 @@
 import Template from "../models/templateModel.js"
 import FormModel from "../models/formModel.js";
+import QRCode from 'qrcode';
 
 
 // Storing the templates 
@@ -78,6 +79,9 @@ const deleteQuestion = async (req, res) => {
 const storeTemplate = async (req,res)=>{
     const template = new Template(req.body);
     try {
+        const formUrl= `https://feedback-form-user.vercel.app/?formId=${template._id}`
+        const qrCode = await QRCode.toDataURL(formUrl)
+        template.qrCode=qrCode;
         await template.save();
         res.json({
             success:true,

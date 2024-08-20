@@ -12,6 +12,7 @@ interface User {
 interface Response {
   questionText: string;
   response: any;
+  file:any;
   questionPrompt: string;
   questionType:string
 }
@@ -21,6 +22,7 @@ interface Feedback {
   formId: string;
   user: User;
   responses: Response[];
+  
   comment:string,
   submittedAt: string;
   assignedAdmin?: Admin;

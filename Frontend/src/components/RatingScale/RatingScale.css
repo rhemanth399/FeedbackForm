@@ -8,6 +8,10 @@
   display: flex;
 }
 
+.rating-scale p {
+  font-weight: bold;
+}
+
 .rating-star {
   font-size: 24px;
   cursor: pointer;
