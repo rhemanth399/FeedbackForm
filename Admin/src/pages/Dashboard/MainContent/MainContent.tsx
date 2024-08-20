@@ -17,7 +17,7 @@ const MainContent: React.FC = () => {
       try {
         const token = localStorage.getItem('token'); // Get the token from local storage or any other secure storage
         
-        const response = await axios.get('http://192.168.1.3:4000/api/admin/feedback/starrating', {
+        const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/feedback/starrating', {
           headers: {
             Authorization: `Bearer ${token}`, // Send the token in the request headers
           },
@@ -75,7 +75,7 @@ const MainContent: React.FC = () => {
             fill="#8884d8"
             label
           >
-            {pieChartData.map((entry, index) => (
+            {pieChartData.map((_entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>

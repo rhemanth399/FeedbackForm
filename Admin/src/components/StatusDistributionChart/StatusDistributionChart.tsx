@@ -17,7 +17,7 @@ interface RepeatedIssue {
 // Define the component
 const StatusDistributionChart: React.FC = () => {
   const [data, setData] = useState<FeedbackTrend[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [issues, setIssues] = useState<RepeatedIssue[]>([]);
 
 
@@ -27,13 +27,13 @@ const StatusDistributionChart: React.FC = () => {
       const token = localStorage.getItem('token');
       try {
         
-        const response = await axios.get('http://192.168.1.3:4000/api/admin/feedbackstatistics', {
+        const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/feedbackstatistics', {
           headers: {
             Authorization: `Bearer ${token}`, 
           },
         });
         setData(response.data);
-        const response2 = await axios.get('http://192.168.1.3:4000/api/admin/feedback/repeatedissues', {
+        const response2 = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/feedback/repeatedissues', {
           headers: {
             Authorization: `Bearer ${token}`, // Replace with your token
           },

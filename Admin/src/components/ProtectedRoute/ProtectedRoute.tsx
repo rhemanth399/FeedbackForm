@@ -1,14 +1,13 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 
 
 type ProtectedRouteProps = {
     children: JSX.Element;
-    requiredPermissions?: string[]; // Optional permissions requirement
+    
   };
 
-  export default function ProtectedRoute({ children, requiredPermissions }: ProtectedRouteProps) {
+  export default function ProtectedRoute({ children}: ProtectedRouteProps) {
     const token = localStorage.getItem('token');
   
     if (!token) {

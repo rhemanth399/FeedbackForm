@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Card, Grid,CardContent, Typography, MenuItem, Select, InputLabel, FormControl, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
+import { Container, Card, Grid,CardContent, Typography, Button, TextField, Pagination, Box, CircularProgress } from '@mui/material';
 import './ListOfFeedback.css'
 
 interface User {
@@ -36,7 +36,7 @@ interface Admin {
 
 const ListOfFeedback: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
-  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [_admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
@@ -47,14 +47,14 @@ const ListOfFeedback: React.FC = () => {
     const fetchFeedbacks = async () => {
       try {
         const token = localStorage.getItem("token")
-        const feedbackResponse = await axios.get('http://192.168.1.3:4000/api/admin/listoffeedback',{
+        const feedbackResponse = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/listoffeedback',{
           headers:{
             Authorization :`Bearer ${token}`
           }
         });
         console.log(feedbackResponse)
         setFeedbacks(feedbackResponse.data);
-        const adminResponse = await axios.get('http://192.168.1.3:4000/api/admin/listofadmins');
+        const adminResponse = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/admin/listofadmins');
         setAdmins(adminResponse.data.admins);
         setLoading(false);
       } catch (err) {
@@ -70,7 +70,7 @@ const ListOfFeedback: React.FC = () => {
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
     const adminSubmittedDate= Date.now();
     try {
-      await axios.put(`http://192.168.1.3:4000/api/${feedbackId}/resolve`, { resolutionComment,adminSubmittedDate });
+      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/${feedbackId}/resolve`, { resolutionComment,adminSubmittedDate });
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
           feedback._id === feedbackId
@@ -84,7 +84,7 @@ const ListOfFeedback: React.FC = () => {
     }
   };
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
