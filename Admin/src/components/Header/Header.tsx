@@ -59,12 +59,21 @@ const settings = ['Logout'];
 
 type HeaderProps = {
   toggleDrawer: (open: boolean) => void;
+  onSearch?: (query: string) => void;
 };
 
-export default function Header({ toggleDrawer }: HeaderProps) {
+export default function Header({ toggleDrawer , onSearch }: HeaderProps) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [searchQuery, setSearchQuery] = React.useState<string>('');
+
   const navigate = useNavigate(); // Use navigate for redirection
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    if (onSearch) {
+      onSearch(event.target.value);
+    }
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -100,12 +109,19 @@ export default function Header({ toggleDrawer }: HeaderProps) {
           >
             ADMIN
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-          </Search>
+          {onSearch && (
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </Search>
+          )}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
