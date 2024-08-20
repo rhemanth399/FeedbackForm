@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -54,21 +55,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
+
 type HeaderProps = {
-    toggleDrawer: (open: boolean) => void;
-  };
+  toggleDrawer: (open: boolean) => void;
+};
 
-  
-export default function Header({ toggleDrawer }:HeaderProps) {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+export default function Header({ toggleDrawer }: HeaderProps) {
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const navigate = useNavigate(); // Use navigate for redirection
 
-  const handleOpenUserMenu = (event:any) => {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-  
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token
+    navigate('/'); // Redirect to the home page
   };
 
   return (
@@ -97,10 +104,7 @@ export default function Header({ toggleDrawer }:HeaderProps) {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -125,7 +129,7 @@ export default function Header({ toggleDrawer }:HeaderProps) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={handleLogout}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
