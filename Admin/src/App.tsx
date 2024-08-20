@@ -23,8 +23,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-       <Route path='dashboard/IssueTracking' element={<ProtectedRoute><Feedback/></ProtectedRoute>}/>
-      <Route path='/dashboard/overview' element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}/>
+       <Route path='/dashboard/IssueTracking' element={<ProtectedRoute><Feedback/></ProtectedRoute>}/>
+      <Route path='/dashboard/FeedbackStatistics' element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}/>
       <Route path='/dashboard/createform' element={<ProtectedRoute><CreateFeedback/></ProtectedRoute>}/>
       <Route path='/dashboard/editform' element={<ProtectedRoute><EditFeedback/></ProtectedRoute>}/>
       
