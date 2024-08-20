@@ -13,7 +13,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import './ListOfFeedback.css';
-import Header from '../Header/Header';  // Assuming Header is imported correctly
 
 interface User {
   name: string;
@@ -47,7 +46,11 @@ interface Admin {
   email: string;
 }
 
-const ListOfFeedback: React.FC = () => {
+interface ListOfFeedbackProps {
+  searchQuery: string; // Prop passed from parent component for search
+}
+
+const ListOfFeedback: React.FC<ListOfFeedbackProps> = ({ searchQuery }) => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [_admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,8 +58,7 @@ const ListOfFeedback: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [feedbacksPerPage] = useState<number>(2);
   const [comment, setComment] = useState<{ [key: string]: string }>({});
-  const [searchQuery, setSearchQuery] = useState<string>(''); // Added state for search query
-  const [filteredFeedbacks, setFilteredFeedbacks] = useState<Feedback[]>([]); // State for filtered feedbacks
+  const [filteredFeedbacks, setFilteredFeedbacks] = useState<Feedback[]>([]);
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -95,7 +97,7 @@ const ListOfFeedback: React.FC = () => {
       )
     );
     setFilteredFeedbacks(filtered);
-  }, [searchQuery, feedbacks]); // Filter feedbacks whenever search query or feedbacks change
+  }, [searchQuery, feedbacks]);
 
   const handleResolveFeedback = async (feedbackId: string, resolutionComment: string) => {
     const adminSubmittedDate = Date.now();
@@ -121,10 +123,6 @@ const ListOfFeedback: React.FC = () => {
     setPage(value);
   };
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query); // Set search query when user types
-  };
-
   if (loading)
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -138,66 +136,63 @@ const ListOfFeedback: React.FC = () => {
   const currentFeedbacks = filteredFeedbacks.slice(indexOfFirstFeedback, indexOfLastFeedback);
 
   return (
-    <>
-      <Header toggleDrawer={() => {}} onSearch={handleSearch} /> {/* Pass the search handler */}
-      <Container className="feedback-list">
-        <Grid container spacing={2}>
-          {currentFeedbacks.map((feedback, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <Card key={index} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
-                <CardContent>
-                  <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
-                  <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
-                  <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
-                  <Typography>Status: {feedback.status || 'unassigned'}</Typography>
-                  <Typography>Comment: {feedback.comment || 'N/A'}</Typography>
+    <Container className="feedback-list">
+      <Grid container spacing={2}>
+        {currentFeedbacks.map((feedback, index) => (
+          <Grid item xs={12} sm={6} key={index}>
+            <Card key={index} className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
+              <CardContent>
+                <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
+                <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
+                <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
+                <Typography>Status: {feedback.status || 'unassigned'}</Typography>
+                <Typography>Comment: {feedback.comment || 'N/A'}</Typography>
 
-                  <Typography variant="subtitle1">Responses:</Typography>
-                  <ul className="ul-items">
-                    {feedback.responses.map((response, index) => (
-                      <li key={index}>
-                        <span className="question">
-                          {index + 1}) {response.questionPrompt}
-                        </span>
-                        <p>
-                          A:{' '}
-                          {response.questionType === 'File upload' ? (
-                            <img src={response.response} alt="file upload" className="file-upload" />
-                          ) : (
-                            response.response
-                          )}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <TextField
-                  label="Add a Comment"
-                  variant="outlined"
-                  fullWidth
-                  value={comment[feedback._id] || ''}
-                  onChange={(e) => setComment({ ...comment, [feedback._id]: e.target.value })}
-                  sx={{ mt: 2 }}
-                />
-                <Button
-                  style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
-                  onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
-                >
-                  Resolution
-                </Button>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{ height: '100px' }}>
-          <Pagination
-            count={Math.ceil(filteredFeedbacks.length / feedbacksPerPage)}
-            page={page}
-            onChange={handleChangePage}
-          />
-        </Box>
-      </Container>
-    </>
+                <Typography variant="subtitle1">Responses:</Typography>
+                <ul className="ul-items">
+                  {feedback.responses.map((response, index) => (
+                    <li key={index}>
+                      <span className="question">
+                        {index + 1}) {response.questionPrompt}
+                      </span>
+                      <p>
+                        A:{' '}
+                        {response.questionType === 'File upload' ? (
+                          <img src={response.response} alt="file upload" className="file-upload" />
+                        ) : (
+                          response.response
+                        )}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+              <TextField
+                label="Add a Comment"
+                variant="outlined"
+                fullWidth
+                value={comment[feedback._id] || ''}
+                onChange={(e) => setComment({ ...comment, [feedback._id]: e.target.value })}
+                sx={{ mt: 2 }}
+              />
+              <Button
+                style={{ backgroundColor: 'violet', color: '#fff', marginTop: '10px' }}
+                onClick={() => handleResolveFeedback(feedback._id, comment[feedback._id] || '')}
+              >
+                Resolution
+              </Button>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{ height: '100px' }}>
+        <Pagination
+          count={Math.ceil(filteredFeedbacks.length / feedbacksPerPage)}
+          page={page}
+          onChange={handleChangePage}
+        />
+      </Box>
+    </Container>
   );
 };
 
