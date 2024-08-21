@@ -33,7 +33,7 @@ export default function Sidebar({ open, toggleDrawer }: TemporaryDrawerProps) {
       <List>
         {['Dashboard','Feedback Statistics', 'Issue Tracking'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => navigate(text.replace(" ", ''))}>
+            <ListItemButton onClick={() => navigate('/'+text.replace(" ", ''))}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -45,7 +45,7 @@ export default function Sidebar({ open, toggleDrawer }: TemporaryDrawerProps) {
         {/* Conditional rendering based on permissions */}
         {permissions.canCreateForm && (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('CreateForm')}>
+            <ListItemButton onClick={() => navigate('/CreateForm')}>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
@@ -56,7 +56,7 @@ export default function Sidebar({ open, toggleDrawer }: TemporaryDrawerProps) {
 
         {permissions.canEditForm && (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('EditForm')}>
+            <ListItemButton onClick={() => navigate('/EditForm')}>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
