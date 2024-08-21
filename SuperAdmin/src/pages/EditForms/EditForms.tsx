@@ -122,6 +122,7 @@ const FormEditor: React.FC = () => {
   };
 
   return (
+    <><h1>Edit Form</h1>
     <div className="form-editor">
       {selectedFormId ? (
         form ? (
@@ -217,6 +218,7 @@ const FormEditor: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
