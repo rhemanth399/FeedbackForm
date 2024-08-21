@@ -18,6 +18,7 @@ const questionTypes = [
 type QuestionType = typeof questionTypes[number];
 
 interface Question {
+  _id?:string;
   type: QuestionType;
   prompt: string;
   options: string[];
@@ -66,10 +67,10 @@ const ManageTemplates: React.FC = () => {
     }
   };
 
-  const deleteQuestion = async (index: number) => {
+  const deleteQuestion = async (questionId:string) => {
     if (form) {
       try {
-        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/template/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/templates/${form._id}/questions/${questionId}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -82,6 +83,7 @@ const ManageTemplates: React.FC = () => {
   const addNewQuestion = () => {
     if (form) {
       const newQuestion: Question = {
+        
         type: questionTypes[0], // Default to the first question type
         prompt: '',
         options: [],
@@ -160,7 +162,7 @@ const ManageTemplates: React.FC = () => {
                     />
                   </div>
                 )}
-                <button onClick={() => deleteQuestion(index)}>Delete</button>
+                <button onClick={() => deleteQuestion(question._id!)}>Delete</button>
               </div>
             ))}
             <div className='add-edit-save'>

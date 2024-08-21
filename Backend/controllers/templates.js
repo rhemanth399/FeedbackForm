@@ -1,6 +1,7 @@
 import Template from "../models/templateModel.js"
 import FormModel from "../models/formModel.js";
 import QRCode from 'qrcode';
+import mongoose from "mongoose";
 
 
 // Storing the templates 
@@ -54,24 +55,35 @@ const deletingTemplate = async (req,res)=>{
 }
 
 const deleteQuestion = async (req, res) => {
-    const { formId, questionIndex } = req.params;
-  
-    try{
-        const form = await Template.findById(formId);
-        if(!form){
-            return res.json({success:false,message:"Form not Found"})
-        }
-        form.questions.splice(questionIndex,1);
-        await form.save();
-        res.json({
-            success:true,message:"Question Deleted Successfully",form
-        })
+    const { templateId, questionId } = req.params;
+    console.log('hi',templateId,questionId)
+
+  try {
+    
+    const template = await Template.findById(templateId);
+    if (!template) {
+      console.log('Template not found.');
+      return;
     }
-    catch(error){
-        res.json({
-            success:false,message:"Error deleting question"
-        })
+
+    // Find the index of the question to be removed
+    const questionIndex = template.questions.findIndex(q => q._id.toString() === questionId);
+    
+    if (questionIndex === -1) {
+      console.log('Question not found.');
+      return;
     }
+
+    // Remove the question from the array
+    template.questions.splice(questionIndex, 1);
+
+    // Save the updated template
+    await template.save();
+    console.log('Question deleted successfully.');
+  } catch (error) {
+    console.log('hieli',error)
+    res.status(500).json({ message: 'Error deleting question.', error });
+  }
   };
 
 

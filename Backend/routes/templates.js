@@ -10,6 +10,6 @@ templateRouter.post("/templates",storeTemplates)
 templateRouter.delete("/templates/:id",deletingTemplate)
 templateRouter.put("/template/:id",updatingTemplatesBasedonId)
 templateRouter.get("/template/:id",templateBasedonId)
-templateRouter.delete('/template/:templateId/questions/:questionIndex', deleteQuestion);
+templateRouter.delete('/templates/:templateId/questions/:questionId', deleteQuestion);
 
 export default templateRouter
