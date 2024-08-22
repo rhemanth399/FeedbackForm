@@ -73,11 +73,28 @@ const updateAdminCanCreateForm= async(req,res)=>{
         if(!admin){  
             return res.status(400).json({message:"Admin not Found",success:false})
         }
-        
+        return res.status(200).json({ message: "Permission updated successfully", success: true });
+ 
     }
     catch(err){
         return res.status(500).json({message:"Server Error",success:false})
     }
 }
 
-export {createAdmin,getListOfAdmins,loginAdmin,updateAdminCanCreateForm}
+const updateAdminCanEditForm = async(req,res)=>{
+    const {adminId,canEditForm}= req.body;
+    const canEditFormBoolean = canEditForm.toLowerCase() ==="yes"?true:false;
+    try{
+
+    let admin = await Admin.findByIdAndUpdate(adminId,{'permissions.canEditForm':canEditFormBoolean},{new:true,runValidators:true});
+    if(!admin){
+        return res.status(400).json({message:"Admin not found",success:false})
+    }
+    return res.status(200).json({message:"Permission updated successfully",success:true})
+}
+catch(err){
+    return res.status(500).json({message:"Server Error",success:false})
+}
+}
+
+export {createAdmin,getListOfAdmins,loginAdmin,updateAdminCanCreateForm , updateAdminCanEditForm}

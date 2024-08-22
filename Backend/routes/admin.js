@@ -1,5 +1,5 @@
 import express from 'express'
-import { createAdmin, getListOfAdmins, loginAdmin, updateAdminCanCreateForm } from '../controllers/admin.js';
+import { createAdmin, getListOfAdmins, loginAdmin, updateAdminCanCreateForm, updateAdminCanEditForm } from '../controllers/admin.js';
 
 const adminRouter = express.Router();
 
@@ -7,5 +7,6 @@ adminRouter.post("/admin/create",createAdmin)
 adminRouter.get("/admin/listofadmins",getListOfAdmins)
 adminRouter.post("/admin/login",loginAdmin)
 adminRouter.put("/admin/updateCanCreateForm",updateAdminCanCreateForm)
+adminRouter.put("/admin/updateCanEditForm",updateAdminCanEditForm)
 
 export default adminRouter
