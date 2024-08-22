@@ -66,9 +66,11 @@ catch(err){
 
 const updateAdminCanCreateForm= async(req,res)=>{
     const {adminId,canCreateForm}= req.body;
+    const canCreateFormBoolean = canCreateForm.toLowerCase() ==="yes"?true:false;
     try{
-        let admin = await Admin.findByIdAndUpdate(adminId,{'permissions.canCreateForm':canCreateForm},{new:true,runValidators:true});
-        if(!admin){
+        
+        let admin = await Admin.findByIdAndUpdate(adminId,{'permissions.canCreateForm':canCreateFormBoolean},{new:true,runValidators:true});
+        if(!admin){  
             return res.status(400).json({message:"Admin not Found",success:false})
         }
         
