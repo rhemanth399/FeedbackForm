@@ -64,4 +64,18 @@ catch(err){
 
 }
 
-export {createAdmin,getListOfAdmins,loginAdmin}
+const updateAdminCanCreateForm= async(req,res)=>{
+    const {adminId,canCreateForm}= req.body;
+    try{
+        let admin = await Admin.findByIdAndUpdate(adminId,{'permissions.canCreateForm':canCreateForm},{new:true,runValidators:true});
+        if(!admin){
+            return res.status(400).json({message:"Admin not Found",success:false})
+        }
+        
+    }
+    catch(err){
+        return res.status(500).json({message:"Server Error",success:false})
+    }
+}
+
+export {createAdmin,getListOfAdmins,loginAdmin,updateAdminCanCreateForm}
