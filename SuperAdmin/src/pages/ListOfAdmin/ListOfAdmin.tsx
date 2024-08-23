@@ -141,7 +141,7 @@ const ListOfAdmin: React.FC = () => {
   const handlePermissionChange = async (adminId: string, permissionType: 'canCreateForm' | 'canEditForm', currentValue: boolean) => {
     try {
       const updatedValue = !currentValue;
-      await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/admin/update${permissionType === 'canCreateForm' ? 'CanCreateForm' : 'CanEditForm'}`, {
+      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/admin/update${permissionType === 'canCreateForm' ? 'CanCreateForm' : 'CanEditForm'}`, {
         adminId,
         [permissionType]: updatedValue ? 'Yes' : 'No',
       });
