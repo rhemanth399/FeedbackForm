@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer'
-import FeedbackModel from '../models/feedbackModel'
-import SuperadminModel from '../models/superModel'
+import FeedbackModel from '../models/feedbackModel.js'
+import SuperadminModel from '../models/superModel.js'
 
-export const sendFeedbackNotification = async (feedbackId)=>{
+  const SendFeedbackNotification = async (feedbackId)=>{
     const feedback = await FeedbackModel.findById(feedbackId);
     const superadmin = await SuperadminModel.findOne();
 
@@ -30,3 +30,5 @@ export const sendFeedbackNotification = async (feedbackId)=>{
       })
 }
 
+
+export default SendFeedbackNotification
