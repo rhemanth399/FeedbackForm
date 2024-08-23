@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { sendFeedbackNotification } from "../services/emailNotifications";
 
 const responseSchema = new mongoose.Schema({
   questionPrompt: { type: String, required: true },
@@ -26,6 +27,11 @@ const feedbackSchema = new mongoose.Schema({
  comment:String,
  resolutionComment: String,
  adminSubmittedDate:{type:Date,default:Date.now}
+});
+
+feedbackSchema.post('save', function(doc, next) {
+  sendFeedbackNotification(doc._id);
+  next();
 });
 
 const FeedbackModel = mongoose.model('Feedback', feedbackSchema);
