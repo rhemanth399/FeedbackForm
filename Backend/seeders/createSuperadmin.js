@@ -1,4 +1,4 @@
-import SuperadminModel from "../models/superModel";
+import SuperadminModel from "../models/superModel.js";
 
 const createSuperadmin = async () => {
     const superadmin = await SuperadminModel.findOne({ email: 'superadmin@example.com' });
