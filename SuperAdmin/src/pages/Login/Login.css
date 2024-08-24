@@ -1,0 +1,67 @@
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+    padding: 20px;
+    box-sizing: border-box;
+    background-image: url('../../assets/6.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .login-container {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 750px;
+    width: 100%;
+  }
+  
+  .login-form {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 400px; 
+    width: 100%;
+  }
+  
+  .login-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #6a0dad;
+    margin-bottom: 10px;
+  }
+  
+  .login-subtitle {
+    font-size: 17px;
+    color: rgb(234, 167, 234);
+    margin-bottom: 30px;
+  }
+  
+  .login-image {
+    flex: 1;
+    background: url('../../assets/Login.jpg') no-repeat center center;
+    background-size: cover;
+    display: none; /* Hide on mobile */
+  }
+  
+  .error-msg{
+    color:red;
+    font-size: 16px;
+  }
+  
+  @media (min-width: 645px) {
+    .login-image {
+        display: block;
+    }
+  }
+  

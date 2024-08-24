@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes ,useLocation} from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
@@ -8,20 +8,27 @@ import ManageTemplates from './pages/ManageTemplates/ManageTemplates.tsx'
 import CreateAdmin from './pages/CreateAdmin/CreateAdmin.tsx'
 import ListOfFeedback from './pages/ListOfFeedback/ListOfFeedback.tsx'
 import ListOfAdmin from './pages/ListOfAdmin/ListOfAdmin.tsx'
+import Login from './pages/Login/Login.tsx'
 
 function App() {
+  const location = useLocation();
+
+  // Check if the current path is the login page
+  const isLoginPage = location.pathname === '/login';
+
   
   return (
     
       <div >
-          <Navbar/>
+          {!isLoginPage && <Navbar />}
           
           <hr/>
           
           <div className="app-content">
-          <Sidebar/>
+          {!isLoginPage && <Sidebar />}
 
           <Routes>
+          <Route path="/login" element={<Login />} />
             <Route path="/createForm" element={<CreateForms/>}/>
             <Route path="/editForms" element={<EditForms/>}/>
             <Route path="/manageTemplates" element={<ManageTemplates/>}/>
