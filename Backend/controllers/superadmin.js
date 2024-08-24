@@ -1,17 +1,21 @@
 import SuperadminModel from "../models/superModel.js";
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken';
 
 
 // login superadmin
 
 const superAdminLogin = async(req,res)=>{
     const {email,password} = req.body
+
     try{
         const superadmin = await SuperadminModel.findOne({email})
+
         if(!superadmin){
             return res.status(400).json({message:"Invalid email"})
         }
         const isMatch = await bcrypt.compare(password,superadmin.password)
+        
         if(!isMatch){
             return res.status(400).json({message:"Invalid password"})
         }
@@ -23,7 +27,7 @@ const superAdminLogin = async(req,res)=>{
             }
         }
 
-        const token = jwt.sign(payload,'jwt_sceret',{expires:'1h'})
+        const token = jwt.sign(payload,'jwt_sceret',{expiresIn:'1h'})
         return res.status(200).send({token,message:"Sucessfully login"})
     }
     catch(err){
