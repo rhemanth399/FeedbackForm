@@ -4,7 +4,7 @@ import SuperadminModel from '../models/superModel.js'
 
   const SendFeedbackNotification = async (feedbackId)=>{
     const feedback = await FeedbackModel.findById(feedbackId);
-    const superadmin = await SuperadminModel.find();
+    const superadmin = await SuperadminModel.findOne();
 
     if(!superadmin){
         return;

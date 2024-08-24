@@ -4,7 +4,7 @@ export const createSuperadmin = async () => {
     const superadmin = await SuperadminModel.findOne({ email: 'superadmin@example.com' });
     if (!superadmin) {
       const newSuperadmin = new SuperadminModel({
-        email: 'rhemanth3999@example.com',
+        email: 'rhemanth3999@gmail.com',
         password: '123456'
       });
       await newSuperadmin.save();
