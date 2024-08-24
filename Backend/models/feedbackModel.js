@@ -35,7 +35,7 @@ feedbackSchema.post('save', async function(doc, next) {
   }
   catch(err){
     console.log(err);
-    console.error("Error sending feedback notification:", error);
+    console.error("Error sending feedback notification:", err);
     next(err)
   }
   next();
