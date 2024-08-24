@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import SendFeedbackNotification  from "../services/sendFeedbackNotification.js";
+import SendFeedbackNotification from "../services/SendFeedbackNotification";
 const responseSchema = new mongoose.Schema({
   questionPrompt: { type: String, required: true },
   response: String ,
@@ -29,8 +29,15 @@ const feedbackSchema = new mongoose.Schema({
 });
 
 
-feedbackSchema.post('save', function(doc, next) {
-  SendFeedbackNotification(doc._id);
+feedbackSchema.post('save', async function(doc, next) {
+  try{
+  await SendFeedbackNotification(doc._id);
+  }
+  catch(err){
+    console.log(err);
+    console.error("Error sending feedback notification:", error);
+    next(err)
+  }
   next();
 });
 
