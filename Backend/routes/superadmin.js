@@ -1,5 +1,5 @@
 import express from 'express'
-import { superAdminLogin } from '../controllers/superadmin';
+import { superAdminLogin } from '../controllers/superadmin.js';
 
 const superAdminRouter = express.Router();
 

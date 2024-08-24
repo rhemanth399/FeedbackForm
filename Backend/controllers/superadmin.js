@@ -1,4 +1,4 @@
-import SuperadminModel from "../models/superModel";
+import SuperadminModel from "../models/superModel.js";
 import bcrypt from 'bcrypt'
 
 
