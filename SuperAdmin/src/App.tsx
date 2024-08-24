@@ -14,7 +14,7 @@ function App() {
   const location = useLocation();
 
   // Check if the current path is the login page
-  const isLoginPage = location.pathname === '/login';
+  const isLoginPage = location.pathname === '/';
 
   
   return (
@@ -28,7 +28,7 @@ function App() {
           {!isLoginPage && <Sidebar />}
 
           <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
             <Route path="/createForm" element={<CreateForms/>}/>
             <Route path="/editForms" element={<EditForms/>}/>
             <Route path="/manageTemplates" element={<ManageTemplates/>}/>
