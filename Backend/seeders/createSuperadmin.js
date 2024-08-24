@@ -1,6 +1,6 @@
 import SuperadminModel from "../models/superModel.js";
 
-const createSuperadmin = async () => {
+export const createSuperadmin = async () => {
     const superadmin = await SuperadminModel.findOne({ email: 'superadmin@example.com' });
     if (!superadmin) {
       const newSuperadmin = new SuperadminModel({
@@ -14,4 +14,4 @@ const createSuperadmin = async () => {
     }
   };
   
-  createSuperadmin().catch(console.error);
+  //createSuperadmin().catch(console.error);

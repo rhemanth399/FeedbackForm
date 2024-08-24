@@ -7,6 +7,7 @@ import templateRouter from "./routes/templates.js";
 import adminRouter from "./routes/admin.js";
 import feedbackRouter from "./routes/feedback.js";
 import path from 'path'
+import { createSuperadmin } from "./seeders/createSuperadmin.js";
 
 
 //app config
@@ -32,6 +33,8 @@ app.use('/uploads', express.static(uploadPath));
 app.use("/api",adminRouter)
 
 app.use("/api",feedbackRouter)
+
+
 
 //db connection
 connectDB();
