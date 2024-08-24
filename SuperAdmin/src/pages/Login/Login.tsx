@@ -53,7 +53,7 @@ const Login: React.FC = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                      {error&&<div className="error-msg">{errorMsg==='Email is required'?errorMsg:''}</div>}
-                    <input
+                    <CustomInput
                         type="password"
                         placeholder="Password"
                         value={password}
