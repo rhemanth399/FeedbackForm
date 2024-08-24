@@ -14,7 +14,7 @@ import SuperadminModel from '../models/superModel.js'
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'rhemanth399@example.com',
+          user: 'rhemanth399@gmail.com',
           pass: 'tect vfii meiw jnea'
         }
       });
