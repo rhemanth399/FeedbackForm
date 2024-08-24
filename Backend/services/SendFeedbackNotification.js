@@ -6,6 +6,10 @@ import SuperadminModel from '../models/superModel.js'
     const feedback = await FeedbackModel.findById(feedbackId);
     const superadmin = await SuperadminModel.findOne();
 
+    if(!superadmin){
+        return;
+    }
+
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

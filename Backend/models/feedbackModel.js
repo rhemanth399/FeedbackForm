@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import SendFeedbackNotification from "../services/SendFeedbackNotification";
+import SendFeedbackNotification from "../services/SendFeedbackNotification.js";
 const responseSchema = new mongoose.Schema({
   questionPrompt: { type: String, required: true },
   response: String ,
