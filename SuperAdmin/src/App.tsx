@@ -22,7 +22,7 @@ function App() {
       <div >
           {!isLoginPage && <Navbar />}
           
-          <hr/>
+          {!isLoginPage && <hr/>}
           
           <div className="app-content">
           {!isLoginPage && <Sidebar />}
