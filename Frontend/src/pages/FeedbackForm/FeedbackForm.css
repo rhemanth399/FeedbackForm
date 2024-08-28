@@ -103,7 +103,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-.question-options {
+.question-content {
   display: flex;
   flex-direction: column;
   width: 100%; /* Ensure options take full width on mobile */
