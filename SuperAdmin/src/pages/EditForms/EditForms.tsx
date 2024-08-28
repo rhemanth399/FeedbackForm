@@ -150,6 +150,7 @@ const FormEditor: React.FC = () => {
                             {...provided.dragHandleProps}
                             className="question"
                           >
+                            
                             <span className="question-number">{index + 1}) </span>
                             <select
                               value={question.type}
