@@ -79,17 +79,14 @@ const updatingFormBasedonId = async (req,res) =>{
 }
 
 const deleteQuestion = async (req,res)=>{
-    const {formId,questionIndex} =req.params;
+    const {formId,questionId} =req.params;
     try{
-        const form = await formModel.findById(formId);
-        if(!form){
-            return res.json({success:false,message:"Form not Found"})
-        }
-        form.questions.splice(questionIndex,1);
-        await form.save();
-        res.json({
-            success:true,message:"Question Deleted Successfully",form
-        })
+        const result = await formModel.updateOne(
+            { _id: formId },
+            { $pull: { questions: { _id: questionId } } }
+        );
+        return result;
+        
     }
     catch(error){
         res.json({
