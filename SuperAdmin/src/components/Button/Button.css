@@ -1,7 +1,8 @@
 .custom-button {
-    padding: 10px 20px;
+    padding: 10px 40px;
     font-size: 16px;
-    background-color: rgb(225, 161, 225);
+    background-color: rgb(244, 177, 146);
+    
     color: white;
     border: none;
     border-radius: 4px;
@@ -15,7 +16,7 @@
 }
 
 .custom-button:hover {
-    background-color: rgb(229, 181, 229);
+    background-color: rgb(247, 167, 129);
     transform: scale(1.05);
 }
 

@@ -2,12 +2,13 @@
 
 
 *{
-  padding: 0;
-  margin: 0;
+  padding: 0px;
+  margin: 0px;
   box-sizing: border-box;
   font-family: Outfit;
 }
 
+/*
 body{
   min-height: 100vh;
   background-color: #fcfcfc;
@@ -28,4 +29,4 @@ hr{
 
 .app-content{
   display: flex;
-}
+} */

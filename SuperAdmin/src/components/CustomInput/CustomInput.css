@@ -19,14 +19,14 @@
 }
 
 .custom-input:focus{
-    border-bottom: 1px solid rgb(225, 161, 225);
+    border-bottom: 1px solid rgb(244, 177, 146);
 }
 
 .custom-input:focus ~ .label,
 .custom-input:not(:placeholder-shown) ~ .label {
     top: -20px;
     font-size: 16px;
-    color: rgb(225, 161, 225);
+    color: rgb(244, 177, 146);
 }
 
 .label {
