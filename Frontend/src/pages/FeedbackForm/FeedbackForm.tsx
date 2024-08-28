@@ -72,10 +72,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   }, [apiUrl]);
 
 
+  
   // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
   //   const form = new FormData();
-    
   //   if (formData.fileupload) {
   //     Object.keys(formData.fileupload).forEach((questionId) => {
   //       const file = formData.fileupload[questionId];
@@ -84,43 +84,37 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   //       }
   //     });
   //   }
-  
   //   const payload = {
   //     formId: formId,
   //     user: formData.user,
-  //     responses: questions
-  //       .map((question) => {
-  //         const response = formData.multiple_choice[question._id] ||
-  //           formData.single_choice[question._id] ||
-  //           formData.dropdown[question._id] ||
-  //           formData.textarea[question._id] ||
-  //           formData.ratingscale[question._id] ||
-  //           formData.likestscale[question._id] ||
-  //           formData.textinput[question._id] ||
-  //           formData.datepicker[question._id] ||
-  //           formData.fileupload[question._id] ||
-  //           formData.checkbox[question._id];
-          
-  //         if (response === undefined || response === null) {
-  //           return null; // Skip questions with no response
-  //         }
-  
-  //         return {
-  //           questionId: question._id,
-  //           questionType: question.type,
-  //           response: Array.isArray(response) ? response.join(', ') : response,
-  //         };
-  //       })
-  //       .filter(response => response !== null), // Filter out null responses
+  //     responses: questions.map((question) => {
+  //       {console.log(question._id)}
+  //       const response = formData.multiple_choice[question._id] ||
+  //         formData.single_choice[question._id] ||
+  //         formData.dropdown[question._id] ||
+  //         formData.textarea[question._id] ||
+  //         formData.ratingscale[question._id] ||
+  //         formData.likestscale[question._id] ||
+  //         formData.textinput[question._id] ||
+  //         formData.datepicker[question._id] ||
+  //         formData.fileupload[question._id] ||
+  //         formData.checkbox[question._id];
+  //       return {
+  //         questionId: question._id,
+  //         questionType: question.type,
+  //         response: Array.isArray(response) ? response.join(', ') : response,
+  //       };
+  //     }),
   //   };
-  
-  //   console.log("Payload:", payload);
-  //   form.append("json", JSON.stringify(payload));
+  //   console.log("hhhh",payload)
+  //   form.append("json", JSON.stringify(payload))
     
+
+
   //   try {
-  //     console.log("Submitting form...");
-  //     const response = await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/feedback`, form, {
-  //       headers: {
+  //     console.log("Hi")
+  //     const response = await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/feedback`, form,{
+  //       headers:{
   //         'Content-Type': 'multipart/form-data',
   //       }
   //     });
@@ -135,14 +129,13 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
   //     toast.error('An error occurred while submitting the form');
   //   }
   // };
-  
-
 
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData();
+  
     if (formData.fileupload) {
       Object.keys(formData.fileupload).forEach((questionId) => {
         const file = formData.fileupload[questionId];
@@ -151,11 +144,11 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
         }
       });
     }
+  
     const payload = {
       formId: formId,
       user: formData.user,
       responses: questions.map((question) => {
-        {console.log(question._id)}
         const response = formData.multiple_choice[question._id] ||
           formData.single_choice[question._id] ||
           formData.dropdown[question._id] ||
@@ -165,26 +158,29 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
           formData.textinput[question._id] ||
           formData.datepicker[question._id] ||
           formData.fileupload[question._id] ||
-          formData.checkbox[question._id];
+          formData.checkbox[question._id] ||
+          '';
+  
         return {
           questionId: question._id,
           questionType: question.type,
           response: Array.isArray(response) ? response.join(', ') : response,
+          file: question.type === 'File upload' && formData.fileupload[question._id] ? formData.fileupload[question._id].name : null,
         };
       }),
     };
-    console.log("hhhh",payload)
-    form.append("json", JSON.stringify(payload))
-    
-
-
+  
+    console.log("Payload:", payload);
+    form.append("json", JSON.stringify(payload));
+  
     try {
-      console.log("Hi")
-      const response = await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/feedback`, form,{
-        headers:{
+      console.log("Submitting form...");
+      const response = await axios.post(`https://feedbackform-backend-ao0d.onrender.com/api/feedback`, form, {
+        headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
+  
       if (response.data) {
         toast.success('Form submitted successfully');
         navigate("/");
@@ -196,6 +192,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ withData }) => {
       toast.error('An error occurred while submitting the form');
     }
   };
+  
 
   
 
