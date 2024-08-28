@@ -264,7 +264,7 @@ interface Form {
   qrCode: string;
 }
 
-const FormEditor: React.FC = () => {
+const EditForms: React.FC = () => {
   const [forms, setForms] = useState<Form[]>([]);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const [form, setForm] = useState<Form | null>(null);
@@ -370,11 +370,11 @@ const FormEditor: React.FC = () => {
 
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="questions">
-                  {(provided) => (
+                  {(provided:any) => (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
                       {form.questions.map((question, index) => (
                         <Draggable key={question._id} draggableId={question._id} index={index}>
-                          {(provided) => (
+                          {(provided:any) => (
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
@@ -455,4 +455,4 @@ const FormEditor: React.FC = () => {
   );
 };
 
-export default FormEditor;
+export default EditForms;
