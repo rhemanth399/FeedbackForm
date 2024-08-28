@@ -74,7 +74,7 @@ const FormEditor: React.FC = () => {
   const deleteQuestion = async (index: any) => {
     if (form) {
       try {
-        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}/questions/${index}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
