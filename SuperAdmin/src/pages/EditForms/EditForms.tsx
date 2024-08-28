@@ -1,3 +1,233 @@
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import './EditForms.css';
+// import { useNavigate } from 'react-router-dom';
+
+// const questionTypes = [
+//   'Multiple choice',
+//   'Single choice',
+//   'Dropdown',
+//   'Rating scale',
+//   'Likert scale',
+//   'Text input (upto 150 characters)',
+//   'Text area (upto 250 characters)',
+//   'Date picker',
+//   'File upload',
+//   'Checkbox'
+// ] as const;
+
+// type QuestionType = typeof questionTypes[number];
+
+// interface Question {
+//   type: QuestionType;
+//   prompt: string;
+//   options: string[];
+// }
+
+// interface Form {
+//   _id: string;
+//   title: string;
+//   questions: Question[];
+//   submittedAt: String,
+//   qrCode:string
+// }
+
+// const FormEditor: React.FC = () => {
+//   const [forms, setForms] = useState<Form[]>([]);
+//   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
+//   const [form, setForm] = useState<Form | null>(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchForms = async () => {
+//       try {
+//         const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/allForms');
+//         console.log("1", response)
+//         setForms(response.data.message);
+//       } catch (error) {
+//         console.error('Error fetching forms', error);
+//       }
+//     };
+//     fetchForms();
+//   }, []);
+
+//   const fetchForm = async (formId: string) => {
+//     try {
+//       const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${formId}`);
+//       console.log("2", response)
+//       setForm(response.data.message);
+//     } catch (error) {
+//       console.error('Error fetching form', error);
+//     }
+//   };
+
+//   const updateQuestion = (index: number, key: keyof Question, value: any) => {
+//     if (form) {
+//       const newQuestions = [...form.questions];
+//       newQuestions[index][key] = value;
+//       setForm({ ...form, questions: newQuestions });
+//     }
+//   };
+
+//   const deleteQuestion = async (index: number) => {
+//     if (form) {
+//       try {
+//         const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${index}`);
+//         setForm(response.data.form);
+//         alert('Question deleted successfully!');
+//       } catch (error) {
+//         console.error('Error deleting question', error);
+//         alert('Failed to delete question');
+//       }
+//     }
+//   };
+
+//   const addNewQuestion = () => {
+//     if (form) {
+//       const newQuestion: Question = {
+//         type: questionTypes[0], // Default to first question type
+//         prompt: '',
+//         options: [],
+//       };
+//       setForm({ ...form, questions: [...form.questions, newQuestion] });
+//     }
+//   };
+
+//   const saveForm = async () => {
+//     if (form) {
+//       try {
+//         await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
+//         alert('Form updated successfully!');
+//         navigate("/editforms")
+//       } catch (error) {
+//         console.error('Error updating form', error);
+//         alert('Failed to update form');
+//       }
+//     }
+//   };
+
+//   const onDragEnd = (result: any) => {
+//     if (!result.destination) {
+//       return;
+//     }
+
+//     const reorderedQuestions = Array.from(form?.questions || []);
+//     const [movedQuestion] = reorderedQuestions.splice(result.source.index, 1);
+//     reorderedQuestions.splice(result.destination.index, 0, movedQuestion);
+
+//     if (form) {
+//       setForm({ ...form, questions: reorderedQuestions });
+//     }
+//   };
+
+//   return (
+//     <><h1>Edit Form</h1>
+//     <div className="form-editor">
+//       {selectedFormId ? (
+//         form ? (
+//           <div>
+//             <input
+//               type="text"
+//               placeholder="Form Title"
+//               value={form.title}
+//               onChange={(e) => setForm({ ...form, title: e.target.value })}
+//             />
+//             <img src={form.qrCode} alt="qrCode"/>
+            
+//             <DragDropContext onDragEnd={onDragEnd}>
+//               <Droppable droppableId="questions">
+//                 {(provided: any) => (
+//                   <div {...provided.droppableProps} ref={provided.innerRef}>
+//                     {form.questions.map((question, index) => (
+//                       <Draggable key={index} draggableId={String(index)} index={index}>
+//                         {(provided: any) => (
+//                           <div
+//                             ref={provided.innerRef}
+//                             {...provided.draggableProps}
+//                             {...provided.dragHandleProps}
+//                             className="question"
+//                           >
+//                             <span className="question-number">{index + 1}) </span>
+//                             <select
+//                               value={question.type}
+//                               onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
+//                             >
+//                               <option value="">Select question type</option>
+//                               {questionTypes.map((type) => (
+//                                 <option key={type} value={type}>
+//                                   {type}
+//                                 </option>
+//                               ))}
+//                             </select>
+                            
+//                             <input
+//                               type="text"
+//                               placeholder="Question prompt"
+//                               value={question.prompt}
+//                               onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
+//                             />
+                            
+//                             {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
+//                               <div>
+//                                 <textarea
+//                                   placeholder="Options (comma separated)"
+//                                   value={question.options.join(',')}
+//                                   onChange={(e) =>
+//                                     updateQuestion(index, 'options', e.target.value.split(','))
+//                                   }
+//                                 />
+//                               </div>
+//                             )}
+//                             <button onClick={() => deleteQuestion(question._id)}>Delete</button>
+//                           </div>
+//                         )}
+//                       </Draggable>
+//                     ))}
+//                     {provided.placeholder}
+//                   </div>
+//                 )}
+//               </Droppable>
+//             </DragDropContext>
+//             <div className='add-save'>
+//             <button onClick={addNewQuestion} className='add-question'>Add New Question</button>
+//             <button onClick={saveForm} className='save-form'>Save Form</button>
+//             </div>
+//           </div>
+//         ) : (
+//           <p>Loading form...</p>
+//         )
+//       ) : (
+//         <div>
+//           <h2>Select a form to edit</h2>
+//           <ul className="form-list">
+//             {forms.map((form) => (
+//               <li
+//                 key={form._id}
+//                 onClick={() => {
+//                   setSelectedFormId(form._id);
+//                   fetchForm(form._id);
+//                 }}
+//                 className={form._id === selectedFormId ? 'selected' : ''}
+//               >
+//                 {form.title}
+//                 <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       )}
+//     </div>
+//     </>
+//   );
+// };
+
+// export default FormEditor;
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -20,6 +250,7 @@ const questionTypes = [
 type QuestionType = typeof questionTypes[number];
 
 interface Question {
+  _id: string; // Add _id for deletion
   type: QuestionType;
   prompt: string;
   options: string[];
@@ -29,8 +260,8 @@ interface Form {
   _id: string;
   title: string;
   questions: Question[];
-  submittedAt: String,
-  qrCode:string
+  submittedAt: string;
+  qrCode: string;
 }
 
 const FormEditor: React.FC = () => {
@@ -43,7 +274,7 @@ const FormEditor: React.FC = () => {
     const fetchForms = async () => {
       try {
         const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/allForms');
-        console.log("1", response)
+        console.log("Fetched forms:", response);
         setForms(response.data.message);
       } catch (error) {
         console.error('Error fetching forms', error);
@@ -55,7 +286,7 @@ const FormEditor: React.FC = () => {
   const fetchForm = async (formId: string) => {
     try {
       const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${formId}`);
-      console.log("2", response)
+      console.log("Fetched form:", response);
       setForm(response.data.message);
     } catch (error) {
       console.error('Error fetching form', error);
@@ -70,10 +301,10 @@ const FormEditor: React.FC = () => {
     }
   };
 
-  const deleteQuestion = async (index: number) => {
+  const deleteQuestion = async (questionId: string) => {
     if (form) {
       try {
-        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${questionId}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -86,6 +317,7 @@ const FormEditor: React.FC = () => {
   const addNewQuestion = () => {
     if (form) {
       const newQuestion: Question = {
+        _id: Date.now().toString(), // Generating a unique ID for new question
         type: questionTypes[0], // Default to first question type
         prompt: '',
         options: [],
@@ -99,7 +331,7 @@ const FormEditor: React.FC = () => {
       try {
         await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
         alert('Form updated successfully!');
-        navigate("/editforms")
+        navigate("/editforms");
       } catch (error) {
         console.error('Error updating form', error);
         alert('Failed to update form');
@@ -122,102 +354,103 @@ const FormEditor: React.FC = () => {
   };
 
   return (
-    <><h1>Edit Form</h1>
-    <div className="form-editor">
-      {selectedFormId ? (
-        form ? (
-          <div>
-            <input
-              type="text"
-              placeholder="Form Title"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-            />
-            <img src={form.qrCode} alt="qrCode"/>
-            
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="questions">
-                {(provided: any) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {form.questions.map((question, index) => (
-                      <Draggable key={index} draggableId={String(index)} index={index}>
-                        {(provided: any) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="question"
-                          >
-                            <span className="question-number">{index + 1}) </span>
-                            <select
-                              value={question.type}
-                              onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
+    <>
+      <h1>Edit Form</h1>
+      <div className="form-editor">
+        {selectedFormId ? (
+          form ? (
+            <div>
+              <input
+                type="text"
+                placeholder="Form Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+              />
+              <img src={form.qrCode} alt="QR Code" />
+
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="questions">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {form.questions.map((question, index) => (
+                        <Draggable key={question._id} draggableId={question._id} index={index}>
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="question"
                             >
-                              <option value="">Select question type</option>
-                              {questionTypes.map((type) => (
-                                <option key={type} value={type}>
-                                  {type}
-                                </option>
-                              ))}
-                            </select>
-                            
-                            <input
-                              type="text"
-                              placeholder="Question prompt"
-                              value={question.prompt}
-                              onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
-                            />
-                            
-                            {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
-                              <div>
-                                <textarea
-                                  placeholder="Options (comma separated)"
-                                  value={question.options.join(',')}
-                                  onChange={(e) =>
-                                    updateQuestion(index, 'options', e.target.value.split(','))
-                                  }
-                                />
-                              </div>
-                            )}
-                            <button onClick={() => deleteQuestion(index)}>Delete</button>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-            <div className='add-save'>
-            <button onClick={addNewQuestion} className='add-question'>Add New Question</button>
-            <button onClick={saveForm} className='save-form'>Save Form</button>
+                              <span className="question-number">{index + 1}) </span>
+                              <select
+                                value={question.type}
+                                onChange={(e) => updateQuestion(index, 'type', e.target.value as QuestionType)}
+                              >
+                                <option value="">Select question type</option>
+                                {questionTypes.map((type) => (
+                                  <option key={type} value={type}>
+                                    {type}
+                                  </option>
+                                ))}
+                              </select>
+
+                              <input
+                                type="text"
+                                placeholder="Question prompt"
+                                value={question.prompt}
+                                onChange={(e) => updateQuestion(index, 'prompt', e.target.value)}
+                              />
+
+                              {['Multiple choice', 'Single choice', 'Dropdown'].includes(question.type) && (
+                                <div>
+                                  <textarea
+                                    placeholder="Options (comma separated)"
+                                    value={question.options.join(',')}
+                                    onChange={(e) =>
+                                      updateQuestion(index, 'options', e.target.value.split(','))
+                                    }
+                                  />
+                                </div>
+                              )}
+                              <button onClick={() => deleteQuestion(question._id)}>Delete</button>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <div className='add-save'>
+                <button onClick={addNewQuestion} className='add-question'>Add New Question</button>
+                <button onClick={saveForm} className='save-form'>Save Form</button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>Loading form...</p>
+          )
         ) : (
-          <p>Loading form...</p>
-        )
-      ) : (
-        <div>
-          <h2>Select a form to edit</h2>
-          <ul className="form-list">
-            {forms.map((form) => (
-              <li
-                key={form._id}
-                onClick={() => {
-                  setSelectedFormId(form._id);
-                  fetchForm(form._id);
-                }}
-                className={form._id === selectedFormId ? 'selected' : ''}
-              >
-                {form.title}
-                <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+          <div>
+            <h2>Select a form to edit</h2>
+            <ul className="form-list">
+              {forms.map((form) => (
+                <li
+                  key={form._id}
+                  onClick={() => {
+                    setSelectedFormId(form._id);
+                    fetchForm(form._id);
+                  }}
+                  className={form._id === selectedFormId ? 'selected' : ''}
+                >
+                  {form.title}
+                  <p className='created-date'>{form.submittedAt.split('T')[0]}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </>
   );
 };
