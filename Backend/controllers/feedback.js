@@ -7,12 +7,11 @@ import FormModel from '../models/formModel.js';
 // Create a new feedback
 export const createFeedback = async (req, res) => {
   try {
-    const url = await req.file;
+    // Check if a file was uploaded
+    const fileUrl = req.file ? `https://feedbackform-backend-ao0d.onrender.com/uploads/${req.file.filename}` : null;
 
-    const path = `https://feedbackform-backend-ao0d.onrender.com/uploads/${url.filename}`
-    console.log(path);
-    const { formId, user, responses } = await JSON.parse(req.body.json);
-    console.log(responses, "responses", formId, user,);
+    // Parse the form data
+    const { formId, user, responses } = JSON.parse(req.body.json);
 
     // Validate that the form exists
     const form = await FormModel.findById(formId);
@@ -28,22 +27,22 @@ export const createFeedback = async (req, res) => {
       return res.status(400).json({ message: 'Invalid question ID(s) in responses' });
     }
 
-    // Add the file path to the first response and include question prompts
-    const updatedResponses = responses.map((response, index) => {
+    // Add the file path to the corresponding response if applicable
+    const updatedResponses = responses.map((response) => {
       const question = form.questions.id(response.questionId);
       console.log(response);
 
       return {
         questionPrompt: question.prompt,
-        questionType: question.type, 
-        //response: typeof response.response === "object" ? undefined : response.response,
-        response: question.type === 'File upload' && path ? path:response.response,
-        file: (question.prompt === "File upload") && path ? path : null
+        questionType: question.type,
+        response: question.type === 'File upload' && fileUrl ? fileUrl : response.response,
+        file: question.type === 'File upload' && fileUrl ? fileUrl : null
       };
     });
 
-    console.log(updatedResponses, "updatedResponses")
+    console.log(updatedResponses, "updatedResponses");
 
+    // Create the feedback document
     const newFeedback = new FeedbackModel({
       formId,
       user,
@@ -51,14 +50,15 @@ export const createFeedback = async (req, res) => {
       submittedAt: Date.now()
     });
 
+    // Save the feedback to the database
     const savedFeedback = await newFeedback.save();
     res.status(201).json(savedFeedback);
   } catch (error) {
     console.log(error, "error");
-
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Retrieve list of feedback
 export const RetrievingListOfFeedback = async (req, res) => {
