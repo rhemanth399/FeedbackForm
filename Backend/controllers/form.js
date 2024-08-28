@@ -81,7 +81,7 @@ const updatingFormBasedonId = async (req,res) =>{
 const deleteQuestion = async (req,res)=>{
     const {formId,questionIndex} =req.params;
      // Convert questionId to mongoose ObjectId
-     const questionObjectId = mongoose.Types.ObjectId(questionId);
+     const questionObjectId = mongoose.Types.ObjectId(questionIndex);
 
     try {
         const result = await formModel.updateOne(
