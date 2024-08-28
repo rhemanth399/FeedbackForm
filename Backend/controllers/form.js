@@ -79,19 +79,29 @@ const updatingFormBasedonId = async (req,res) =>{
 }
 
 const deleteQuestion = async (req,res)=>{
-    const {formId,questionId} =req.params;
-    try{
-        const result = await formModel.updateOne(
+    const {formId,questionIndex} =req.params;
+    
+    try {
+        const result = await FormModel.updateOne(
             { _id: formId },
-            { $pull: { questions: { _id: questionId } } }
+            { $pull: { questions: { _id: questionIndex } } }
         );
-        return result;
-        
-    }
-    catch(error){
-        res.json({
-            success:false,message:"Error deleting question"
-        })
+        if (result.nModified > 0) {
+            res.json({
+                success: true,
+                message: "Question deleted successfully"
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "Question not found"
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Error deleting question"
+        });
     }
 }
 
