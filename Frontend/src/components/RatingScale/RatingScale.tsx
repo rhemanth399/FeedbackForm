@@ -19,6 +19,7 @@ const RatingScale: React.FC<RatingScaleProps> = ({ question, scale, questionId }
 
   const handleRatingChange = (value: any) => {
     setRating(value);
+    setTimeout(() => setRating(value), 0);
   };
 
   return (
