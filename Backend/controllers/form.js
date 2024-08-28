@@ -82,7 +82,7 @@ const deleteQuestion = async (req,res)=>{
     const {formId,questionIndex} =req.params;
     
     try {
-        const result = await FormModel.updateOne(
+        const result = await formModel.updateOne(
             { _id: formId },
             { $pull: { questions: { _id: questionIndex } } }
         );
