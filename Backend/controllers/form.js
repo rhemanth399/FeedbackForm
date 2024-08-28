@@ -1,5 +1,6 @@
 import formModel from "../models/formModel.js";
 import QRCode from 'qrcode';
+import mongoose from 'mongoose';
 
 // storing the feedback data
 const storeFeedback = async (req,res) =>{
