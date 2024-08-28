@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import SendFeedbackNotification from "../services/SendFeedbackNotification.js";
 const responseSchema = new mongoose.Schema({
-  questionPrompt: { type: String},
+  questionPrompt: { type: String,required:true},
   response: String ,
   file: String,
   questionType: { type: String }
