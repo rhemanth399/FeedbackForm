@@ -81,15 +81,15 @@ const updatingFormBasedonId = async (req,res) =>{
 
 const deleteQuestion = async (req,res)=>{
     const {formId,questionIndex} =req.params;
-     // Convert questionId to mongoose ObjectId
-     const questionObjectId = mongoose.Types.ObjectId(questionIndex);
-
+     
     try {
+        
         const result = await formModel.updateOne(
             { _id: formId },
-            { $pull: { questions: { _id: questionObjectId } } }
+            { $pull: { questions: { _id: questionIndex} } }
         );
-        if (result.nModified > 0) {
+        console.log(result)
+        if (result.modifiedCount > 0) {
             res.json({
                 success: true,
                 message: "Question deleted successfully"
