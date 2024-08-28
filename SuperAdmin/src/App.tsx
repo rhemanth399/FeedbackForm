@@ -23,12 +23,13 @@ function App() {
           {!isLoginPage && <Navbar />}
           
           {!isLoginPage && <hr/>}
+          <Routes><Route path="/" element={<Login />} /></Routes>
           
           <div className="app-content">
           {!isLoginPage && <Sidebar />}
 
           <Routes>
-          <Route path="/" element={<Login />} />
+          
             <Route path="/createForm" element={<CreateForms/>}/>
             <Route path="/editForms" element={<EditForms/>}/>
             <Route path="/manageTemplates" element={<ManageTemplates/>}/>
