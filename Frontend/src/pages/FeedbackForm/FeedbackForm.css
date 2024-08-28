@@ -103,7 +103,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-.question-content {
+.question-options {
   display: flex;
   flex-direction: column;
   width: 100%; /* Ensure options take full width on mobile */
@@ -120,23 +120,21 @@ h1 {
   }
 
   .question-container {
-      flex-direction: column;
-      align-items: flex-start;
-      width: 100%; /* Ensure full width on mobile */
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: flex-start; /* Align items to the start */
   }
 
   .question-number {
-      padding-right: 0;
-      margin-bottom: 10px;
-      width: 100%; /* Ensure full width for question number */
+    width: auto; /* Allow number to adjust based on content */
+    margin-bottom: 5px; /* Add space below number */
+    text-align: left; /* Align number to the left */
   }
 
   .question-content {
-      width: 100%; /* Ensure full width for question content */
+    width: 100%; /* Full width for question content on mobile */
   }
 
   .question-options {
-      flex-direction: column;
-      width: 100%; /* Ensure options take full width on mobile */
+    flex-direction: column; /* Ensure options stack vertically */
   }
 }
