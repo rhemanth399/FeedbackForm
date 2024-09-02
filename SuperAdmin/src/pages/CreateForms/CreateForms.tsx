@@ -37,17 +37,39 @@ const CreateForms : React.FC = () => {
   };
 
   const saveForm = async () => {
+    const filteredQuestions = questions.filter(question => {
+      // Ensure that the question has a type and a prompt
+      if (!question.type || !question.prompt.trim()) {
+        return false;
+      }
+      // For question types that require options, ensure options are provided and valid
+      if (['Multiple choice', 'Single choice', 'Dropdown', 'Checkbox', 'Likert scale'].includes(question.type)) {
+        return question.options.length > 0 && question.options.every((option:any) => option.trim() !== '');
+      }
+      return true;
+    });
+    if (!title.trim()) {
+      alert('Form title is required.');
+      return;
+    }
+  
+    if (filteredQuestions.length === 0) {
+      alert('Please provide at least one complete question.');
+      return;
+    }
+
     try {
       console.log(title,questions)
-      await axios.post('https://feedbackform-backend-ao0d.onrender.com/api/create', { title, questions });
+      await axios.post('https://feedbackform-backend-ao0d.onrender.com/api/create', { title, questions:filteredQuestions });
       alert('Form saved successfully!');
+      setQuestions([])
+    setTitle("")
     } catch (error) {
       console.error('Error saving form', error);
       alert('Failed to save form');
     }
     console.log(questions)
-    setQuestions([])
-    setTitle("")
+    
   };
 
   return (

@@ -69,6 +69,7 @@ const ManageTemplates: React.FC = () => {
 
   const deleteQuestion = async (questionId:string) => {
     if (form) {
+      console.log('hemanth',form)
       try {
         const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/templates/${form._id}/questions/${questionId}`);
         setForm(response.data.form);
