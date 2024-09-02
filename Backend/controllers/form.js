@@ -108,4 +108,28 @@ const deleteQuestion = async (req,res)=>{
     }
 }
 
-export { storeFeedback , allFormsRetrieving ,feedbackBasedonId , updatingFormBasedonId ,deleteQuestion}
+// deleting a form based on form ID
+const deleteForm = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const form = await formModel.findByIdAndDelete(id);
+        if (!form) {
+            return res.status(404).json({
+                success: false,
+                message: "Form not found"
+            });
+        }
+        res.json({
+            success: true,
+            message: "Form deleted successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error deleting form"
+        });
+    }
+}
+
+export { storeFeedback , allFormsRetrieving ,feedbackBasedonId , updatingFormBasedonId ,deleteQuestion,deleteForm}
