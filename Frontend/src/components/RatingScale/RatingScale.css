@@ -25,5 +25,5 @@
 
 .rating-star:hover,
 .rating-star:hover ~ .rating-star {
-  color: gold;
+  color: #ccc;
 }

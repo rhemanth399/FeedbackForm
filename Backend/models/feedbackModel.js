@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-
+import SendFeedbackNotification from "../services/SendFeedbackNotification.js";
 const responseSchema = new mongoose.Schema({
-  questionPrompt: { type: String, required: true },
+  questionPrompt: { type: String,required:true},
   response: String ,
   file: String,
   questionType: { type: String }
@@ -26,6 +26,19 @@ const feedbackSchema = new mongoose.Schema({
  comment:String,
  resolutionComment: String,
  adminSubmittedDate:{type:Date,default:Date.now}
+});
+
+
+feedbackSchema.post('save', async function(doc, next) {
+  try{
+  await SendFeedbackNotification(doc._id);
+  }
+  catch(err){
+    console.log(err);
+    console.error("Error sending feedback notification:", err);
+    next(err)
+  }
+  next();
 });
 
 const FeedbackModel = mongoose.model('Feedback', feedbackSchema);

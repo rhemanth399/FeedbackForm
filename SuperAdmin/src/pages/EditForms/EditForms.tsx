@@ -20,6 +20,7 @@ const questionTypes = [
 type QuestionType = typeof questionTypes[number];
 
 interface Question {
+  _id:string,
   type: QuestionType;
   prompt: string;
   options: string[];
@@ -70,10 +71,10 @@ const FormEditor: React.FC = () => {
     }
   };
 
-  const deleteQuestion = async (index: number) => {
+  const deleteQuestion = async (index: any) => {
     if (form) {
       try {
-        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/forms/${form._id}/questions/${index}`);
+        const response = await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}/questions/${index}`);
         setForm(response.data.form);
         alert('Question deleted successfully!');
       } catch (error) {
@@ -86,6 +87,7 @@ const FormEditor: React.FC = () => {
   const addNewQuestion = () => {
     if (form) {
       const newQuestion: Question = {
+        _id:Date.now().toString(),
         type: questionTypes[0], // Default to first question type
         prompt: '',
         options: [],
@@ -148,6 +150,7 @@ const FormEditor: React.FC = () => {
                             {...provided.dragHandleProps}
                             className="question"
                           >
+                            
                             <span className="question-number">{index + 1}) </span>
                             <select
                               value={question.type}
@@ -179,7 +182,7 @@ const FormEditor: React.FC = () => {
                                 />
                               </div>
                             )}
-                            <button onClick={() => deleteQuestion(index)}>Delete</button>
+                            <button onClick={() => deleteQuestion(question._id)}>Delete</button>
                           </div>
                         )}
                       </Draggable>
@@ -223,3 +226,7 @@ const FormEditor: React.FC = () => {
 };
 
 export default FormEditor;
+
+
+
+

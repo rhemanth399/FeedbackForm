@@ -1,5 +1,6 @@
 import formModel from "../models/formModel.js";
 import QRCode from 'qrcode';
+import mongoose from 'mongoose';
 
 // storing the feedback data
 const storeFeedback = async (req,res) =>{
@@ -80,21 +81,30 @@ const updatingFormBasedonId = async (req,res) =>{
 
 const deleteQuestion = async (req,res)=>{
     const {formId,questionIndex} =req.params;
-    try{
-        const form = await formModel.findById(formId);
-        if(!form){
-            return res.json({success:false,message:"Form not Found"})
+     
+    try {
+        
+        const result = await formModel.updateOne(
+            { _id: formId },
+            { $pull: { questions: { _id: questionIndex} } }
+        );
+        console.log(result)
+        if (result.modifiedCount > 0) {
+            res.json({
+                success: true,
+                message: "Question deleted successfully"
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: "Question not found"
+            });
         }
-        form.questions.splice(questionIndex,1);
-        await form.save();
-        res.json({
-            success:true,message:"Question Deleted Successfully",form
-        })
-    }
-    catch(error){
-        res.json({
-            success:false,message:"Error deleting question"
-        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Error deleting question"
+        });
     }
 }
 
