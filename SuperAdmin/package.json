@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.20",
     "@mui/styled-engine": "^5.15.14",
     "axios": "^1.7.2",
+    "html2canvas": "^1.4.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
