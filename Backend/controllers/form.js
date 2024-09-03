@@ -62,7 +62,8 @@ const feedbackBasedonId = async (req,res) =>{
 const updatingFormBasedonId = async (req,res) =>{
     const {id} =req.params;
     try {
-        const form = await formModel.findByIdAndUpdate(id,req.body)
+        const updateData = req.body;
+        const form = await formModel.findByIdAndUpdate(id,{ $set: updateData }, { new: true })
         if(!form){
             return res.json({
                 success:false,message:"Not Found"
