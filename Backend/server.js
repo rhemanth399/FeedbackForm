@@ -9,6 +9,7 @@ import feedbackRouter from "./routes/feedback.js";
 import path from 'path'
 import { createSuperadmin } from "./seeders/createSuperadmin.js";
 import superAdminRouter from "./routes/superadmin.js";
+import './jobs/feedbackStatusUpdate.js'
 
 
 //app config

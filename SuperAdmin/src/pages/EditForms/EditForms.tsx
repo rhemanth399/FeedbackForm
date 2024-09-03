@@ -291,6 +291,7 @@ const FormEditor: React.FC = () => {
     const fetchForms = async () => {
       try {
         const response = await axios.get('https://feedbackform-backend-ao0d.onrender.com/api/allForms');
+        //const response = await axios.get('http://localhost:4000/api/allForms');
         console.log("1", response)
         setForms(response.data.message);
       } catch (error) {
@@ -303,6 +304,7 @@ const FormEditor: React.FC = () => {
   const fetchForm = async (formId: string) => {
     try {
       const response = await axios.get(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${formId}`);
+      //const response = await axios.get(`http://localhost:4000/api/forms/${formId}`);
       console.log("2", response)
       setForm(response.data.message);
     } catch (error) {
@@ -406,15 +408,20 @@ const FormEditor: React.FC = () => {
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
               />
-              <div className='qrCode-section' ref={qrCodeSectionRef}>
 
+<input type="text"  id="qrCodeInput"  value={qrCodeInput} onChange={(e) => setQRCodeInput(e.target.value)} />
+                 
+              <div className='qrCode-section' ref={qrCodeSectionRef}>
+                <div>
+                
                 <img src={form.qrCode} alt="qrCode" />
                 <p>Scan The QRCODE</p>
+                </div>
                 <div className='qrCode-text'>
-                  <input type="text"  id="qrCodeInput" value={qrCodeInput} onChange={(e) => setQRCodeInput(e.target.value)} />
+                   <button onClick={handleDownloadQRCode}>Download</button>
                 </div>
               </div>
-              <button onClick={handleDownloadQRCode}>Download</button>
+              
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="questions">
                   {(provided: any) => (

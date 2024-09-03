@@ -31,6 +31,7 @@ body {
   border-radius: 4px;
   font-size: 16px;
   box-sizing: border-box;
+  outline: none;
 }
 
 .form-editor textarea {
@@ -114,6 +115,17 @@ body {
   margin-right: 5px;
 }
 
+.qrCode-section{
+  display: flex;
+  gap:2rem;
+  margin: 10px;
+}
+
+.qrCode-text{
+  display: flex;
+  align-items: center;
+  
+}
 @media (max-width: 768px) {
   .form-editor {
     padding: 10px;

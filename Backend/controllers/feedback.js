@@ -3,6 +3,7 @@
 import Admin from '../models/adminModel.js';
 import FeedbackModel from '../models/feedbackModel.js';
 import FormModel from '../models/formModel.js';
+import { getFeedbackStatistics } from '../services/getFeedbackStatistics.js';
 
 // Create a new feedback
 export const createFeedback = async (req, res) => {
@@ -89,6 +90,7 @@ export const RetrievingListOfFeedbackBasedOnAdmin = async(req,res)=>{
 export const feedbackTaskAssign = async (req, res) => {
   const { feedbackId } = req.params;
   const { adminId, comment } = req.body;
+  const assignedDate = new Date();
   try {
     // Find the feedback to get the currently assigned admin
     const feedback = await FeedbackModel.findById(feedbackId).select('assignedAdmin');
@@ -121,7 +123,8 @@ export const feedbackTaskAssign = async (req, res) => {
             email: admin.email
           },
           status: 'assigned',
-          comment: comment
+          comment: comment,
+          assignedDate
         }
       }
     );
@@ -339,3 +342,13 @@ export const getSearchFeedback = async (req, res) => {
     res.status(500).json({ error: 'Error searching feedback' });
   }
 };
+
+
+export const superadminfeedbackStatistics = async(req,res)=>{
+  try {
+    const stats = await getFeedbackStatistics();
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch feedback statistics' });
+  }
+}
