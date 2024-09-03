@@ -22,7 +22,7 @@ const feedbackSchema = new mongoose.Schema({
   responses: [responseSchema],
   submittedAt: { type: Date, default: Date.now },
  assignedAdmin: assignedAdminSchema,
- status: { type: String, enum: ['pending', 'assigned', 'resolved'], default: 'received' },
+ status: { type: String, enum: ['pending', 'assigned', 'resolved','received'], default: 'received' },
  comment:String,
  resolutionComment: String,
  assignedDate: { type: Date },
