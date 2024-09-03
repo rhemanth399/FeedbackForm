@@ -33,6 +33,10 @@ const Sidebar: React.FC = () => {
           <img src={assets.add_icon} alt="" />
           <p>List Of Feedback</p>
         </NavLink>
+        <NavLink to="/feedback-statistics" className="sidebar-option">
+          <img src={assets.add_icon} alt="" />
+          <p>Feedback Statistics</p>
+        </NavLink>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import CreateAdmin from './pages/CreateAdmin/CreateAdmin.tsx'
 import ListOfFeedback from './pages/ListOfFeedback/ListOfFeedback.tsx'
 import ListOfAdmin from './pages/ListOfAdmin/ListOfAdmin.tsx'
 import Login from './pages/Login/Login.tsx'
+import FeedbackStatistics from './pages/FeedbackStatistics/FeedbackStatistics.tsx'
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
             <Route path="/createAdmin" element={<CreateAdmin/>}/>
             <Route path="/listofadmins" element={<ListOfAdmin/>}/>
             <Route path="/listOfFeedback" element={<ListOfFeedback/>}/>
+            <Route path="/feedback-statistics" element={<FeedbackStatistics/>}/>
           </Routes>
           </div>
         </div>
