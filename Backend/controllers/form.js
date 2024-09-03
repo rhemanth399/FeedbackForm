@@ -110,9 +110,10 @@ const deleteQuestion = async (req,res)=>{
 
 // deleting a form based on form ID
 const deleteForm = async (req, res) => {
-    const { id } = req.params;
+    const { formId } = req.body;
+    console.log(formId)
     try {
-        const form = await formModel.findByIdAndDelete(id);
+        const form = await formModel.findByIdAndDelete(formId);
         if (!form) {
             return res.status(404).json({
                 success: false,

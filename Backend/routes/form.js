@@ -10,5 +10,5 @@ formRouter.get("/allForms",allFormsRetrieving)
 formRouter.get("/forms/:id",feedbackBasedonId)
 formRouter.put("/forms/:id",updatingFormBasedonId)
 formRouter.delete("/forms/:formId/questions/:questionIndex",deleteQuestion)
-formRouter.delete("form/:formId",deleteForm)
+formRouter.delete("form/",deleteForm)
 export default formRouter
