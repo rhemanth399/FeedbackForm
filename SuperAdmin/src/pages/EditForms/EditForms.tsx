@@ -369,24 +369,31 @@ const FormEditor: React.FC = () => {
       setForm({ ...form, questions: reorderedQuestions });
     }
   };
-
-  const handleDownloadQRCode = async () => {
-    if (qrCodeSectionRef.current) {
-      try {
-        const canvas = await html2canvas(qrCodeSectionRef.current);
-        const dataUrl = canvas.toDataURL('image/png');
-        
-        // Create a link element and trigger a download
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = `${form?.title || 'qr_code'}.png`;
-        link.click();
-      } catch (error) {
-        console.error('Error capturing QR code section:', error);
-      }
-    }
+  const handleDownloadQRCode = () => {
+    const qrCodeInputElement:any = document.getElementById('qrCodeInput');
+    const qrCodeText = qrCodeInputElement.value;
+  
+    // Create a span element with the QR code text
+    const qrCodeTextSpan:any = document.createElement('span');
+    qrCodeTextSpan.id = 'qrCodeTextSpan';
+    qrCodeTextSpan.textContent = qrCodeText;
+  
+    // Replace the input field with the span element
+    qrCodeInputElement.parentNode.replaceChild(qrCodeTextSpan, qrCodeInputElement);
+  
+    // Select the QR code section for printing
+    const qrCodeSection:any = document.querySelector('.qrCode-section');
+  
+    html2canvas(qrCodeSection).then((canvas) => {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'QRCode.png';
+      link.click();
+  
+      // Revert the span back to the input field
+      qrCodeTextSpan.parentNode.replaceChild(qrCodeInputElement, qrCodeTextSpan);
+    });
   };
-
   return (
     <><h1>Edit Form</h1>
       <div className="form-editor">
@@ -404,7 +411,7 @@ const FormEditor: React.FC = () => {
                 <img src={form.qrCode} alt="qrCode" />
                 <p>Scan The QRCODE</p>
                 <div className='qrCode-text'>
-                  <input type="text" value={qrCodeInput} onChange={(e) => setQRCodeInput(e.target.value)} />
+                  <input type="text"  id="qrCodeInput" value={qrCodeInput} onChange={(e) => setQRCodeInput(e.target.value)} />
                 </div>
               </div>
               <button onClick={handleDownloadQRCode}>Download</button>
