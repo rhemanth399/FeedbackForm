@@ -265,7 +265,7 @@ const questionTypes = [
 type QuestionType = typeof questionTypes[number];
 
 interface Question {
-  _id: string;
+  _id?: string;
   type: QuestionType;
   prompt: string;
   options: string[];
@@ -336,7 +336,7 @@ const FormEditor: React.FC = () => {
   const addNewQuestion = () => {
     if (form) {
       const newQuestion: Question = {
-        _id: Date.now().toString(),
+        //_id: Date.now().toString(),
         type: questionTypes[0], // Default to first question type
         prompt: '',
         options: [],
@@ -348,7 +348,10 @@ const FormEditor: React.FC = () => {
   const saveForm = async () => {
     if (form) {
       try {
+        console.log(form._id)
         await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/forms/${form._id}`, form);
+        //await axios.put(`http://localhost:4000/api/forms/${form._id}`, form);
+        //console.log(response)
         alert('Form updated successfully!');
         navigate("/editforms")
       } catch (error) {
@@ -385,12 +388,20 @@ const FormEditor: React.FC = () => {
   
     // Select the QR code section for printing
     const qrCodeSection:any = document.querySelector('.qrCode-section');
-  
+    const downloadButton:any = qrCodeSection.querySelector('button');
+
+
+    // Hide the download button before capturing the canvas
+    downloadButton.style.display = 'none';
+
     html2canvas(qrCodeSection).then((canvas) => {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
       link.download = 'QRCode.png';
       link.click();
+      
+      // Show the download button after capturing the canvas
+      downloadButton.style.display = 'block';
   
       // Revert the span back to the input field
       qrCodeTextSpan.parentNode.replaceChild(qrCodeInputElement, qrCodeTextSpan);
