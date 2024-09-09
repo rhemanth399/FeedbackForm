@@ -93,3 +93,8 @@
   float: left; /* Align to the right */
   margin-left: 10px;
 }
+
+.ellipsis-content {
+  display: flex;
+  justify-content: flex-end;
+}
