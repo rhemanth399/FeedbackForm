@@ -26,6 +26,12 @@ label {
     margin-bottom: 5px; /* Add spacing between label and input */
 }
 
+.error {
+    color: red; 
+    font-size: 0.875rem; 
+    margin-top: 5px; 
+  }
+
 @media (min-width: 768px) {
     .inputs {
         width: 50%; /* Adjust width on larger screens */
