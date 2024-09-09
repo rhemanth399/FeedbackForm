@@ -189,7 +189,8 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreVertIcon from '@mui/icons-material/MoreHoriz';
+import CloseIcon from '@mui/icons-material/Close';
 import { Container,IconButton, Card, Grid, CardContent, Typography, MenuItem, Select, InputLabel, FormControl, TextField, Pagination, Box, CircularProgress } from '@mui/material';
 import './ListOfFeedback.css'
 
@@ -331,7 +332,7 @@ const ListOfFeedback: React.FC = () => {
                 ):(
                   <div className="ellipsis-content">
                   <IconButton onClick={() => handleToggleExpand(feedback._id)}>
-                    <MoreHorizIcon />
+                  {expandedFeedbackId === feedback._id ? <CloseIcon />: <MoreVertIcon />}
                   </IconButton>
                 </div>
               )}
