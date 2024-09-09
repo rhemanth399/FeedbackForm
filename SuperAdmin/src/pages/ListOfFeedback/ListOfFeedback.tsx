@@ -109,7 +109,7 @@ const ListOfFeedback: React.FC = () => {
           <Grid item xs={12} sm={6} key={feedback._id}>
             <Card className={`feedback-item ${feedback.status || 'unassigned'}`} sx={{ mb: 2 }}>
               <CardContent>
-              <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
+              <Typography variant="h6" className="highlight-name">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
                 <div className='top-content'>
                 
                 <Typography>📧: {feedback.user.email || 'N/A'}</Typography>
