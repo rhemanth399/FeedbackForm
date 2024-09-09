@@ -121,7 +121,12 @@ const ListOfFeedback: React.FC = () => {
                 {feedback.resolutionComment && (
                   <>
                     <Typography>💬: {feedback.resolutionComment}</Typography>
-                    <Typography>📅: {feedback.adminSubmittedDate}</Typography>
+                    <Typography>📅: {new Date(feedback.adminSubmittedDate).toLocaleDateString('en-GB', {
+                                      day: 'numeric',
+                                      month: 'short', // Short month format
+                                      year: 'numeric',
+                                      })}
+                    </Typography>
                   </>
                 )}
                 </div>
