@@ -112,16 +112,16 @@ const ListOfFeedback: React.FC = () => {
               <Typography variant="h6">Feedback from {feedback.user.name || 'Anonymous'}</Typography>
                 <div className='top-content'>
                 
-                <Typography>Email: {feedback.user.email || 'N/A'}</Typography>
-                <Typography>Phone: {feedback.user.phone || 'N/A'}</Typography>
-                <Typography>Status: {feedback.status || 'unassigned'}</Typography>
+                <Typography>📧: {feedback.user.email || 'N/A'}</Typography>
+                <Typography>📞: {feedback.user.phone || 'N/A'}</Typography>
+                <Typography>🥲: {feedback.status || 'unassigned'}</Typography>
                 {feedback.assignedAdmin && (
-                  <Typography>Assigned Admin: {feedback.assignedAdmin.name}</Typography>
+                  <Typography>👤: {feedback.assignedAdmin.name}</Typography>
                 )}
                 {feedback.resolutionComment && (
                   <>
-                    <Typography>Comments: {feedback.resolutionComment}</Typography>
-                    <Typography>Date: {feedback.adminSubmittedDate}</Typography>
+                    <Typography>💬: {feedback.resolutionComment}</Typography>
+                    <Typography>📅: {feedback.adminSubmittedDate}</Typography>
                   </>
                 )}
                 </div>
