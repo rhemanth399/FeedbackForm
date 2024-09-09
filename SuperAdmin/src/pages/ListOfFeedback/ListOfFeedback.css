@@ -70,6 +70,8 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 15px;
   gap:10px;
 }
@@ -95,6 +97,5 @@
 }
 
 .ellipsis-content {
-  display: flex;
-  justify-content: flex-end;
+  margin-left: auto;
 }
