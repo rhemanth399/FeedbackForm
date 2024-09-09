@@ -89,7 +89,7 @@
   border-radius: 5px;
   font-weight: bold;
   
-  text-align: right;
-  float: right; /* Align to the right */
+  
+  float: left; /* Align to the right */
   margin-left: 10px;
 }

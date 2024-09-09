@@ -321,6 +321,12 @@ const ListOfFeedback: React.FC = () => {
                                       year: 'numeric',
                                       })}
                 </Typography>
+                {feedback.resolutionComment && (
+                  <>
+                    <Typography>💬: {feedback.resolutionComment}</Typography>
+                    
+                  </>
+                )}
                 </>
                 ):(
                   <div className="ellipsis-content">
@@ -329,12 +335,7 @@ const ListOfFeedback: React.FC = () => {
                   </IconButton>
                 </div>
               )}
-                {feedback.resolutionComment && (
-                  <>
-                    <Typography>💬: {feedback.resolutionComment}</Typography>
-                    
-                  </>
-                )}
+                
                 </div>
                 {expandedFeedbackId === feedback._id && (
                   <div>
