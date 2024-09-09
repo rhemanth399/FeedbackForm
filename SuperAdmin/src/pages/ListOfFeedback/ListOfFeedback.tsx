@@ -116,7 +116,7 @@ const ListOfFeedback: React.FC = () => {
                 <Typography>📞: {feedback.user.phone || 'N/A'}</Typography>
                 <Typography>🥲: {feedback.status || 'unassigned'}</Typography>
                 {feedback.assignedAdmin && (
-                  <Typography>👤: {feedback.assignedAdmin.name}</Typography>
+                  <Typography>👨‍💼: {feedback.assignedAdmin.name}</Typography>
                 )}
                 {feedback.resolutionComment && (
                   <>
