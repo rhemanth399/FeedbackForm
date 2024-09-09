@@ -97,4 +97,33 @@ catch(err){
 }
 }
 
-export {createAdmin,getListOfAdmins,loginAdmin,updateAdminCanCreateForm , updateAdminCanEditForm}
+const deleteAdmin = async(req,res)=>{
+    try{
+        const admin = await Admin.findByIdAndDelete(req.params.id);
+        if(!admin){
+            return res.status(404).json({message:'Admin Not Found'})
+        }
+        res.status(200).json({message:'Admin deleted successfully'})
+    }
+    catch(error){
+        res.status(500).json({message:'Server error',error})
+    }
+}
+
+const updateAdmin = async(req,res)=>{
+    try{
+        const updatedAdmin = await Admin.findByIdAndUpdate(
+            req.params.id,
+            req.body,{new:true,runValidators:true}
+        )
+        if(!updatedAdmin){
+            return res.status(404).json({message:'Admin not found'})
+        }
+        res.status(200).json({message:'Admin Updated Successfully',admin:updateAdmin})
+    }
+    catch(error){
+        res.status(500).json({ message: 'Server error', error });
+    }
+}
+
+export {createAdmin,getListOfAdmins,loginAdmin,updateAdminCanCreateForm , updateAdminCanEditForm ,deleteAdmin ,updateAdmin}
