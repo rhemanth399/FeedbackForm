@@ -129,9 +129,10 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, CircularProgress, Box, Checkbox } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, CircularProgress, Box, Checkbox, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import './ListOfAdmin.css';
 
 interface Admin {
@@ -146,20 +147,13 @@ interface Admin {
   };
 }
 
-interface EditAdminData {
-  name: string;
-  email: string;
-  phone: string;
-  designation: string;
-}
-
 const ListOfAdmin: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [editAdminData, setEditAdminData] = useState<EditAdminData | null>(null);
+  const [editRowId, setEditRowId] = useState<string | null>(null); // Track the row in edit mode
+  const [editFormValues, setEditFormValues] = useState<Partial<Admin>>({});
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -180,6 +174,30 @@ const ListOfAdmin: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleEditClick = (admin: Admin) => {
+    setEditRowId(admin._id);
+    setEditFormValues(admin);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditFormValues({ ...editFormValues, [name]: value });
+  };
+
+  const handleSaveClick = async (adminId: string) => {
+    try {
+      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/admin/${adminId}`, editFormValues);
+      setAdmins(prevAdmins =>
+        prevAdmins.map(admin =>
+          admin._id === adminId ? { ...admin, ...editFormValues } : admin
+        )
+      );
+      setEditRowId(null); // Exit edit mode
+    } catch (error) {
+      console.error('Error updating admin', error);
+    }
+  };
+
   const handlePermissionChange = async (adminId: string, permissionType: 'canCreateForm' | 'canEditForm', currentValue: boolean) => {
     try {
       const updatedValue = !currentValue;
@@ -187,7 +205,7 @@ const ListOfAdmin: React.FC = () => {
         adminId,
         [permissionType]: updatedValue ? 'Yes' : 'No',
       });
-
+      
       setAdmins(prevAdmins =>
         prevAdmins.map(admin =>
           admin._id === adminId
@@ -197,48 +215,6 @@ const ListOfAdmin: React.FC = () => {
       );
     } catch (error) {
       console.error('Error updating permission', error);
-    }
-  };
-
-  const handleEditClick = (admin: Admin) => {
-    setEditAdminData({
-      name: admin.name,
-      email: admin.email,
-      phone: admin.phone,
-      designation: admin.designation,
-    });
-    setEditMode(true);
-  };
-
-  const handleDeleteClick = async (adminId: string) => {
-    try {
-      await axios.delete(`https://feedbackform-backend-ao0d.onrender.com/api/admin/delete/${adminId}`);
-      setAdmins(prevAdmins => prevAdmins.filter(admin => admin._id !== adminId));
-    } catch (error) {
-      console.error('Error deleting admin', error);
-    }
-  };
-
-  const handleSaveClick = async (adminId: string) => {
-    if (!editAdminData) return;
-
-    try {
-      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/admin/update/${adminId}`, {
-        ...editAdminData,
-      });
-
-      setAdmins(prevAdmins =>
-        prevAdmins.map(admin =>
-          admin._id === adminId
-            ? { ...admin, ...editAdminData }
-            : admin
-        )
-      );
-
-      setEditMode(false);
-      setEditAdminData(null);
-    } catch (error) {
-      console.error('Error updating admin data', error);
     }
   };
 
@@ -254,14 +230,15 @@ const ListOfAdmin: React.FC = () => {
       <h1>List of Admins</h1>
       <Box mb={2}>
         <TextField
-          label="Search Admin"
+          id="search"
+          label="Search by Name"
           variant="outlined"
-          fullWidth
           value={searchTerm}
           onChange={handleSearchChange}
+          className="search-input"
         />
       </Box>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className="table-container">
         <Table>
           <TableHead>
             <TableRow>
@@ -269,8 +246,8 @@ const ListOfAdmin: React.FC = () => {
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Designation</TableCell>
-              <TableCell>Can Create Form</TableCell>
-              <TableCell>Can Edit Form</TableCell>
+              <TableCell>Create Form</TableCell>
+              <TableCell>Edit Form</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -278,41 +255,29 @@ const ListOfAdmin: React.FC = () => {
             {filteredAdmins.map((admin) => (
               <TableRow key={admin._id}>
                 <TableCell>
-                  {editMode && editAdminData ? (
-                    <TextField
-                      value={editAdminData.name}
-                      onChange={(e) => setEditAdminData({ ...editAdminData, name: e.target.value })}
-                    />
+                  {editRowId === admin._id ? (
+                    <TextField name="name" value={editFormValues.name || ''} onChange={handleInputChange} />
                   ) : (
                     admin.name
                   )}
                 </TableCell>
                 <TableCell>
-                  {editMode && editAdminData ? (
-                    <TextField
-                      value={editAdminData.email}
-                      onChange={(e) => setEditAdminData({ ...editAdminData, email: e.target.value })}
-                    />
+                  {editRowId === admin._id ? (
+                    <TextField name="email" value={editFormValues.email || ''} onChange={handleInputChange} />
                   ) : (
                     admin.email
                   )}
                 </TableCell>
                 <TableCell>
-                  {editMode && editAdminData ? (
-                    <TextField
-                      value={editAdminData.phone}
-                      onChange={(e) => setEditAdminData({ ...editAdminData, phone: e.target.value })}
-                    />
+                  {editRowId === admin._id ? (
+                    <TextField name="phone" value={editFormValues.phone || ''} onChange={handleInputChange} />
                   ) : (
                     admin.phone
                   )}
                 </TableCell>
                 <TableCell>
-                  {editMode && editAdminData ? (
-                    <TextField
-                      value={editAdminData.designation}
-                      onChange={(e) => setEditAdminData({ ...editAdminData, designation: e.target.value })}
-                    />
+                  {editRowId === admin._id ? (
+                    <TextField name="designation" value={editFormValues.designation || ''} onChange={handleInputChange} />
                   ) : (
                     admin.designation
                   )}
@@ -330,11 +295,18 @@ const ListOfAdmin: React.FC = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  <EditIcon onClick={() => handleEditClick(admin)} />
-                  <DeleteIcon onClick={() => handleDeleteClick(admin._id)} />
-                  {editMode && editAdminData && (
-                    <button onClick={() => handleSaveClick(admin._id)}>Save</button>
+                  {editRowId === admin._id ? (
+                    <IconButton onClick={() => handleSaveClick(admin._id)}>
+                      <SaveIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={() => handleEditClick(admin)}>
+                      <EditIcon />
+                    </IconButton>
                   )}
+                  <IconButton>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
