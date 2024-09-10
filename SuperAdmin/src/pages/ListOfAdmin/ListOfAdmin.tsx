@@ -186,7 +186,7 @@ const ListOfAdmin: React.FC = () => {
 
   const handleSaveClick = async (adminId: string) => {
     try {
-      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/admin/${adminId}`, editFormValues);
+      await axios.put(`https://feedbackform-backend-ao0d.onrender.com/api/admin/update/${adminId}`, editFormValues);
       setAdmins(prevAdmins =>
         prevAdmins.map(admin =>
           admin._id === adminId ? { ...admin, ...editFormValues } : admin
