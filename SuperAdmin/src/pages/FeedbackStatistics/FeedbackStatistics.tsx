@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios'
-
+import './FeedbackStatistics.css'
 interface FeedbackStatisticsProps {}
 
 interface FeedbackStatisticsData {
@@ -37,16 +37,30 @@ const FeedbackStatistics: React.FC<FeedbackStatisticsProps> = () => {
       ];
     
       return (
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
+        // <ResponsiveContainer width="100%" height={400}>
+        //   <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        //     <CartesianGrid strokeDasharray="3 3" />
+        //     <XAxis dataKey="name" />
+        //     <YAxis />
+        //     <Tooltip />
+        //     <Legend />
+        //     <Bar dataKey="count" fill="#8884d8" />
+        //   </BarChart>
+        // </ResponsiveContainer>
+        
+        <ResponsiveContainer  height={500}>
+          
+  <BarChart data={chartData} margin={{ top: 120, right: 40, left: 40, bottom: 1 }} barSize={50} >
+    <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+    <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#333' }} />
+    <YAxis tick={{ fontSize: 12, fill: '#333' }} />
+    <Tooltip contentStyle={{padding:'5px'}}/>
+    <Legend wrapperStyle={{ padding: 10, fontSize: 14 }} />
+    <Bar dataKey="count" fill="#8884d8"  />
+    
+  </BarChart>
+</ResponsiveContainer>
+
       );
     };
     
