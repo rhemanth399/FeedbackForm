@@ -9,6 +9,6 @@ adminRouter.post("/admin/login",loginAdmin)
 adminRouter.put("/admin/updateCanCreateForm",updateAdminCanCreateForm)
 adminRouter.put("/admin/updateCanEditForm",updateAdminCanEditForm)
 adminRouter.delete("/admin/delete/:id",deleteAdmin)
-adminRouter.put("admin/update/:id",updateAdmin)
+adminRouter.put("/admin/update/:id",updateAdmin)
 
 export default adminRouter
