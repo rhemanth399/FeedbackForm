@@ -192,7 +192,7 @@ const ListOfAdmin: React.FC = () => {
           admin._id === adminId ? { ...admin, ...editFormValues } : admin
         )
       );
-      setEditRowId(null); // Exit edit mode
+      setEditRowId(null); // Exit edit mode after saving
     } catch (error) {
       console.error('Error updating admin', error);
     }
